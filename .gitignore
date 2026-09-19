@@ -5,3 +5,5 @@ Thumbs.db
 # Generated repository health reports
 reports/repository-inventory.json
 reports/repository-quality.json
+reports/repository-pages.json
+reports/repository-releases.json

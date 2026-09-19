@@ -2,6 +2,22 @@
 
 All notable changes to this repository are documented here.
 
+## [0.4.0] - 2026-09-20
+
+### Added
+
+- Added GitHub Pages reachability checks with redirect support and HTML content-type warnings.
+- Added headers-only HTTP checking to avoid downloading large standalone HTML artifacts.
+- Added registry / `app.config.json` / Latest Release / Git tag version consistency checks.
+- Added tolerant version tag matching for `1.2.3` and `v1.2.3`.
+- Added JSON Schemas for Pages and release/version reports.
+- Added both new checks to the scheduled Repository Health workflow and workflow artifact.
+
+### Changed
+
+- Repository Health workflow now watches all files under `schema/**`.
+- Missing GitHub Releases or tags are explicitly valid; mismatches are warnings rather than automatic mutations.
+
 ## [0.3.1] - 2026-09-20
 
 ### Fixed

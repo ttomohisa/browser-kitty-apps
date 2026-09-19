@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://browser-kitty.com/schema/repository-releases.schema.json",
+  "title": "Browser Kitty Release Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "generatedAt", "sourceRegistry", "sourceInventory", "githubApi", "authenticated", "policy", "summary", "applications"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "sourceRegistry": { "type": "string", "const": "apps.json" },
+    "sourceInventory": { "type": "string", "minLength": 1 },
+    "githubApi": { "type": "string", "pattern": "^https://" },
+    "authenticated": { "type": "boolean" },
+    "policy": { "$ref": "#/definitions/policy" },
+    "summary": { "$ref": "#/definitions/summary" },
+    "applications": { "type": "array", "items": { "$ref": "#/definitions/application" } }
+  },
+  "definitions": {
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["missingReleaseIsFailure", "missingTagsIsFailure", "versionMismatchSeverity", "acceptedTagForms"],
+      "properties": {
+        "missingReleaseIsFailure": { "type": "boolean" },
+        "missingTagsIsFailure": { "type": "boolean" },
+        "versionMismatchSeverity": { "type": "string", "enum": ["WARN"] },
+        "acceptedTagForms": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registeredApps", "checkedApps", "pass", "warn", "fail", "lookupErrors"],
+      "properties": {
+        "registeredApps": { "type": "integer", "minimum": 0 },
+        "checkedApps": { "type": "integer", "minimum": 0 },
+        "pass": { "type": "integer", "minimum": 0 },
+        "warn": { "type": "integer", "minimum": 0 },
+        "fail": { "type": "integer", "minimum": 0 },
+        "lookupErrors": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["appId", "name", "repository", "registryStatus", "registeredVersion", "defaultBranch", "releaseStatus", "appConfigLookupStatus", "appConfigVersion", "registryMatchesAppConfig", "releaseLookupStatus", "latestReleaseTag", "registryMatchesRelease", "tagLookupStatus", "tagCount", "matchingVersionTag", "tags", "issues", "error"],
+      "properties": {
+        "appId": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "repository": { "type": "string", "minLength": 1 },
+        "registryStatus": { "type": "string", "enum": ["development", "rc", "stable", "maintenance", "archived"] },
+        "registeredVersion": { "type": "string", "minLength": 1 },
+        "defaultBranch": { "type": ["string", "null"] },
+        "releaseStatus": { "type": "string", "enum": ["PASS", "WARN", "FAIL"] },
+        "appConfigLookupStatus": { "type": "string", "enum": ["ok", "error"] },
+        "appConfigVersion": { "type": ["string", "null"] },
+        "registryMatchesAppConfig": { "type": ["boolean", "null"] },
+        "releaseLookupStatus": { "type": "string", "enum": ["ok", "none", "error"] },
+        "latestReleaseTag": { "type": ["string", "null"] },
+        "registryMatchesRelease": { "type": ["boolean", "null"] },
+        "tagLookupStatus": { "type": "string", "enum": ["ok", "none", "error"] },
+        "tagCount": { "type": "integer", "minimum": 0 },
+        "matchingVersionTag": { "type": ["string", "null"] },
+        "tags": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "issues": { "type": "array", "items": { "$ref": "#/definitions/issue" } },
+        "error": { "type": ["string", "null"] }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "code", "message"],
+      "properties": {
+        "severity": { "type": "string", "enum": ["WARN", "FAIL"] },
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

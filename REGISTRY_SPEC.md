@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 0.3.1 current / 1.0.0 target
+Version: 0.4.0 current / 1.0.0 target
 
 ## Purpose
 
@@ -42,7 +42,7 @@ Not every application must pass through every state.
 - v0.2.0 — Repository Inventory (implemented)
 - v0.3.0 — Assets / Repository Quality (implemented)
 - v0.3.1 — PowerShell CI parser hardening (implemented)
-- v0.4.0 — GitHub Pages / Release
+- v0.4.0 — GitHub Pages / Release (implemented)
 - v0.5.0 — Standalone / Runtime Metadata
 - v0.6.0 — Repository Health Report
 - v0.7.0 — Full Registry
@@ -53,13 +53,23 @@ Not every application must pass through every state.
 
 ## v0.2.0 implementation note
 
-`check-repositories.ps1` implements the Repository Inventory milestone without changing the responsibility of individual application repositories. The script reads `apps.json`, queries the GitHub REST API, and writes a generated inventory containing repository existence, visibility, archive state, default branch, and latest Release metadata. Missing or inaccessible repositories fail the check; absence of a GitHub Release is recorded but is not treated as a failure at this stage. GitHub Pages reachability and Release version comparison remain scheduled for v0.4.0.
+`check-repositories.ps1` implements the Repository Inventory milestone without changing the responsibility of individual application repositories. The script reads `apps.json`, queries the GitHub REST API, and writes a generated inventory containing repository existence, visibility, archive state, default branch, and latest Release metadata. Missing or inaccessible repositories fail the check; absence of a GitHub Release is recorded but is not treated as a failure. v0.4.0 consumes this inventory for release/version consistency checks.
 
 
 ### Authentication note
 
 The inventory does not rely on the built-in Actions `GITHUB_TOKEN` for child-repository reads because that token is scoped to the repository containing the workflow. Public child repositories are read anonymously by default. A dedicated `BROWSER_KITTY_GITHUB_TOKEN` secret may be configured later when the registry grows enough that anonymous API rate limits become a practical constraint.
 
+
+
+
+## v0.4.0 implementation note
+
+`check-pages.ps1` checks the `pages.url` registered for every application. Published applications must resolve through redirects to HTTP 2xx. The checker uses `HttpClient` with `ResponseHeadersRead`: `HEAD` is preferred and a headers-only `GET` is used only when a server returns 405/501. This avoids downloading large standalone HTML files during scheduled health checks. Successful non-HTML content types are reported as `WARN`.
+
+`check-releases.ps1` consumes `repository-inventory.json` and compares the registry version with the default branch's `app.config.json`. It also compares the latest GitHub Release tag when a Release exists and checks Git tag refs for a tag matching the registered version. `1.2.3` and `v1.2.3` are equivalent. Browser Kitty does not require every app repository to create GitHub Releases or tags, so absence is valid; an existing version mismatch is `WARN`, while lookup/parse failures are `FAIL`.
+
+The Repository Health workflow now produces four schema-validated reports: inventory, quality, Pages, and release/version consistency. All four are uploaded together as a 14-day workflow artifact.
 
 ## v0.3.1 implementation note
 
@@ -78,4 +88,4 @@ Repository quality has three states:
 - `WARN` — the repository can continue through development, but a release-oriented item should be addressed or the Git tree result was truncated.
 - `FAIL` — a required core/release file is missing or repository file inspection could not be completed.
 
-GitHub Pages reachability and Release version comparison are intentionally left for v0.4.0.
+GitHub Pages reachability and Release/version consistency are implemented in v0.4.0.

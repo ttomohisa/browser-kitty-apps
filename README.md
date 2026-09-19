@@ -4,25 +4,28 @@ Browser Kittyで公開している各アプリを、独立したGitHub Repositor
 
 このRepositoryはmonorepoではありません。各アプリのソースコード・Release・GitHub Pagesは従来どおり各Repositoryで管理し、ここではアプリ一覧、公開情報、実行条件、今後のRepository Health Checkに必要なメタデータを管理します。
 
-## v0.3.1
+## v0.4.0
 
-v0.3.1はv0.3.0のCI修正版です。Repository Inventory / Quality Checkの機能は維持したまま、PowerShellの文字列補間によるParserErrorを修正し、全PowerShellスクリプトの構文とUTF-8を事前検査するpreflightを追加しました。
+v0.4.0 adds publication and version-consistency checks on top of the Registry, Repository Inventory, and Repository Quality checks. GitHub Pages URLs are checked without downloading the full standalone HTML, and registry versions are compared with each repository's `app.config.json`, latest GitHub Release when present, and Git tag refs.
 
-- `apps.json` — Browser KittyアプリのRegistry
-- `categories.json` — カテゴリ定義
-- `schema/apps.schema.json` — RegistryのJSON Schema
-- `schema/repository-inventory.schema.json` — 生成InventoryのJSON Schema
-- `schema/repository-quality.schema.json` — Repository Quality ReportのJSON Schema
-- `scripts/check-registry.ps1` — PowerShell 7による整合性確認
-- `scripts/check-powershell.ps1` — 全PowerShellスクリプトの構文 / UTF-8 preflight
-- `.github/workflows/validate-registry.yml` — Push / Pull Request時のRegistry自動検証
-- `scripts/check-repositories.ps1` — GitHub Repositoryの存在・公開状態・Archive・default branch・Latest Release取得
-- `scripts/check-assets.ps1` — README / LICENSE / app.config / favicon / screenshotの日英Assets確認
-- `.github/workflows/repository-health.yml` — Repository Inventory + Quality CheckのPush / 定期 / 手動実行
-- `reports/README.md` — 生成Inventoryの扱い
-- `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty全体の共通ガイド
+- `apps.json` — Browser Kitty application registry
+- `categories.json` — category definitions
+- `schema/apps.schema.json` — registry JSON Schema
+- `schema/repository-inventory.schema.json` — repository inventory JSON Schema
+- `schema/repository-quality.schema.json` — repository quality JSON Schema
+- `schema/repository-pages.schema.json` — GitHub Pages report JSON Schema
+- `schema/repository-releases.schema.json` — release/version report JSON Schema
+- `scripts/check-registry.ps1` — registry validation
+- `scripts/check-powershell.ps1` — PowerShell syntax / strict UTF-8 preflight
+- `scripts/check-repositories.ps1` — repository existence / visibility / archive / default branch / latest Release inventory
+- `scripts/check-assets.ps1` — README / LICENSE / app.config / favicon / screenshot quality check
+- `scripts/check-pages.ps1` — published Pages reachability and response check
+- `scripts/check-releases.ps1` — registry / app.config / Release / tag version consistency check
+- `.github/workflows/repository-health.yml` — scheduled and on-change health checks
+- `reports/README.md` — generated report behavior
+- `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
 
-現在は代表11アプリを登録しています。全アプリの移行はv0.7.0までに段階的に行います。
+The registry currently contains 11 representative applications. Full migration is planned by v0.7.0.
 
 ## Registry
 
@@ -125,9 +128,9 @@ reports/repository-inventory.json
 - `pushed_at` / `updated_at`
 - Latest Releaseの有無・取得状態・基本情報
 
-Repositoryが見つからない、またはRepository lookup自体に失敗した場合はexit code 1とします。Private / Archiveの状態不整合はwarningとしてInventoryへ残します。Latest Releaseが存在しない404は`releaseLookupStatus: none`として正常に記録します。一方、Release APIの認証・rate limit・サーバーエラーなどで取得自体に失敗した場合は`error`としてCIを失敗させます。Release versionとの比較はv0.4.0で追加します。
+Repositoryが見つからない、またはRepository lookup自体に失敗した場合はexit code 1とします。Private / Archiveの状態不整合はwarningとしてInventoryへ残します。Latest Releaseが存在しない404は`releaseLookupStatus: none`として正常に記録します。一方、Release APIの認証・rate limit・サーバーエラーなどで取得自体に失敗した場合は`error`としてCIを失敗させます。
 
-GitHub Actionsでは `repository-health.yml` がPush・定期実行・手動実行に対応し、Inventory JSONとQuality Report JSONを14日間のArtifactとして保存します。生成JSONはそれぞれ専用Schemaで検証します。現在の11Repoは匿名APIでも必要リクエスト数が小さいためそのまま動作します。登録数が増えてAPI rate limitが問題になる場合は、必要な公開Repositoryを読める専用tokenをRepository Secret `BROWSER_KITTY_GITHUB_TOKEN` として任意設定します。GitHub PagesのHTTP確認とRelease version比較はv0.4.0で追加します。
+GitHub Actionsでは `repository-health.yml` がPush・定期実行・手動実行に対応します。現在の11Repoは匿名APIでも必要リクエスト数が小さいためそのまま動作します。登録数が増えてAPI rate limitが問題になる場合は、必要な公開Repositoryを読める専用tokenをRepository Secret `BROWSER_KITTY_GITHUB_TOKEN` として任意設定します。
 
 ## Repository quality
 
@@ -160,6 +163,33 @@ reports/repository-quality.json
 
 `check-assets.ps1` は `reports/repository-inventory.json` のdefault branch情報を再利用し、同じRepository metadataを重複取得しません。これにより横断チェック時のGitHub API消費を抑えます。
 
+## GitHub Pages
+
+公開URLは次で確認します。
+
+```powershell
+./scripts/check-pages.ps1
+```
+
+既定の出力先は `reports/repository-pages.json` です。公開済みアプリはredirect後にHTTP 2xxへ到達することを必須とします。巨大な単一HTMLを毎回取得しないよう、通常は`HEAD`だけを送り、サーバーが`HEAD`を拒否した場合だけheaders-onlyの`GET`へフォールバックします。HTML以外のContent-Typeで成功した場合は`WARN`です。
+
+## Release / version consistency
+
+```powershell
+./scripts/check-releases.ps1
+```
+
+既定の出力先は `reports/repository-releases.json` です。次を横断確認します。
+
+- `apps.json` の `release.version`
+- default branchの `app.config.json` version
+- Latest GitHub Release tag（存在する場合）
+- Git tag refs（存在する場合）
+
+GitHub Releaseやtagそのものは必須ではありません。存在する場合にだけRegistry版との不一致を`WARN`として検出します。tagは `1.2.3` と `v1.2.3` を同じversionとして扱います。GitHub API取得失敗や `app.config.json` の取得・解析失敗は`FAIL`です。
+
+GitHub ActionsではInventory / Quality / Pages / Releaseの4 JSONを14日間Artifact保存します。各JSONは専用Schemaで検証します。
+
 ## Add an application
 
 1. `categories.json` に対象カテゴリがあることを確認します。
@@ -184,7 +214,7 @@ htmlapps-*                 Public / individual applications
 
 - v0.2.0 — Repository Inventory ✅
 - v0.3.0 — Assets / Repository Quality ✅
-- v0.4.0 — GitHub Pages / Release
+- v0.4.0 — GitHub Pages / Release ✅
 - v0.5.0 — Standalone / Runtime Metadata
 - v0.6.0 — Repository Health Report
 - v0.7.0 — Full Registry
