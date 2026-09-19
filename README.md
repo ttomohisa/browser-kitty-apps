@@ -4,18 +4,20 @@ Browser Kittyで公開している各アプリを、独立したGitHub Repositor
 
 このRepositoryはmonorepoではありません。各アプリのソースコード・Release・GitHub Pagesは従来どおり各Repositoryで管理し、ここではアプリ一覧、公開情報、実行条件、今後のRepository Health Checkに必要なメタデータを管理します。
 
-## v0.2.0
+## v0.3.0
 
-v0.2.0ではRegistryのデータモデルに加えて、登録済みRepositoryの実在状態をGitHub APIから取得するRepository Inventoryを追加しました。
+v0.3.0ではRepository Inventoryに加えて、Browser Kittyの公開品質に必要なRepositoryファイルとリリース用Assetsを横断確認するRepository Quality Checkを追加しました。
 
 - `apps.json` — Browser KittyアプリのRegistry
 - `categories.json` — カテゴリ定義
 - `schema/apps.schema.json` — RegistryのJSON Schema
 - `schema/repository-inventory.schema.json` — 生成InventoryのJSON Schema
+- `schema/repository-quality.schema.json` — Repository Quality ReportのJSON Schema
 - `scripts/check-registry.ps1` — PowerShell 7による整合性確認
 - `.github/workflows/validate-registry.yml` — Push / Pull Request時のRegistry自動検証
 - `scripts/check-repositories.ps1` — GitHub Repositoryの存在・公開状態・Archive・default branch・Latest Release取得
-- `.github/workflows/repository-health.yml` — Repository InventoryのPush / 定期 / 手動実行
+- `scripts/check-assets.ps1` — README / LICENSE / app.config / favicon / screenshotの日英Assets確認
+- `.github/workflows/repository-health.yml` — Repository Inventory + Quality CheckのPush / 定期 / 手動実行
 - `reports/README.md` — 生成Inventoryの扱い
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty全体の共通ガイド
 
@@ -124,7 +126,38 @@ reports/repository-inventory.json
 
 Repositoryが見つからない、またはRepository lookup自体に失敗した場合はexit code 1とします。Private / Archiveの状態不整合はwarningとしてInventoryへ残します。Latest Releaseが存在しない404は`releaseLookupStatus: none`として正常に記録します。一方、Release APIの認証・rate limit・サーバーエラーなどで取得自体に失敗した場合は`error`としてCIを失敗させます。Release versionとの比較はv0.4.0で追加します。
 
-GitHub Actionsでは `repository-health.yml` がPush・定期実行・手動実行に対応し、Inventory JSONを14日間のArtifactとして保存します。生成JSONは専用Schemaでも検証します。現在の11Repoは匿名APIでも必要リクエスト数が小さいためそのまま動作します。登録数が増えてAPI rate limitが問題になる場合は、必要な公開Repositoryを読める専用tokenをRepository Secret `BROWSER_KITTY_GITHUB_TOKEN` として任意設定します。PagesやAssetsの実チェックはまだ行わず、v0.3.0 / v0.4.0で段階的に追加します。
+GitHub Actionsでは `repository-health.yml` がPush・定期実行・手動実行に対応し、Inventory JSONとQuality Report JSONを14日間のArtifactとして保存します。生成JSONはそれぞれ専用Schemaで検証します。現在の11Repoは匿名APIでも必要リクエスト数が小さいためそのまま動作します。登録数が増えてAPI rate limitが問題になる場合は、必要な公開Repositoryを読める専用tokenをRepository Secret `BROWSER_KITTY_GITHUB_TOKEN` として任意設定します。GitHub PagesのHTTP確認とRelease version比較はv0.4.0で追加します。
+
+## Repository quality
+
+Repository Inventoryを生成したあと、次を実行します。
+
+```powershell
+./scripts/check-assets.ps1
+```
+
+既定の出力先:
+
+```text
+reports/repository-quality.json
+```
+
+判定は `PASS / WARN / FAIL` の3段階です。
+
+**必須ファイル:**
+
+- `README.md`
+- `LICENSE`
+- `app.config.json`
+- `assets/favicon.svg`
+
+これらが欠けた場合は `FAIL` です。
+
+`assets/screenshot.png` と `assets/screenshot-en.png` は、Browser Kittyへ公開済みの `stable` / `maintenance` アプリではリリース品質要件として扱い、欠けた場合は `FAIL` とします。`development` / `rc` ではリリース前に追加すべき項目として `WARN` に留めます。
+
+`package.json` は存在確認だけ行います。現在の `htmlapps-template` はNode/package.jsonを必須としていないため、存在しなくても警告・失敗にはしません。
+
+`check-assets.ps1` は `reports/repository-inventory.json` のdefault branch情報を再利用し、同じRepository metadataを重複取得しません。これにより横断チェック時のGitHub API消費を抑えます。
 
 ## Add an application
 
@@ -149,7 +182,7 @@ htmlapps-*                 Public / individual applications
 詳細は [`REGISTRY_SPEC.md`](REGISTRY_SPEC.md) を参照してください。
 
 - v0.2.0 — Repository Inventory ✅
-- v0.3.0 — Assets / Repository Quality
+- v0.3.0 — Assets / Repository Quality ✅
 - v0.4.0 — GitHub Pages / Release
 - v0.5.0 — Standalone / Runtime Metadata
 - v0.6.0 — Repository Health Report

@@ -1,4 +1,4 @@
-name: Repository inventory
+name: Repository health
 
 on:
   push:
@@ -6,16 +6,20 @@ on:
     paths:
       - apps.json
       - schema/repository-inventory.schema.json
+      - schema/repository-quality.schema.json
       - scripts/check-registry.ps1
       - scripts/check-repositories.ps1
+      - scripts/check-assets.ps1
       - .github/workflows/repository-health.yml
   pull_request:
     branches: [main]
     paths:
       - apps.json
       - schema/repository-inventory.schema.json
+      - schema/repository-quality.schema.json
       - scripts/check-registry.ps1
       - scripts/check-repositories.ps1
+      - scripts/check-assets.ps1
       - .github/workflows/repository-health.yml
   schedule:
     - cron: '17 3 * * *'
@@ -25,7 +29,7 @@ permissions:
   contents: read
 
 jobs:
-  inventory:
+  health:
     name: Check registered repositories
     runs-on: ubuntu-latest
     steps:
@@ -42,11 +46,19 @@ jobs:
           BROWSER_KITTY_GITHUB_TOKEN: ${{ secrets.BROWSER_KITTY_GITHUB_TOKEN }}
         run: ./scripts/check-repositories.ps1
 
-      - name: Upload repository inventory
+      - name: Check repository assets and quality
+        shell: pwsh
+        env:
+          BROWSER_KITTY_GITHUB_TOKEN: ${{ secrets.BROWSER_KITTY_GITHUB_TOKEN }}
+        run: ./scripts/check-assets.ps1
+
+      - name: Upload repository health reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: browser-kitty-repository-inventory
-          path: reports/repository-inventory.json
+          name: browser-kitty-repository-health
+          path: |
+            reports/repository-inventory.json
+            reports/repository-quality.json
           if-no-files-found: warn
           retention-days: 14

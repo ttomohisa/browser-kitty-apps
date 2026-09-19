@@ -2,5 +2,6 @@
 .DS_Store
 Thumbs.db
 
-# Generated repository inventory
+# Generated repository health reports
 reports/repository-inventory.json
+reports/repository-quality.json

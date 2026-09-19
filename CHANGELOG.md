@@ -2,6 +2,19 @@
 
 All notable changes to this repository are documented here.
 
+## [0.3.0] - 2026-09-20
+
+### Added
+
+- Repository Quality Check with `PASS`, `WARN`, and `FAIL` results.
+- Required-file checks for `README.md`, `LICENSE`, `app.config.json`, and `assets/favicon.svg`.
+- Release screenshot checks for `assets/screenshot.png` and `assets/screenshot-en.png`.
+- Status-aware screenshot policy: published stable/maintenance apps fail when release screenshots are missing; development/RC apps warn instead.
+- Informational `package.json` detection without treating Node as a repository requirement.
+- JSON Schema for generated repository quality reports.
+- Repository tree lookup that reuses default-branch data from the v0.2.0 inventory to reduce duplicate GitHub API calls.
+- Combined GitHub Actions artifact containing inventory and quality reports.
+
 ## [0.2.0] - 2026-09-20
 
 ### Added

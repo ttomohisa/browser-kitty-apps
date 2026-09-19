@@ -23,3 +23,25 @@ The generated inventory is intentionally not committed. GitHub Actions uploads i
 ## Authentication
 
 The inventory works anonymously for public repositories. If a larger registry needs a higher API rate limit, set `BROWSER_KITTY_GITHUB_TOKEN` to a dedicated token that can read the target repositories. The built-in Actions `GITHUB_TOKEN` is intentionally not used for cross-repository inventory.
+
+## Repository quality
+
+After the inventory has been generated, run:
+
+```powershell
+./scripts/check-assets.ps1
+```
+
+The command writes `reports/repository-quality.json`. It checks the default branch tree for the Browser Kitty repository baseline:
+
+- `README.md`
+- `LICENSE`
+- `app.config.json`
+- `assets/favicon.svg`
+- `assets/screenshot.png`
+- `assets/screenshot-en.png`
+- `package.json` presence (informational only)
+
+The report assigns `PASS`, `WARN`, or `FAIL` per application. Missing core files fail the check. Missing screenshots fail published stable/maintenance applications and warn during development/RC. `package.json` is not required because the current Browser Kitty app template does not require Node.
+
+The quality report is generated output and is not committed. GitHub Actions uploads both inventory and quality JSON files in the `browser-kitty-repository-health` artifact.

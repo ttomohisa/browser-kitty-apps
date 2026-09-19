@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 0.2.0 current / 1.0.0 target
+Version: 0.3.0 current / 1.0.0 target
 
 ## Purpose
 
@@ -40,7 +40,7 @@ Not every application must pass through every state.
 
 - v0.1.0 — Registry Foundation
 - v0.2.0 — Repository Inventory (implemented)
-- v0.3.0 — Assets / Repository Quality
+- v0.3.0 — Assets / Repository Quality (implemented)
 - v0.4.0 — GitHub Pages / Release
 - v0.5.0 — Standalone / Runtime Metadata
 - v0.6.0 — Repository Health Report
@@ -52,9 +52,24 @@ Not every application must pass through every state.
 
 ## v0.2.0 implementation note
 
-`check-repositories.ps1` implements the Repository Inventory milestone without changing the responsibility of individual application repositories. The script reads `apps.json`, queries the GitHub REST API, and writes a generated inventory containing repository existence, visibility, archive state, default branch, and latest Release metadata. Missing or inaccessible repositories fail the check; absence of a GitHub Release is recorded but is not treated as a failure at this stage. GitHub Pages and asset checks remain scheduled for v0.3.0 and v0.4.0.
+`check-repositories.ps1` implements the Repository Inventory milestone without changing the responsibility of individual application repositories. The script reads `apps.json`, queries the GitHub REST API, and writes a generated inventory containing repository existence, visibility, archive state, default branch, and latest Release metadata. Missing or inaccessible repositories fail the check; absence of a GitHub Release is recorded but is not treated as a failure at this stage. GitHub Pages reachability and Release version comparison remain scheduled for v0.4.0.
 
 
 ### Authentication note
 
 The inventory does not rely on the built-in Actions `GITHUB_TOKEN` for child-repository reads because that token is scoped to the repository containing the workflow. Public child repositories are read anonymously by default. A dedicated `BROWSER_KITTY_GITHUB_TOKEN` secret may be configured later when the registry grows enough that anonymous API rate limits become a practical constraint.
+
+
+## v0.3.0 implementation note
+
+`check-assets.ps1` implements the Repository Quality milestone. It consumes the generated v0.2.0 inventory for repository/default-branch information, then reads each default-branch Git tree through the GitHub REST API and produces `reports/repository-quality.json`. This avoids repeating repository metadata calls and keeps cross-repository API use predictable as the registry grows.
+
+The quality policy follows the current Browser Kitty repository conventions rather than assuming Node is mandatory. `README.md`, `LICENSE`, `app.config.json`, and `assets/favicon.svg` are core requirements. `assets/screenshot.png` and `assets/screenshot-en.png` are required for published stable/maintenance applications and produce warnings during development/RC. `package.json` is recorded only as informational because the current `htmlapps-template` does not require it.
+
+Repository quality has three states:
+
+- `PASS` — required files are present and no quality warning was detected.
+- `WARN` — the repository can continue through development, but a release-oriented item should be addressed or the Git tree result was truncated.
+- `FAIL` — a required core/release file is missing or repository file inspection could not be completed.
+
+GitHub Pages reachability and Release version comparison are intentionally left for v0.4.0.
