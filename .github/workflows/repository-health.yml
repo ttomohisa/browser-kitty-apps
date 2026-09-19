@@ -1,0 +1,52 @@
+name: Repository inventory
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps.json
+      - schema/repository-inventory.schema.json
+      - scripts/check-registry.ps1
+      - scripts/check-repositories.ps1
+      - .github/workflows/repository-health.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - apps.json
+      - schema/repository-inventory.schema.json
+      - scripts/check-registry.ps1
+      - scripts/check-repositories.ps1
+      - .github/workflows/repository-health.yml
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    name: Check registered repositories
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate registry
+        shell: pwsh
+        run: ./scripts/check-registry.ps1
+
+      - name: Build repository inventory
+        shell: pwsh
+        env:
+          BROWSER_KITTY_GITHUB_TOKEN: ${{ secrets.BROWSER_KITTY_GITHUB_TOKEN }}
+        run: ./scripts/check-repositories.ps1
+
+      - name: Upload repository inventory
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-kitty-repository-inventory
+          path: reports/repository-inventory.json
+          if-no-files-found: warn
+          retention-days: 14

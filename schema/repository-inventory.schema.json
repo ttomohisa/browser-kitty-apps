@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://browser-kitty.com/schema/repository-inventory.schema.json",
+  "title": "Browser Kitty Repository Inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "sourceRegistry",
+    "githubApi",
+    "authenticated",
+    "summary",
+    "repositories"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceRegistry": {
+      "type": "string",
+      "const": "apps.json"
+    },
+    "githubApi": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "authenticated": {
+      "type": "boolean"
+    },
+    "summary": {
+      "$ref": "#/definitions/summary"
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/repository"
+      }
+    }
+  },
+  "definitions": {
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registeredApps",
+        "checkedRepositories",
+        "existingRepositories",
+        "missingRepositories",
+        "privateRepositories",
+        "archivedRepositories",
+        "withLatestRelease",
+        "withoutLatestRelease",
+        "warnings",
+        "errors"
+      ],
+      "properties": {
+        "registeredApps": { "type": "integer", "minimum": 0 },
+        "checkedRepositories": { "type": "integer", "minimum": 0 },
+        "existingRepositories": { "type": "integer", "minimum": 0 },
+        "missingRepositories": { "type": "integer", "minimum": 0 },
+        "privateRepositories": { "type": "integer", "minimum": 0 },
+        "archivedRepositories": { "type": "integer", "minimum": 0 },
+        "withLatestRelease": { "type": "integer", "minimum": 0 },
+        "withoutLatestRelease": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 },
+        "errors": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "appId",
+        "name",
+        "repository",
+        "registryStatus",
+        "registeredVersion",
+        "lookupStatus",
+        "exists",
+        "visibility",
+        "private",
+        "archived",
+        "defaultBranch",
+        "htmlUrl",
+        "pushedAt",
+        "updatedAt",
+        "releaseLookupStatus",
+        "hasLatestRelease",
+        "latestRelease",
+        "warnings",
+        "error"
+      ],
+      "properties": {
+        "appId": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "repository": { "type": "string", "minLength": 1 },
+        "registryStatus": {
+          "type": "string",
+          "enum": ["development", "rc", "stable", "maintenance", "archived"]
+        },
+        "registeredVersion": { "type": "string", "minLength": 1 },
+        "lookupStatus": {
+          "type": "string",
+          "enum": ["ok", "missing", "error"]
+        },
+        "exists": { "type": "boolean" },
+        "visibility": { "type": ["string", "null"] },
+        "private": { "type": ["boolean", "null"] },
+        "archived": { "type": ["boolean", "null"] },
+        "defaultBranch": { "type": ["string", "null"] },
+        "htmlUrl": { "type": ["string", "null"] },
+        "pushedAt": { "type": ["string", "null"] },
+        "updatedAt": { "type": ["string", "null"] },
+        "releaseLookupStatus": {
+          "type": "string",
+          "enum": ["ok", "none", "error"]
+        },
+        "hasLatestRelease": { "type": "boolean" },
+        "latestRelease": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/definitions/release" }
+          ]
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "error": { "type": ["string", "null"] }
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tagName", "name", "draft", "prerelease", "publishedAt", "htmlUrl"],
+      "properties": {
+        "tagName": { "type": "string" },
+        "name": { "type": ["string", "null"] },
+        "draft": { "type": "boolean" },
+        "prerelease": { "type": "boolean" },
+        "publishedAt": { "type": ["string", "null"] },
+        "htmlUrl": { "type": "string" }
+      }
+    }
+  }
+}

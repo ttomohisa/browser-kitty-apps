@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 0.1.0 foundation / 1.0.0 target
+Version: 0.2.0 current / 1.0.0 target
 
 ## Purpose
 
@@ -39,7 +39,7 @@ Not every application must pass through every state.
 ## Roadmap
 
 - v0.1.0 — Registry Foundation
-- v0.2.0 — Repository Inventory
+- v0.2.0 — Repository Inventory (implemented)
 - v0.3.0 — Assets / Repository Quality
 - v0.4.0 — GitHub Pages / Release
 - v0.5.0 — Standalone / Runtime Metadata
@@ -48,3 +48,13 @@ Not every application must pass through every state.
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate
 - v1.0.0 — Production Registry
+
+
+## v0.2.0 implementation note
+
+`check-repositories.ps1` implements the Repository Inventory milestone without changing the responsibility of individual application repositories. The script reads `apps.json`, queries the GitHub REST API, and writes a generated inventory containing repository existence, visibility, archive state, default branch, and latest Release metadata. Missing or inaccessible repositories fail the check; absence of a GitHub Release is recorded but is not treated as a failure at this stage. GitHub Pages and asset checks remain scheduled for v0.3.0 and v0.4.0.
+
+
+### Authentication note
+
+The inventory does not rely on the built-in Actions `GITHUB_TOKEN` for child-repository reads because that token is scoped to the repository containing the workflow. Public child repositories are read anonymously by default. A dedicated `BROWSER_KITTY_GITHUB_TOKEN` secret may be configured later when the registry grows enough that anonymous API rate limits become a practical constraint.
