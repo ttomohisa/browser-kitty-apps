@@ -1,0 +1,35 @@
+name: Validate registry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps.json
+      - categories.json
+      - schema/**
+      - scripts/check-registry.ps1
+      - .github/workflows/validate-registry.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - apps.json
+      - categories.json
+      - schema/**
+      - scripts/check-registry.ps1
+      - .github/workflows/validate-registry.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate apps registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate registry
+        shell: pwsh
+        run: ./scripts/check-registry.ps1

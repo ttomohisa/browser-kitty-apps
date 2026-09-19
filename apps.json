@@ -1,0 +1,282 @@
+{
+  "$schema": "./schema/apps.schema.json",
+  "schemaVersion": 1,
+  "apps": [
+    {
+      "id": "pptx-diff",
+      "name": "PPTX Diff",
+      "nameJa": "PPTX Diff",
+      "repository": "ttomohisa/htmlapps-pptx-diff",
+      "category": "presentation",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "pptx-diff"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-pptx-diff/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "pdf-review-notes",
+      "name": "PDF Review Notes",
+      "nameJa": "PDF Review Notes",
+      "repository": "ttomohisa/htmlapps-pdf-review-notes",
+      "category": "pdf",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "pdf-review-notes"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-pdf-review-notes/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "data-pipeline-builder",
+      "name": "Data Pipeline Builder",
+      "nameJa": "データ変換パイプライン",
+      "repository": "ttomohisa/htmlapps-data-pipeline-builder",
+      "category": "data",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "data-pipeline-builder"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-data-pipeline-builder/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "ffmpeg-filter-builder",
+      "name": "FFmpeg Filter Builder",
+      "nameJa": "FFmpeg Filter Builder",
+      "repository": "ttomohisa/htmlapps-ffmpeg-filter-builder",
+      "category": "video",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "ffmpeg-filter-builder"
+      },
+      "release": {
+        "version": "1.1.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-ffmpeg-filter-builder/mt/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.mt.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": true,
+        "requiresWasm": true,
+        "requiresWorker": true
+      },
+      "hosting": {
+        "crossOriginIsolated": true,
+        "headers": [
+          "Cross-Origin-Opener-Policy",
+          "Cross-Origin-Embedder-Policy",
+          "Cross-Origin-Resource-Policy"
+        ]
+      }
+    },
+    {
+      "id": "planner-refill-maker",
+      "name": "Planner Refill Maker",
+      "nameJa": "システム手帳リフィルメーカー",
+      "repository": "ttomohisa/htmlapps-planner-refill-maker",
+      "category": "print",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "planner-refill-maker"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-planner-refill-maker/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "label-sheet-maker",
+      "name": "Label Sheet Maker",
+      "nameJa": "ラベルシート作成",
+      "repository": "ttomohisa/htmlapps-label-sheet-maker",
+      "category": "print",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "label-sheet-maker"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-label-sheet-maker/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "nfc-tap-log",
+      "name": "NFC Tap Log",
+      "nameJa": "NFC Tap Log",
+      "repository": "ttomohisa/htmlapps-nfc-tap-log",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "nfc-tap-log"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-nfc-tap-log/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "pass-the-phone-vote",
+      "name": "Pass-the-Phone Vote",
+      "nameJa": "スマホ回し投票",
+      "repository": "ttomohisa/htmlapps-pass-the-phone-vote",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "pass-the-phone-vote"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "pptx-version-control",
+      "name": "PPTX Version Control",
+      "nameJa": "PPTX Version Control",
+      "repository": "ttomohisa/htmlapps-pptx-version-control",
+      "category": "presentation",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "pptx-version-control"
+      },
+      "release": {
+        "version": "1.1.2"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-pptx-version-control/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "image-counter",
+      "name": "Image Counter",
+      "nameJa": "画像カウンター",
+      "repository": "ttomohisa/htmlapps-image-counter",
+      "category": "image",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "image-counter"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-image-counter/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false
+      }
+    },
+    {
+      "id": "local-video-compressor",
+      "name": "Local Video Compressor",
+      "nameJa": "ローカル動画圧縮",
+      "repository": "ttomohisa/htmlapps-video-compressor",
+      "category": "video",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "local-video-compressor"
+      },
+      "release": {
+        "version": "1.3.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-video-compressor/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "requiresWasm": true
+      }
+    }
+  ]
+}

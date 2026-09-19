@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "categories": [
+    {
+      "id": "pdf",
+      "name": "PDF",
+      "nameJa": "PDF・書類"
+    },
+    {
+      "id": "presentation",
+      "name": "Presentation",
+      "nameJa": "プレゼンテーション"
+    },
+    {
+      "id": "data",
+      "name": "Data",
+      "nameJa": "データ"
+    },
+    {
+      "id": "video",
+      "name": "Video",
+      "nameJa": "動画"
+    },
+    {
+      "id": "print",
+      "name": "Print",
+      "nameJa": "印刷・用紙"
+    },
+    {
+      "id": "image",
+      "name": "Image",
+      "nameJa": "画像"
+    },
+    {
+      "id": "utility",
+      "name": "Utility",
+      "nameJa": "便利ツール"
+    }
+  ]
+}
