@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 0.3.0 current / 1.0.0 target
+Version: 0.3.1 current / 1.0.0 target
 
 ## Purpose
 
@@ -41,6 +41,7 @@ Not every application must pass through every state.
 - v0.1.0 — Registry Foundation
 - v0.2.0 — Repository Inventory (implemented)
 - v0.3.0 — Assets / Repository Quality (implemented)
+- v0.3.1 — PowerShell CI parser hardening (implemented)
 - v0.4.0 — GitHub Pages / Release
 - v0.5.0 — Standalone / Runtime Metadata
 - v0.6.0 — Repository Health Report
@@ -58,6 +59,11 @@ Not every application must pass through every state.
 ### Authentication note
 
 The inventory does not rely on the built-in Actions `GITHUB_TOKEN` for child-repository reads because that token is scoped to the repository containing the workflow. Public child repositories are read anonymously by default. A dedicated `BROWSER_KITTY_GITHUB_TOKEN` secret may be configured later when the registry grows enough that anonymous API rate limits become a practical constraint.
+
+
+## v0.3.1 implementation note
+
+v0.3.1 is a CI reliability patch. PowerShell string interpolation in the GitHub API error path now delimits `${statusCode}` before a literal colon, avoiding a parser error on PowerShell 7. `check-powershell.ps1` was added as a syntax and strict UTF-8 preflight and is run before registry/inventory/quality checks in both workflows.
 
 
 ## v0.3.0 implementation note

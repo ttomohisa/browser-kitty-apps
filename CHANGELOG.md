@@ -2,6 +2,18 @@
 
 All notable changes to this repository are documented here.
 
+## [0.3.1] - 2026-09-20
+
+### Fixed
+
+- Fixed PowerShell parser errors in `check-repositories.ps1` and `check-assets.ps1` caused by a colon immediately following an interpolated variable name.
+
+### Added
+
+- Added `check-powershell.ps1` to parse every PowerShell script before repository checks run.
+- Added strict UTF-8 validation for PowerShell scripts.
+- Updated both GitHub Actions workflows so any change under `scripts/**` triggers validation.
+
 ## [0.3.0] - 2026-09-20
 
 ### Added

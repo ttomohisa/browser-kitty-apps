@@ -4,9 +4,9 @@ Browser Kittyで公開している各アプリを、独立したGitHub Repositor
 
 このRepositoryはmonorepoではありません。各アプリのソースコード・Release・GitHub Pagesは従来どおり各Repositoryで管理し、ここではアプリ一覧、公開情報、実行条件、今後のRepository Health Checkに必要なメタデータを管理します。
 
-## v0.3.0
+## v0.3.1
 
-v0.3.0ではRepository Inventoryに加えて、Browser Kittyの公開品質に必要なRepositoryファイルとリリース用Assetsを横断確認するRepository Quality Checkを追加しました。
+v0.3.1はv0.3.0のCI修正版です。Repository Inventory / Quality Checkの機能は維持したまま、PowerShellの文字列補間によるParserErrorを修正し、全PowerShellスクリプトの構文とUTF-8を事前検査するpreflightを追加しました。
 
 - `apps.json` — Browser KittyアプリのRegistry
 - `categories.json` — カテゴリ定義
@@ -14,6 +14,7 @@ v0.3.0ではRepository Inventoryに加えて、Browser Kittyの公開品質に�
 - `schema/repository-inventory.schema.json` — 生成InventoryのJSON Schema
 - `schema/repository-quality.schema.json` — Repository Quality ReportのJSON Schema
 - `scripts/check-registry.ps1` — PowerShell 7による整合性確認
+- `scripts/check-powershell.ps1` — 全PowerShellスクリプトの構文 / UTF-8 preflight
 - `.github/workflows/validate-registry.yml` — Push / Pull Request時のRegistry自動検証
 - `scripts/check-repositories.ps1` — GitHub Repositoryの存在・公開状態・Archive・default branch・Latest Release取得
 - `scripts/check-assets.ps1` — README / LICENSE / app.config / favicon / screenshotの日英Assets確認

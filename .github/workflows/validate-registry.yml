@@ -7,7 +7,7 @@ on:
       - apps.json
       - categories.json
       - schema/**
-      - scripts/check-registry.ps1
+      - scripts/**
       - .github/workflows/validate-registry.yml
   pull_request:
     branches: [main]
@@ -15,7 +15,7 @@ on:
       - apps.json
       - categories.json
       - schema/**
-      - scripts/check-registry.ps1
+      - scripts/**
       - .github/workflows/validate-registry.yml
   workflow_dispatch:
 
@@ -29,6 +29,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: PowerShell syntax and UTF-8 preflight
+        shell: pwsh
+        run: ./scripts/check-powershell.ps1
 
       - name: Validate registry
         shell: pwsh

@@ -70,7 +70,7 @@ function Invoke-GitHubGet {
 
     if (-not ($AllowedStatusCodes -contains $statusCode)) {
         if ($null -ne $data -and $null -ne $data.PSObject.Properties['message']) {
-            $errorMessage = "HTTP $statusCode: $($data.message)"
+            $errorMessage = "HTTP ${statusCode}: $($data.message)"
         }
         else {
             $errorMessage = "HTTP $statusCode"
