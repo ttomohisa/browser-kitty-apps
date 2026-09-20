@@ -4,9 +4,9 @@ Browser Kittyで公開している各アプリを、独立したGitHub Repositor
 
 このRepositoryはmonorepoではありません。各アプリのソースコード・Release・GitHub Pagesは従来どおり各Repositoryで管理し、ここではアプリ一覧、公開情報、実行条件、今後のRepository Health Checkに必要なメタデータを管理します。
 
-## v0.6.1
+## v0.6.2
 
-v0.6.1 fixes empty-collection parameter binding in the consolidated health report and adds a CI smoke test that exercises the all-PASS / zero-issue path before network-backed health checks run. v0.6.0 added the consolidated Repository Health Report. The five lower-level reports are normalized into one per-application health view, with a machine-readable JSON report and a human-readable Markdown report. Source checks continue far enough to collect their reports; the consolidated health step is the final CI gate.
+v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a successful PowerShell script invocation can leave `$LASTEXITCODE` unset, so the test now checks `$?` immediately after `generate-report.ps1`. Repository Health also treats the smoke step as a collector and enforces its result after live checks and artifact upload, preventing a smoke-test regression from skipping all five source reports. v0.6.1 remains the empty-collection binding fix.
 
 - `apps.json` — Browser Kitty application registry
 - `categories.json` — category definitions
@@ -213,6 +213,12 @@ GitHub ActionsではInventory / Quality / Pages / Release / Runtimeの5つのソ
 `crossOriginIsolated` / `requiresWasm` / `requiresWorker` / `requiresWebGPU` / `requiresWebCodecs` はv0.5.0から全アプリで明示必須です。これは「コードを検索して自動推測した値」ではなく、Registryで管理する宣言値です。機械的に確認できない能力を無理にFAILへせず、Repository metadataと明確に矛盾する場合だけ警告または失敗にします。
 
 ## Repository Health Report
+### Health report smoke test
+
+`test-generate-report.ps1` runs a PASS fixture before the live repository checks. A successful PowerShell script invocation does not necessarily initialize `$LASTEXITCODE`, so the smoke test uses PowerShell's `$?` command status instead. This keeps the test compatible with `Set-StrictMode -Version Latest`.
+
+In the Repository Health workflow, the smoke step uses `continue-on-error` so live Inventory / Quality / Pages / Release / Runtime checks and artifact upload still run. A final enforcement step fails the job if the smoke test itself failed. The lighter Validate Registry workflow keeps the smoke test fail-fast.
+
 
 ```powershell
 ./scripts/generate-report.ps1
@@ -262,7 +268,7 @@ htmlapps-*                 Public / individual applications
 - v0.4.0 — GitHub Pages / Release ✅
 - v0.5.0 — Standalone / Runtime Metadata ✅
 - v0.6.0 — Repository Health Report ✅
-- v0.6.1 — Empty-collection binding fix / health report smoke test ✅
+- v0.6.2 — Empty-collection binding fix / health report smoke test ✅
 - v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate

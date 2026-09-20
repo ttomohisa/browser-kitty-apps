@@ -110,8 +110,9 @@ try {
         -JsonOutputPath $jsonOutput `
         -MarkdownOutputPath $markdownOutput
 
-    if ($LASTEXITCODE -notin @(0, $null)) {
-        throw "generate-report.ps1 smoke test exited with code $LASTEXITCODE"
+    $reportCommandSucceeded = $?
+    if (-not $reportCommandSucceeded) {
+        throw 'generate-report.ps1 smoke test returned an unsuccessful command status.'
     }
     if (-not (Test-Path -LiteralPath $jsonOutput -PathType Leaf)) {
         throw 'Smoke test did not generate repository-status.json.'

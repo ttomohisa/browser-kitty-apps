@@ -2,6 +2,19 @@
 
 All notable changes to this repository are documented here.
 
+## [0.6.2] - 2026-09-20
+
+### Fixed
+
+- Replaced the smoke test's strict-mode-unsafe `$LASTEXITCODE` read with the immediate PowerShell `$?` command status after `generate-report.ps1`.
+- Prevented a smoke-test regression in the Repository Health workflow from skipping all five live source checks and producing a secondary all-missing-source report.
+
+### Changed
+
+- Repository Health now lets the smoke step continue temporarily, runs live checks and uploads diagnostics, then enforces the smoke outcome as a final gate.
+- Validate Registry remains fail-fast on the same smoke test.
+
+
 ## [0.6.1] - 2026-09-20
 
 ### Fixed

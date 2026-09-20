@@ -45,7 +45,7 @@ Not every application must pass through every state.
 - v0.4.0 — GitHub Pages / Release (implemented)
 - v0.5.0 — Standalone / Runtime Metadata (implemented)
 - v0.6.0 — Repository Health Report (implemented)
-- v0.6.1 — Empty-collection binding fix / report smoke test (implemented)
+- v0.6.2 — Empty-collection binding fix / report smoke test (implemented)
 - v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate
@@ -70,7 +70,7 @@ The inventory does not rely on the built-in Actions `GITHUB_TOKEN` for child-rep
 
 PowerShell mandatory collection parameters reject an empty collection unless the parameter explicitly allows it. The initial v0.6.0 report generator passed an empty `List[object]` for `GlobalIssues` on the normal all-clear path, which caused parameter binding to fail before report generation. v0.6.1 adds `[AllowEmptyCollection()]` to collection parameters that legitimately receive empty collections.
 
-A new `test-generate-report.ps1` smoke test constructs five all-PASS source reports with empty warning/issue arrays, runs `generate-report.ps1`, and asserts `overallStatus=PASS`, zero global issues, and complete application coverage. Both validation and repository-health workflows run this smoke test before network-backed checks so collection-binding regressions are caught deterministically.
+A new `test-generate-report.ps1` smoke test constructs five all-PASS source reports with empty warning/issue arrays, runs `generate-report.ps1`, and asserts `overallStatus=PASS`, zero global issues, and complete application coverage.
 
 
 ## v0.6.0 implementation note
@@ -115,3 +115,9 @@ Repository quality has three states:
 - `FAIL` — a required core/release file is missing or repository file inspection could not be completed.
 
 GitHub Pages reachability and Release/version consistency are implemented in v0.4.0.
+
+## v0.6.2 smoke-test execution note
+
+The health-report smoke test must not assume `$LASTEXITCODE` exists after invoking another PowerShell script. Under strict mode, a successful PowerShell script that does not run a native command may leave `$LASTEXITCODE` unset. The smoke test therefore captures `$?` immediately after invoking `generate-report.ps1`.
+
+The Repository Health workflow gives the smoke step `continue-on-error` only to preserve diagnostics: Inventory, Quality, Pages, Release/version, Runtime, the consolidated report, and artifact upload still run. A final enforcement step checks `steps.health-report-smoke.outcome` and fails the job when the smoke test failed. The Validate Registry workflow continues to fail immediately on a smoke-test failure.

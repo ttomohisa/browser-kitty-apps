@@ -39,6 +39,8 @@ jobs:
         run: ./scripts/check-registry.ps1
 
       - name: Smoke test repository health report
+        id: health-report-smoke
+        continue-on-error: true
         shell: pwsh
         run: ./scripts/test-generate-report.ps1
 
@@ -93,3 +95,8 @@ jobs:
             reports/repository-status.md
           if-no-files-found: warn
           retention-days: 14
+      - name: Enforce health report smoke test result
+        if: ${{ always() && steps.health-report-smoke.outcome != 'success' }}
+        shell: pwsh
+        run: throw 'Repository health report smoke test failed. See the earlier smoke-test step for details.'
+
