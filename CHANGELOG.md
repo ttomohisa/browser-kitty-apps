@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.7.2
+
+### Fixed
+
+- Restored Face Redactor's canonical GitHub Pages URL to the repository root, matching the `dist/index.html` deployment produced by the standard Pages workflow.
+- Kept Pages HTTP 404 as a blocking health failure; this patch does not downgrade or hide deployment outages.
+- Documented that Face Redactor needs the standard GitHub Actions Pages deployment workflow and one-time Pages source configuration.
+
 ## v0.7.1
 
 ### Fixed

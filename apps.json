@@ -438,7 +438,7 @@
         "version": "1.0.0"
       },
       "pages": {
-        "url": "https://ttomohisa.github.io/htmlapps-face-redactor/face-redactor.html"
+        "url": "https://ttomohisa.github.io/htmlapps-face-redactor/"
       },
       "runtime": {
         "standalone": true,

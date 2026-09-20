@@ -46,6 +46,7 @@ Not every application must pass through every state.
 - v0.5.0 — Standalone / Runtime Metadata (implemented)
 - v0.6.0 — Repository Health Report (implemented)
 - v0.6.2 — Empty-collection binding fix / report smoke test (implemented)
+- v0.7.2 — Face Redactor Pages correction (implemented)
 - v0.7.1 — Full Registry health-policy calibration (implemented)
 - v0.7.0 — Full Registry / scalable health checks (implemented)
 - v0.8.0 — Browser Kitty Export
@@ -124,6 +125,10 @@ The health-report smoke test must not assume `$LASTEXITCODE` exists after invoki
 The Repository Health workflow gives the smoke step `continue-on-error` only to preserve diagnostics: Inventory, Quality, Pages, Release/version, Runtime, the consolidated report, and artifact upload still run. A final enforcement step checks `steps.health-report-smoke.outcome` and fails the job when the smoke test failed. The Validate Registry workflow continues to fail immediately on a smoke-test failure.
 
 
+
+## v0.7.2 Pages deployment correction
+
+The Full Registry keeps published GitHub Pages reachability as a blocking check. Face Redactor uses the canonical repository-root Pages URL because its standard deployment publishes `dist/index.html` as the site root. A missing or disabled Pages deployment remains `FAIL`; the registry must not hide it by weakening the check.
 
 ## v0.7.1 Health gate calibration
 

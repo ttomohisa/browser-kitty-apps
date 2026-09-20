@@ -1,5 +1,9 @@
 # Browser Kitty Apps
 
+## v0.7.2
+
+v0.7.2 corrects the remaining Face Redactor Pages issue found by the first Full Registry health run. The registry now tracks the canonical GitHub Pages root URL that corresponds to `dist/index.html`; the Face Redactor repository itself must include the standard `deploy-pages.yml` workflow and have GitHub Pages set to **GitHub Actions**. No health rule is relaxed in this patch.
+
 ## v0.7.1
 
 v0.7.1 calibrates the Full Registry health gate after the first 75-app live run. Missing screenshots and favicon files are now repository-hygiene warnings rather than CI-blocking failures; README, LICENSE, repository availability, standard `app.config.json`, Pages reachability, and hard runtime inconsistencies remain blocking. The release also fixes the Face Redactor Pages URL, accepts the dependency-manifest shapes already used across Browser Kitty (`assets`, single `asset`, and `files`), and corrects WASM / Worker capability declarations found by the first full scan.
@@ -38,7 +42,7 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `reports/README.md` — generated report behavior
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
 
-The registry contains 75 applications in v0.7.1, including three explicitly marked legacy repositories.
+The registry contains 75 applications in v0.7.2, including three explicitly marked legacy repositories.
 
 ## Registry
 
@@ -276,6 +280,7 @@ htmlapps-*                 Public / individual applications
 - v0.5.0 — Standalone / Runtime Metadata ✅
 - v0.6.0 — Repository Health Report ✅
 - v0.6.2 — Empty-collection binding fix / health report smoke test ✅
+- v0.7.2 — Face Redactor Pages correction ✅
 - v0.7.1 — Full Registry health-policy calibration ✅
 - v0.7.0 — Full Registry / scalable cross-repository checks ✅
 - v0.8.0 — Browser Kitty Export
