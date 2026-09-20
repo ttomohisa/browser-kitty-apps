@@ -1,8 +1,8 @@
 # Browser Kitty Apps Release Checklist
 
-This checklist is for the parent `browser-kitty-apps` registry. Individual application UI/UX release checks remain the responsibility of each application repository and the Browser Kitty Guide.
+This checklist is for production releases of the parent `browser-kitty-apps` registry. Individual application UI/UX release checks remain the responsibility of each application repository and the Browser Kitty Guide.
 
-## Release Candidate gate
+## Release readiness gate
 
 Run on PowerShell 7:
 
@@ -20,7 +20,7 @@ The scheduled / on-change Repository Health workflow additionally runs:
 ./scripts/check-release-candidate.ps1 -RequireHealthReport
 ```
 
-A release candidate is acceptable when the RC report has **0 FAIL**. WARN items are allowed only when they are non-blocking repository-hygiene or legacy-migration debt already represented by Repository Health. WARNs must remain visible in the generated report; they are not silently suppressed.
+The historical script/report names are retained for compatibility. From v1.0.0 onward this is the general production **release-readiness** gate. A release is acceptable when the report has **0 FAIL**. WARN items may remain only when they are non-blocking repository-hygiene or legacy-migration debt already represented by Repository Health. WARNs must remain visible; they are not silently suppressed.
 
 ## Registry
 
@@ -55,17 +55,31 @@ A release candidate is acceptable when the RC report has **0 FAIL**. WARN items 
 - `VERSION` is the intended release version.
 - The first version heading in `README.md` matches `VERSION`.
 - The first release entry in `CHANGELOG.md` matches `VERSION`.
-- `REGISTRY_SPEC.md` current version matches `VERSION`.
-- `LICENSE`, `README.md`, `CHANGELOG.md`, `REGISTRY_SPEC.md`, schemas, workflows, scripts, and generated export are present.
+- `REGISTRY_SPEC.md` current production version matches `VERSION`.
+- `LICENSE`, `README.md`, `CHANGELOG.md`, `REGISTRY_SPEC.md`, `OPERATIONS.md`, schemas, workflows, scripts, and generated export are present.
 
 ## CI
 
 - `Validate registry` passes.
 - `Repository health` passes.
-- RC reports are uploaded with Repository Health artifacts.
+- Release-readiness reports are uploaded with Repository Health artifacts.
 - PowerShell parser / UTF-8 preflight passes for every `.ps1` file.
 - Health-report smoke test passes.
 
-## v1.0.0 promotion
+## Production baseline
 
-For v1.0.0, update `VERSION`, the top README version section, `CHANGELOG.md`, and `REGISTRY_SPEC.md`, regenerate the public export if registry data changed, then run both GitHub Actions workflows. Promote only with 0 blocking FAILs. Existing non-blocking WARNs may remain when they are explicitly visible in Repository Health and do not indicate a broken published application.
+v1.0.0 establishes the production baseline with 75 registered/published applications and seven categories. Promotion requires complete Repository Health coverage and zero blocking FAILs. Existing non-blocking WARNs may remain when they are explicitly visible and do not indicate a broken published application.
+
+## Subsequent releases
+
+For each parent-registry release:
+
+1. Update `VERSION`.
+2. Add the matching top sections to `README.md` and `CHANGELOG.md`.
+3. Update the current version in `REGISTRY_SPEC.md`.
+4. Regenerate `generated/apps.public.json` if registry/public data changed.
+5. Run the static release-readiness gate.
+6. Require both GitHub Actions workflows to pass.
+7. Release only with 0 blocking FAILs.
+
+Use Semantic Versioning: patch for backward-compatible fixes/metadata corrections, minor for additive registry/schema/export capabilities, and major for intentional incompatible contract changes.

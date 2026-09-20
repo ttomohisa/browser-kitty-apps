@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 0.9.0 current / 1.0.0 target
+Version: 1.0.0 production
 
 ## Purpose
 
@@ -51,9 +51,17 @@ Not every application must pass through every state.
 - v0.7.0 — Full Registry / scalable health checks (implemented)
 - v0.8.0 — Browser Kitty Export (implemented)
 - v0.9.0 — Release Candidate (implemented)
-- v1.0.0 — Production Registry
+- v1.0.0 — Production Registry (implemented)
 
 
+
+## v1.0.0 production contract
+
+v1.0.0 promotes the registry to the production operating baseline. `apps.json` is the parent registry metadata source, while each child repository remains the source of truth for its application implementation and application-specific release. `generated/apps.public.json` is the stable build-time export for the private Browser Kitty website repository and must not be fetched by tools at browser runtime.
+
+Production readiness requires the registry/export contracts to validate, all published applications to remain in a release lifecycle state, complete live health coverage, and **0 blocking FAILs**. Repository-hygiene and legacy-migration WARNs may remain when they are explicitly represented in Repository Health; they are follow-up work rather than false outages. The historical `check-release-candidate.ps1` and `release-candidate.*` names are retained for compatibility and serve as the general release-readiness gate from v1.0.0 onward.
+
+`OPERATIONS.md` defines the steady-state add/update flow, scheduled-health handling, legacy migration, authentication, release policy, and incident response. Production changes continue to follow Semantic Versioning. The parent registry must not automatically rewrite child repositories or the private Browser Kitty website repository.
 
 ## v0.9.0 implementation note
 
@@ -115,7 +123,7 @@ v0.3.1 is a CI reliability patch. PowerShell string interpolation in the GitHub 
 
 `check-assets.ps1` implements the Repository Quality milestone. It consumes the generated v0.2.0 inventory for repository/default-branch information, then reads each default-branch Git tree through the GitHub REST API and produces `reports/repository-quality.json`. This avoids repeating repository metadata calls and keeps cross-repository API use predictable as the registry grows.
 
-The quality policy follows the current Browser Kitty repository conventions rather than assuming Node is mandatory. `README.md`, `LICENSE`, `app.config.json`, and `assets/favicon.svg` are core requirements. `assets/screenshot.png` and `assets/screenshot-en.png` are required for published stable/maintenance applications and produce warnings during development/RC. `package.json` is recorded only as informational because the current `htmlapps-template` does not require it.
+The quality policy follows the current Browser Kitty repository conventions rather than assuming Node is mandatory. `README.md`, `LICENSE`, and a standard-profile `app.config.json` are blocking requirements. `assets/favicon.svg`, `assets/screenshot.png`, and `assets/screenshot-en.png` are release-hygiene assets; missing files are reported as WARN so historical cleanup debt does not masquerade as an application outage. `package.json` is recorded only as informational because the current `htmlapps-template` does not require it.
 
 Repository quality has three states:
 

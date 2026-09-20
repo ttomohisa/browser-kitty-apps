@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://browser-kitty.com/schema/release-candidate.schema.json",
-  "title": "Browser Kitty Apps release candidate report",
+  "title": "Browser Kitty Apps release readiness report",
   "type": "object",
   "additionalProperties": false,
   "required": [

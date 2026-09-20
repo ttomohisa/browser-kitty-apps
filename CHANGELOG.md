@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.0.0
+
+### Production
+
+- Promoted `browser-kitty-apps` from Release Candidate to the production Browser Kitty application registry.
+- Confirmed the v0.9.0 candidate with both GitHub Actions workflows passing, all 75 registered/published applications covered, and zero blocking Repository Health failures.
+- Established `apps.json` as the production registry metadata source and `generated/apps.public.json` as the deterministic build-time feed for the private Browser Kitty website repository.
+
+### Added
+
+- Added `OPERATIONS.md` with the steady-state application add/update flow, health policy, legacy migration procedure, public-export contract, authentication guidance, release policy, and incident handling.
+
+### Changed
+
+- Updated `VERSION`, README, specification, and release checklist for the 1.0.0 production baseline.
+- Generalized the existing release-candidate gate into the long-term release-readiness gate while retaining the historical script/report filenames for compatibility.
+- Updated workflow labels and documentation to use release-readiness terminology for ongoing production releases.
+- Production release policy remains **0 blocking FAILs**; non-blocking WARNs remain visible rather than being suppressed.
+
 ## v0.9.0
 
 ### Added

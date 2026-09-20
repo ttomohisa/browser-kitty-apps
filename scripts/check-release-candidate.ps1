@@ -62,7 +62,7 @@ function Read-JsonFile {
     return @{ Raw = $raw; Value = $value }
 }
 
-Write-Host 'Browser Kitty release candidate check'
+Write-Host 'Browser Kitty release readiness check'
 Write-Host "Repository: $RepositoryRoot"
 
 $versionPath = Join-Path $RepositoryRoot 'VERSION'
@@ -87,6 +87,7 @@ $requiredFiles = @(
     'LICENSE',
     'REGISTRY_SPEC.md',
     'RELEASE_CHECKLIST.md',
+    'OPERATIONS.md',
     'apps.json',
     'categories.json',
     'generated/apps.public.json',
@@ -116,7 +117,7 @@ if ($missingFiles.Count -gt 0) {
     Add-RcCheck -Id 'required_files' -Status 'FAIL' -Message ("Required files are missing: " + ($missingFiles -join ', '))
 }
 else {
-    Add-RcCheck -Id 'required_files' -Status 'PASS' -Message "All $($requiredFiles.Count) RC-required files are present."
+    Add-RcCheck -Id 'required_files' -Status 'PASS' -Message "All $($requiredFiles.Count) release-required files are present."
 }
 
 $readmePath = Join-Path $RepositoryRoot 'README.md'
@@ -149,7 +150,7 @@ if (-not [string]::IsNullOrWhiteSpace($version)) {
 
     if (Test-Path -LiteralPath $specPath -PathType Leaf) {
         $spec = Get-Content -LiteralPath $specPath -Raw -Encoding UTF8
-        $match = [regex]::Match($spec, '(?m)^Version:\s+(?<version>[0-9]+\.[0-9]+\.[0-9]+)\s+current\s+/\s+1\.0\.0\s+target\s*$')
+        $match = [regex]::Match($spec, '(?m)^Version:\s+(?<version>[0-9]+\.[0-9]+\.[0-9]+)(?:\s+current\s+/\s+1\.0\.0\s+target|\s+production)\s*$')
         if (-not $match.Success -or $match.Groups['version'].Value -cne $version) {
             $found = if ($match.Success) { $match.Groups['version'].Value } else { '<none>' }
             Add-RcCheck -Id 'spec_version' -Status 'FAIL' -Message "REGISTRY_SPEC current version is $found; expected $version."
@@ -290,7 +291,7 @@ $report = [ordered]@{
 
 $json = $report | ConvertTo-Json -Depth 20
 if (-not (Test-Json -Json $json -SchemaFile $rcSchemaPath)) {
-    throw 'Generated release-candidate report does not match schema/release-candidate.schema.json.'
+    throw 'Generated release-readiness report does not match schema/release-candidate.schema.json.'
 }
 
 $outputDirectory = Split-Path -Parent $OutputJsonPath
@@ -299,7 +300,7 @@ $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
 [System.IO.File]::WriteAllText($OutputJsonPath, (($json -replace "`r`n", "`n").TrimEnd() + "`n"), $utf8NoBom)
 
 $markdown = [System.Collections.Generic.List[string]]::new()
-$markdown.Add('# Browser Kitty Apps Release Candidate')
+$markdown.Add('# Browser Kitty Apps Release Readiness')
 $markdown.Add('')
 $markdown.Add("Generated: $($report.generatedAt)")
 $markdown.Add('')
@@ -341,8 +342,8 @@ else {
 $markdownText = (($markdown -join "`n").TrimEnd() + "`n")
 [System.IO.File]::WriteAllText($OutputMarkdownPath, $markdownText, $utf8NoBom)
 
-Write-Host "Release candidate JSON written: $OutputJsonPath"
-Write-Host "Release candidate Markdown written: $OutputMarkdownPath"
+Write-Host "Release readiness JSON written: $OutputJsonPath"
+Write-Host "Release readiness Markdown written: $OutputMarkdownPath"
 Write-Host "Overall: $overallStatus"
 Write-Host "PASS: $passCount"
 Write-Host "WARN: $warnCount"

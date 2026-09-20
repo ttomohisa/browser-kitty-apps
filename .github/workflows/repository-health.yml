@@ -12,6 +12,7 @@ on:
       - CHANGELOG.md
       - REGISTRY_SPEC.md
       - RELEASE_CHECKLIST.md
+      - OPERATIONS.md
       - schema/**
       - scripts/**
       - .github/workflows/repository-health.yml
@@ -26,6 +27,7 @@ on:
       - CHANGELOG.md
       - REGISTRY_SPEC.md
       - RELEASE_CHECKLIST.md
+      - OPERATIONS.md
       - schema/**
       - scripts/**
       - .github/workflows/repository-health.yml
@@ -98,9 +100,9 @@ jobs:
         shell: pwsh
         run: ./scripts/generate-report.ps1
 
-      - name: Release candidate gate
+      - name: Release readiness gate
         if: always()
-        id: release-candidate
+        id: release-readiness
         continue-on-error: true
         shell: pwsh
         run: ./scripts/check-release-candidate.ps1 -RequireHealthReport
@@ -126,7 +128,7 @@ jobs:
         if: ${{ always() && steps.health-report-smoke.outcome != 'success' }}
         shell: pwsh
         run: throw 'Repository health report smoke test failed. See the earlier smoke-test step for details.'
-      - name: Enforce release candidate gate result
-        if: ${{ always() && steps.release-candidate.outcome != 'success' }}
+      - name: Enforce release readiness gate result
+        if: ${{ always() && steps.release-readiness.outcome != 'success' }}
         shell: pwsh
-        run: throw 'Release candidate gate failed. See reports/release-candidate.md in the uploaded artifact.'
+        run: throw 'Release readiness gate failed. See reports/release-candidate.md in the uploaded artifact.'
