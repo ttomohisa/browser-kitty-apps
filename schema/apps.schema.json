@@ -32,6 +32,7 @@
         "name",
         "nameJa",
         "repository",
+        "repositoryProfile",
         "category",
         "status",
         "browserKitty",
@@ -87,6 +88,13 @@
         },
         "template": {
           "$ref": "#/definitions/template"
+        },
+        "repositoryProfile": {
+          "type": "string",
+          "enum": [
+            "standard",
+            "legacy"
+          ]
         }
       }
     },

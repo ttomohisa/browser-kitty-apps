@@ -46,6 +46,7 @@ Not every application must pass through every state.
 - v0.5.0 — Standalone / Runtime Metadata (implemented)
 - v0.6.0 — Repository Health Report (implemented)
 - v0.6.2 — Empty-collection binding fix / report smoke test (implemented)
+- v0.7.0 — Full Registry / scalable health checks (implemented)
 - v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate
@@ -121,3 +122,10 @@ GitHub Pages reachability and Release/version consistency are implemented in v0.
 The health-report smoke test must not assume `$LASTEXITCODE` exists after invoking another PowerShell script. Under strict mode, a successful PowerShell script that does not run a native command may leave `$LASTEXITCODE` unset. The smoke test therefore captures `$?` immediately after invoking `generate-report.ps1`.
 
 The Repository Health workflow gives the smoke step `continue-on-error` only to preserve diagnostics: Inventory, Quality, Pages, Release/version, Runtime, the consolidated report, and artifact upload still run. A final enforcement step checks `steps.health-report-smoke.outcome` and fails the job when the smoke test failed. The Validate Registry workflow continues to fail immediately on a smoke-test failure.
+
+
+## v0.7.0 Full Registry notes
+
+The registry now distinguishes `repositoryProfile: standard` from `repositoryProfile: legacy`. Standard repositories are expected to provide `app.config.json`; legacy repositories may omit it while migration remains pending. Legacy omission is a warning, not a repository-unavailable failure.
+
+Full-registry health checks must remain usable without exhausting GitHub's unauthenticated REST quota. Repository metadata is therefore fetched in owner-sized pages, asset presence is checked through throttled raw-file HEAD requests, and release/tag inspection is separated from repository inventory. Templates, builder repositories, shared cores, and duplicate repository aliases are not application entries.

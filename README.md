@@ -1,5 +1,9 @@
 # Browser Kitty Apps
 
+## v0.7.0
+
+v0.7.0 expands the registry from the representative 11 apps to a full 75-app inventory based on the current public Browser Kitty application repositories. Standard template-era repositories and three verified legacy repositories are distinguished with `repositoryProfile`. Repository inventory now batches GitHub metadata by owner so the full registry does not consume one REST request per app; asset checks use throttled `raw.githubusercontent.com` HEAD probes, and release/tag checks use the public release redirect plus `git ls-remote`.
+
 Browser Kittyで公開している各アプリを、独立したGitHub Repositoryのまま一元管理するためのRegistryです。
 
 このRepositoryはmonorepoではありません。各アプリのソースコード・Release・GitHub Pagesは従来どおり各Repositoryで管理し、ここではアプリ一覧、公開情報、実行条件、今後のRepository Health Checkに必要なメタデータを管理します。
@@ -19,7 +23,7 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `schema/repository-health.schema.json` — consolidated health report JSON Schema
 - `scripts/check-registry.ps1` — registry validation
 - `scripts/check-powershell.ps1` — PowerShell syntax / strict UTF-8 preflight
-- `scripts/check-repositories.ps1` — repository existence / visibility / archive / default branch / latest Release inventory
+- `scripts/check-repositories.ps1` — owner-batched repository existence / visibility / archive / default-branch inventory
 - `scripts/check-assets.ps1` — README / LICENSE / app.config / favicon / screenshot quality check
 - `scripts/check-pages.ps1` — published Pages reachability and response check
 - `scripts/check-releases.ps1` — registry / app.config / Release / tag version consistency check
@@ -30,7 +34,7 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `reports/README.md` — generated report behavior
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
 
-The registry currently contains 11 representative applications. Full migration is planned by v0.7.0.
+The registry contains 75 applications in v0.7.0, including three explicitly marked legacy repositories.
 
 ## Registry
 
@@ -269,6 +273,7 @@ htmlapps-*                 Public / individual applications
 - v0.5.0 — Standalone / Runtime Metadata ✅
 - v0.6.0 — Repository Health Report ✅
 - v0.6.2 — Empty-collection binding fix / health report smoke test ✅
+- v0.7.0 — Full Registry / scalable cross-repository checks ✅
 - v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate

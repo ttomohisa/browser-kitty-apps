@@ -1,393 +1,66 @@
 #requires -Version 7.0
 [CmdletBinding()]
 param(
-    [string]$RepositoryRoot = (Split-Path -Parent $PSScriptRoot),
-    [string]$InventoryPath = 'reports/repository-inventory.json',
-    [string]$OutputPath = 'reports/repository-releases.json',
-    [string]$GitHubToken = $env:BROWSER_KITTY_GITHUB_TOKEN,
-    [string]$ApiBaseUrl = 'https://api.github.com',
+    [string]$RepositoryRoot=(Split-Path -Parent $PSScriptRoot),
+    [string]$InventoryPath='reports/repository-inventory.json',
+    [string]$OutputPath='reports/repository-releases.json',
+    [string]$GitHubToken=$env:BROWSER_KITTY_GITHUB_TOKEN,
+    [string]$ApiBaseUrl='https://api.github.com',
     [switch]$NoWrite
 )
-
-$ErrorActionPreference = 'Stop'
-Set-StrictMode -Version Latest
-
-$appsPath = Join-Path $RepositoryRoot 'apps.json'
-$schemaPath = Join-Path $RepositoryRoot 'schema/repository-releases.schema.json'
-$absoluteInventoryPath = if ([System.IO.Path]::IsPathRooted($InventoryPath)) { $InventoryPath } else { Join-Path $RepositoryRoot $InventoryPath }
-
-foreach ($requiredPath in @($appsPath, $schemaPath, $absoluteInventoryPath)) {
-    if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
-        throw "Required file not found: $requiredPath"
-    }
+$ErrorActionPreference='Stop'; Set-StrictMode -Version Latest
+function Abs([string]$p){if([IO.Path]::IsPathRooted($p)){$p}else{Join-Path $RepositoryRoot $p}}
+function New-Issue {param([ValidateSet('WARN','FAIL')][string]$Severity,[string]$Code,[string]$Message);[pscustomobject]@{severity=$Severity;code=$Code;message=$Message}}
+function Normalize-VersionTag([AllowNull()][string]$Value){
+    if([string]::IsNullOrWhiteSpace($Value)){return $null};$v=$Value.Trim();if($v.StartsWith('v',[StringComparison]::OrdinalIgnoreCase)){$v=$v.Substring(1)}
+    if($v -match '^([0-9]+)\.([0-9]+)$'){return "$($Matches[1]).$($Matches[2]).0"};return $v
+}
+function Get-Text([string]$Uri,[int[]]$Allowed=@(200)){
+    try{$r=Invoke-WebRequest -Uri $Uri -Method Get -SkipHttpErrorCheck -MaximumRedirection 5 -TimeoutSec 30}catch{return [pscustomobject]@{StatusCode=0;Content=$null;Error=$_.Exception.Message}}
+    $s=[int]$r.StatusCode;$e=$null;if($Allowed -notcontains $s){$e="HTTP $s"};[pscustomobject]@{StatusCode=$s;Content=[string]$r.Content;Error=$e}
+}
+function Get-LatestReleaseTag([string]$Repository){
+    $uri="https://github.com/$Repository/releases/latest"
+    try{$r=Invoke-WebRequest -Uri $uri -Method Head -SkipHttpErrorCheck -MaximumRedirection 5 -TimeoutSec 20}catch{return [pscustomobject]@{Status='error';Tag=$null;Error=$_.Exception.Message}}
+    $s=[int]$r.StatusCode
+    if($s -eq 404){return [pscustomobject]@{Status='none';Tag=$null;Error=$null}}
+    if($s -ne 200){return [pscustomobject]@{Status='error';Tag=$null;Error="HTTP $s"}}
+    $final=[string]$r.BaseResponse.RequestMessage.RequestUri.AbsoluteUri
+    if($final -match '/releases/tag/([^/?#]+)'){return [pscustomobject]@{Status='ok';Tag=[Uri]::UnescapeDataString($Matches[1]);Error=$null}}
+    return [pscustomobject]@{Status='none';Tag=$null;Error=$null}
 }
 
-$appsFile = Get-Content -LiteralPath $appsPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 100
-$apps = @($appsFile.apps)
-$inventory = Get-Content -LiteralPath $absoluteInventoryPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 100
+$appsPath=Join-Path $RepositoryRoot 'apps.json';$schemaPath=Join-Path $RepositoryRoot 'schema/repository-releases.schema.json';$invPath=Abs $InventoryPath
+foreach($p in @($appsPath,$schemaPath,$invPath)){if(-not(Test-Path $p -PathType Leaf)){throw "Required file not found: $p"}}
+$apps=@((Get-Content $appsPath -Raw -Encoding UTF8|ConvertFrom-Json -Depth 100).apps);$inventory=Get-Content $invPath -Raw -Encoding UTF8|ConvertFrom-Json -Depth 100
+$inventoryById=@{};foreach($e in @($inventory.repositories)){$inventoryById[[string]$e.appId]=$e}
+Write-Host 'Browser Kitty release/version check';Write-Host "Registered apps: $($apps.Count)";Write-Host 'Release lookup: github.com redirect; tag lookup: git ls-remote';Write-Host ''
+$results=[Collections.Generic.List[object]]::new();$pass=0;$warn=0;$fail=0;$lookupErrors=0
+foreach($app in $apps){
+ $id=[string]$app.id;$repo=[string]$app.repository;$registered=[string]$app.release.version;$issues=[Collections.Generic.List[object]]::new();Write-Host "Checking $repo ..." -NoNewline
+ $defaultBranch=$null;$configStatus='error';$configVersion=$null;$outputs=@();$blockNet=$null;$matchConfig=$null;$releaseStatusLookup='error';$releaseTag=$null;$matchRelease=$null;$tagStatus='error';$tags=@();$matchingTag=$null;$err=$null
+ if(-not $inventoryById.ContainsKey($id) -or [string]$inventoryById[$id].lookupStatus -ne 'ok' -or -not [bool]$inventoryById[$id].exists){$issues.Add((New-Issue FAIL 'repository_unavailable' 'Repository is unavailable according to inventory.'));$lookupErrors++;$err='Repository unavailable.'}
+ else{
+  $defaultBranch=[string]$inventoryById[$id].defaultBranch;$profile=if($null -ne $app.PSObject.Properties['repositoryProfile']){[string]$app.repositoryProfile}else{'standard'};$parts=$repo-split'/',2
+  $configUri="https://raw.githubusercontent.com/$([Uri]::EscapeDataString($parts[0]))/$([Uri]::EscapeDataString($parts[1]))/refs/heads/$([Uri]::EscapeDataString($defaultBranch))/app.config.json"
+  $cr=Get-Text $configUri @(200,404)
+  if($cr.StatusCode -eq 200){
+    try{$c=$cr.Content|ConvertFrom-Json -Depth 100;$configStatus='ok';$configVersion=[string]$c.version;$list=[Collections.Generic.List[string]]::new();if($null -ne $c.PSObject.Properties['build']){$b=$c.build;foreach($pn in @('output','multiThreadOutput')){if($null -ne $b.PSObject.Properties[$pn]){$v=[string]$b.$pn;if($v -and -not $list.Contains($v)){$list.Add($v)}}};if($null -ne $b.PSObject.Properties['selfExtract']-and$null -ne $b.selfExtract){foreach($pn in @('output','multiThreadOutput')){if($null -ne $b.selfExtract.PSObject.Properties[$pn]){$v=[string]$b.selfExtract.$pn;if($v -and -not $list.Contains($v)){$list.Add($v)}}}};if($null -ne $b.PSObject.Properties['blockRuntimeNetwork']){$blockNet=[bool]$b.blockRuntimeNetwork}};$outputs=@($list);$matchConfig=(Normalize-VersionTag $configVersion) -eq (Normalize-VersionTag $registered);if (-not $matchConfig){$issues.Add((New-Issue WARN 'app_config_version_mismatch' "Registry version '$registered' differs from app.config.json version '$configVersion'."))}}
+    catch{$issues.Add((New-Issue FAIL 'app_config_invalid' "app.config.json could not be parsed: $($_.Exception.Message)"));$lookupErrors++}
+  }elseif($cr.StatusCode -eq 404 -and $profile -eq 'legacy'){$configStatus='legacy-none';$issues.Add((New-Issue WARN 'legacy_app_config_missing' 'Legacy repository has no app.config.json; version comparison is skipped.'))}
+  else{$issues.Add((New-Issue FAIL 'app_config_lookup_failed' "app.config.json lookup failed: $($cr.Error)"));$lookupErrors++}
 
-$inventoryByAppId = @{}
-foreach ($entry in @($inventory.repositories)) {
-    $inventoryByAppId[[string]$entry.appId] = $entry
+  $lr=Get-LatestReleaseTag $repo;$releaseStatusLookup=$lr.Status;$releaseTag=$lr.Tag
+  if($lr.Status -eq 'ok'){$matchRelease=(Normalize-VersionTag $releaseTag) -eq (Normalize-VersionTag $registered);if (-not $matchRelease){$issues.Add((New-Issue WARN 'release_version_mismatch' "Registry version '$registered' differs from latest GitHub Release tag '$releaseTag'."))}}
+  elseif($lr.Status -eq 'error'){$issues.Add((New-Issue FAIL 'release_lookup_failed' "Latest Release lookup failed: $($lr.Error)"));$lookupErrors++}
+
+  try{$gitOut=@(& git ls-remote --tags --refs "https://github.com/$repo.git" 2>$null);$gitCode=$LASTEXITCODE;if($gitCode -ne 0){throw "git ls-remote exited with code $gitCode"};$tags=@($gitOut|ForEach-Object{if($_ -match 'refs/tags/(.+)$'){$Matches[1]}}|Where-Object{$_});$tagStatus=if($tags.Count){'ok'}else{'none'};$matching=@($tags|Where-Object{(Normalize-VersionTag $_) -eq (Normalize-VersionTag $registered)}|Select-Object -First 1);if($matching.Count){$matchingTag=[string]$matching[0]}elseif($tags.Count){$issues.Add((New-Issue WARN 'registered_version_tag_missing' "Repository has tags, but none matches registry version '$registered'."))}}
+  catch{$tagStatus='error';$issues.Add((New-Issue FAIL 'tag_lookup_failed' "Tag lookup failed: $($_.Exception.Message)"));$lookupErrors++}
+ }
+ $status=if(@($issues|Where-Object severity -eq 'FAIL').Count){'FAIL'}elseif(@($issues|Where-Object severity -eq 'WARN').Count){'WARN'}else{'PASS'};switch($status){'PASS'{$pass++;Write-Host ' PASS' -ForegroundColor Green};'WARN'{$warn++;Write-Host ' WARN' -ForegroundColor Yellow};'FAIL'{$fail++;Write-Host ' FAIL' -ForegroundColor Red}}
+ $results.Add([pscustomobject][ordered]@{appId=$id;name=[string]$app.name;repository=$repo;registryStatus=[string]$app.status;registeredVersion=$registered;defaultBranch=$defaultBranch;releaseStatus=$status;appConfigLookupStatus=$configStatus;appConfigVersion=$configVersion;appConfigBuildOutputs=@($outputs);appConfigBlockRuntimeNetwork=$blockNet;registryMatchesAppConfig=$matchConfig;releaseLookupStatus=$releaseStatusLookup;latestReleaseTag=$releaseTag;registryMatchesRelease=$matchRelease;tagLookupStatus=$tagStatus;tagCount=$tags.Count;matchingVersionTag=$matchingTag;tags=@($tags);issues=@($issues);error=$err})
 }
-
-$headers = @{
-    Accept                 = 'application/vnd.github+json'
-    'User-Agent'           = 'browser-kitty-apps'
-    'X-GitHub-Api-Version' = '2022-11-28'
-}
-if (-not [string]::IsNullOrWhiteSpace($GitHubToken)) {
-    $headers.Authorization = "Bearer $GitHubToken"
-}
-
-function Invoke-GitHubGet {
-    param(
-        [Parameter(Mandatory)][string]$Uri,
-        [int[]]$AllowedStatusCodes = @(200)
-    )
-
-    try {
-        $response = Invoke-WebRequest `
-            -Uri $Uri `
-            -Headers $headers `
-            -Method Get `
-            -SkipHttpErrorCheck `
-            -MaximumRedirection 5 `
-            -TimeoutSec 30
-    }
-    catch {
-        return [pscustomobject]@{
-            StatusCode = 0
-            Data       = $null
-            Error      = $_.Exception.Message
-        }
-    }
-
-    $statusCode = [int]$response.StatusCode
-    $data = $null
-    $errorMessage = $null
-
-    if (-not [string]::IsNullOrWhiteSpace([string]$response.Content)) {
-        try {
-            $data = $response.Content | ConvertFrom-Json -Depth 100
-        }
-        catch {
-            if ($AllowedStatusCodes -contains $statusCode) {
-                $errorMessage = "GitHub returned invalid JSON (HTTP $statusCode)."
-            }
-        }
-    }
-
-    if (-not ($AllowedStatusCodes -contains $statusCode)) {
-        if ($null -ne $data -and $null -ne $data.PSObject.Properties['message']) {
-            $errorMessage = "HTTP ${statusCode}: $($data.message)"
-        }
-        else {
-            $errorMessage = "HTTP $statusCode"
-        }
-    }
-
-    return [pscustomobject]@{
-        StatusCode = $statusCode
-        Data       = $data
-        Error      = $errorMessage
-    }
-}
-
-function Invoke-TextGet {
-    param(
-        [Parameter(Mandatory)][string]$Uri,
-        [int[]]$AllowedStatusCodes = @(200)
-    )
-
-    try {
-        $response = Invoke-WebRequest `
-            -Uri $Uri `
-            -Method Get `
-            -SkipHttpErrorCheck `
-            -MaximumRedirection 5 `
-            -TimeoutSec 30
-    }
-    catch {
-        return [pscustomobject]@{ StatusCode = 0; Content = $null; Error = $_.Exception.Message }
-    }
-
-    $statusCode = [int]$response.StatusCode
-    $errorMessage = $null
-    if (-not ($AllowedStatusCodes -contains $statusCode)) {
-        $errorMessage = "HTTP $statusCode"
-    }
-    return [pscustomobject]@{ StatusCode = $statusCode; Content = [string]$response.Content; Error = $errorMessage }
-}
-
-function Get-AbsoluteOutputPath {
-    param([Parameter(Mandatory)][string]$Path)
-
-    if ([System.IO.Path]::IsPathRooted($Path)) {
-        return $Path
-    }
-    return Join-Path $RepositoryRoot $Path
-}
-
-function New-Issue {
-    param(
-        [Parameter(Mandatory)][ValidateSet('WARN', 'FAIL')][string]$Severity,
-        [Parameter(Mandatory)][string]$Code,
-        [Parameter(Mandatory)][string]$Message
-    )
-
-    return [pscustomobject]@{
-        severity = $Severity
-        code     = $Code
-        message  = $Message
-    }
-}
-
-function Normalize-VersionTag {
-    param([AllowNull()][string]$Value)
-
-    if ([string]::IsNullOrWhiteSpace($Value)) {
-        return $null
-    }
-    $trimmed = $Value.Trim()
-    if ($trimmed.StartsWith('v', [System.StringComparison]::OrdinalIgnoreCase)) {
-        return $trimmed.Substring(1)
-    }
-    return $trimmed
-}
-
-Write-Host 'Browser Kitty release/version check'
-Write-Host "Repository: $RepositoryRoot"
-Write-Host "Registered apps: $($apps.Count)"
-Write-Host "Authenticated: $(-not [string]::IsNullOrWhiteSpace($GitHubToken))"
-Write-Host ''
-
-$results = [System.Collections.Generic.List[object]]::new()
-$passCount = 0
-$warnCount = 0
-$failCount = 0
-$lookupErrorCount = 0
-
-foreach ($app in $apps) {
-    $appId = [string]$app.id
-    $repository = [string]$app.repository
-    $registeredVersion = [string]$app.release.version
-    Write-Host "Checking $repository ..." -NoNewline
-
-    $issues = [System.Collections.Generic.List[object]]::new()
-    $defaultBranch = $null
-    $appConfigLookupStatus = 'error'
-    $appConfigVersion = $null
-    $appConfigBuildOutputs = @()
-    $appConfigBlockRuntimeNetwork = $null
-    $registryMatchesAppConfig = $null
-    $releaseLookupStatus = 'error'
-    $releaseTag = $null
-    $registryMatchesRelease = $null
-    $tagLookupStatus = 'error'
-    $tagCount = 0
-    $matchingVersionTag = $null
-    $tags = @()
-    $errorMessage = $null
-
-    if (-not $inventoryByAppId.ContainsKey($appId)) {
-        $issues.Add((New-Issue -Severity FAIL -Code 'inventory_missing' -Message 'Repository is missing from repository-inventory.json.'))
-        $errorMessage = 'Repository inventory entry is missing.'
-        $lookupErrorCount++
-    }
-    else {
-        $inventoryEntry = $inventoryByAppId[$appId]
-        if ([string]$inventoryEntry.lookupStatus -ne 'ok' -or -not [bool]$inventoryEntry.exists) {
-            $issues.Add((New-Issue -Severity FAIL -Code 'repository_unavailable' -Message 'Repository is unavailable according to repository-inventory.json.'))
-            $errorMessage = 'Repository is unavailable.'
-            $lookupErrorCount++
-        }
-        else {
-            $defaultBranch = [string]$inventoryEntry.defaultBranch
-            $repositoryParts = $repository -split '/', 2
-            $ownerSegment = [Uri]::EscapeDataString([string]$repositoryParts[0])
-            $repoSegment = [Uri]::EscapeDataString([string]$repositoryParts[1])
-            $encodedRepository = "$ownerSegment/$repoSegment"
-            $encodedBranch = [Uri]::EscapeDataString($defaultBranch)
-            $repositoryUri = "$($ApiBaseUrl.TrimEnd('/'))/repos/$encodedRepository"
-
-            # app.config.json is read from raw.githubusercontent.com so this high-frequency
-            # cross-repository check does not consume an extra GitHub REST API request per app.
-            $configUri = "https://raw.githubusercontent.com/$ownerSegment/$repoSegment/refs/heads/$encodedBranch/app.config.json"
-            $configResponse = Invoke-TextGet -Uri $configUri
-            if ($configResponse.StatusCode -eq 200) {
-                try {
-                    $config = $configResponse.Content | ConvertFrom-Json -Depth 100
-                    $appConfigVersion = [string]$config.version
-                    $appConfigLookupStatus = 'ok'
-                    $buildOutputs = [System.Collections.Generic.List[string]]::new()
-                    if ($null -ne $config.PSObject.Properties['build']) {
-                        $build = $config.build
-                        foreach ($propertyName in @('output', 'multiThreadOutput')) {
-                            if ($null -ne $build.PSObject.Properties[$propertyName]) {
-                                $value = [string]$build.$propertyName
-                                if (-not [string]::IsNullOrWhiteSpace($value) -and -not $buildOutputs.Contains($value)) { $buildOutputs.Add($value) }
-                            }
-                        }
-                        if ($null -ne $build.PSObject.Properties['selfExtract'] -and $null -ne $build.selfExtract) {
-                            foreach ($propertyName in @('output', 'multiThreadOutput')) {
-                                if ($null -ne $build.selfExtract.PSObject.Properties[$propertyName]) {
-                                    $value = [string]$build.selfExtract.$propertyName
-                                    if (-not [string]::IsNullOrWhiteSpace($value) -and -not $buildOutputs.Contains($value)) { $buildOutputs.Add($value) }
-                                }
-                            }
-                        }
-                        if ($null -ne $build.PSObject.Properties['blockRuntimeNetwork']) {
-                            $appConfigBlockRuntimeNetwork = [bool]$build.blockRuntimeNetwork
-                        }
-                    }
-                    $appConfigBuildOutputs = @($buildOutputs)
-                    $registryMatchesAppConfig = $registeredVersion -eq $appConfigVersion
-                    if (-not $registryMatchesAppConfig) {
-                        $issues.Add((New-Issue -Severity WARN -Code 'app_config_version_mismatch' -Message "Registry version '$registeredVersion' differs from app.config.json version '$appConfigVersion'."))
-                    }
-                }
-                catch {
-                    $appConfigLookupStatus = 'error'
-                    $issues.Add((New-Issue -Severity FAIL -Code 'app_config_invalid' -Message "app.config.json could not be parsed: $($_.Exception.Message)"))
-                    $lookupErrorCount++
-                }
-            }
-            else {
-                $appConfigLookupStatus = 'error'
-                $message = if ([string]::IsNullOrWhiteSpace([string]$configResponse.Error)) { 'app.config.json lookup failed.' } else { [string]$configResponse.Error }
-                $issues.Add((New-Issue -Severity FAIL -Code 'app_config_lookup_failed' -Message $message))
-                $lookupErrorCount++
-            }
-
-            $releaseLookupStatus = [string]$inventoryEntry.releaseLookupStatus
-            if ($releaseLookupStatus -eq 'ok' -and [bool]$inventoryEntry.hasLatestRelease -and $null -ne $inventoryEntry.latestRelease) {
-                $releaseTag = [string]$inventoryEntry.latestRelease.tagName
-                $registryMatchesRelease = (Normalize-VersionTag -Value $releaseTag) -eq $registeredVersion
-                if (-not $registryMatchesRelease) {
-                    $issues.Add((New-Issue -Severity WARN -Code 'release_version_mismatch' -Message "Registry version '$registeredVersion' differs from latest GitHub Release tag '$releaseTag'."))
-                }
-            }
-            elseif ($releaseLookupStatus -eq 'none') {
-                $registryMatchesRelease = $null
-            }
-            else {
-                $issues.Add((New-Issue -Severity FAIL -Code 'release_lookup_failed' -Message 'Latest Release lookup failed in repository-inventory.json.'))
-                $lookupErrorCount++
-            }
-
-            $tagsUri = "${repositoryUri}/git/matching-refs/tags/"
-            $tagsResponse = Invoke-GitHubGet -Uri $tagsUri
-            if ($tagsResponse.StatusCode -eq 200) {
-                $tagLookupStatus = if (@($tagsResponse.Data).Count -eq 0) { 'none' } else { 'ok' }
-                $tags = @(
-                    $tagsResponse.Data |
-                        ForEach-Object { [string]$_.ref } |
-                        Where-Object { $_.StartsWith('refs/tags/', [System.StringComparison]::Ordinal) } |
-                        ForEach-Object { $_.Substring('refs/tags/'.Length) }
-                )
-                $tagCount = $tags.Count
-                $matchingVersionTag = @($tags | Where-Object { (Normalize-VersionTag -Value $_) -eq $registeredVersion } | Select-Object -First 1)
-                if ($matchingVersionTag.Count -gt 0) {
-                    $matchingVersionTag = [string]$matchingVersionTag[0]
-                }
-                else {
-                    $matchingVersionTag = $null
-                    if ($tagCount -gt 0) {
-                        $issues.Add((New-Issue -Severity WARN -Code 'registered_version_tag_missing' -Message "Repository has tags, but none matches registry version '$registeredVersion' (accepted forms: '$registeredVersion' or 'v$registeredVersion')."))
-                    }
-                }
-            }
-            else {
-                $tagLookupStatus = 'error'
-                $message = if ([string]::IsNullOrWhiteSpace([string]$tagsResponse.Error)) { 'Tag lookup failed.' } else { [string]$tagsResponse.Error }
-                $issues.Add((New-Issue -Severity FAIL -Code 'tag_lookup_failed' -Message $message))
-                $lookupErrorCount++
-            }
-        }
-    }
-
-    $hasFail = @($issues | Where-Object { $_.severity -eq 'FAIL' }).Count -gt 0
-    $hasWarn = @($issues | Where-Object { $_.severity -eq 'WARN' }).Count -gt 0
-    $releaseStatus = if ($hasFail) { 'FAIL' } elseif ($hasWarn) { 'WARN' } else { 'PASS' }
-
-    switch ($releaseStatus) {
-        'PASS' { $passCount++; Write-Host ' PASS' -ForegroundColor Green }
-        'WARN' { $warnCount++; Write-Host ' WARN' -ForegroundColor Yellow }
-        'FAIL' { $failCount++; Write-Host ' FAIL' -ForegroundColor Red }
-    }
-
-    $results.Add([pscustomobject][ordered]@{
-        appId                    = $appId
-        name                     = [string]$app.name
-        repository               = $repository
-        registryStatus           = [string]$app.status
-        registeredVersion        = $registeredVersion
-        defaultBranch            = $defaultBranch
-        releaseStatus            = $releaseStatus
-        appConfigLookupStatus    = $appConfigLookupStatus
-        appConfigVersion         = $appConfigVersion
-        appConfigBuildOutputs    = @($appConfigBuildOutputs)
-        appConfigBlockRuntimeNetwork = $appConfigBlockRuntimeNetwork
-        registryMatchesAppConfig = $registryMatchesAppConfig
-        releaseLookupStatus      = $releaseLookupStatus
-        latestReleaseTag         = $releaseTag
-        registryMatchesRelease   = $registryMatchesRelease
-        tagLookupStatus          = $tagLookupStatus
-        tagCount                 = $tagCount
-        matchingVersionTag       = $matchingVersionTag
-        tags                     = @($tags)
-        issues                   = @($issues)
-        error                    = $errorMessage
-    })
-}
-
-$report = [ordered]@{
-    schemaVersion = 1
-    generatedAt   = [DateTimeOffset]::UtcNow.ToString('o')
-    sourceRegistry = 'apps.json'
-    sourceInventory = $InventoryPath
-    githubApi     = $ApiBaseUrl
-    authenticated = -not [string]::IsNullOrWhiteSpace($GitHubToken)
-    policy = [ordered]@{
-        missingReleaseIsFailure    = $false
-        missingTagsIsFailure       = $false
-        versionMismatchSeverity    = 'WARN'
-        acceptedTagForms           = @('<version>', 'v<version>')
-    }
-    summary = [ordered]@{
-        registeredApps = $apps.Count
-        checkedApps    = $results.Count
-        pass           = $passCount
-        warn           = $warnCount
-        fail           = $failCount
-        lookupErrors   = $lookupErrorCount
-    }
-    applications = @($results)
-}
-
-$reportJson = $report | ConvertTo-Json -Depth 30
-if (-not (Test-Json -Json $reportJson -SchemaFile $schemaPath)) {
-    throw 'Generated Release report does not match schema/repository-releases.schema.json.'
-}
-
-if (-not $NoWrite) {
-    $absoluteOutputPath = Get-AbsoluteOutputPath -Path $OutputPath
-    $outputDirectory = Split-Path -Parent $absoluteOutputPath
-    if (-not [string]::IsNullOrWhiteSpace($outputDirectory)) {
-        New-Item -ItemType Directory -Path $outputDirectory -Force | Out-Null
-    }
-    $reportJson | Set-Content -LiteralPath $absoluteOutputPath -Encoding utf8NoBOM
-    Write-Host ''
-    Write-Host "Release report written: $absoluteOutputPath"
-}
-
-Write-Host ''
-Write-Host "PASS: $passCount"
-Write-Host "WARN: $warnCount"
-Write-Host "FAIL: $failCount"
-Write-Host "Lookup errors: $lookupErrorCount"
-
-if ($failCount -gt 0) {
-    exit 1
-}
+$report=[ordered]@{schemaVersion=1;generatedAt=[DateTimeOffset]::UtcNow.ToString('o');sourceRegistry='apps.json';sourceInventory=$InventoryPath;githubApi=$ApiBaseUrl;authenticated=-not [string]::IsNullOrWhiteSpace($GitHubToken);policy=[ordered]@{missingReleaseIsFailure=$false;missingTagsIsFailure=$false;versionMismatchSeverity='WARN';acceptedTagForms=@('<version>','v<version>')};summary=[ordered]@{registeredApps=$apps.Count;checkedApps=$results.Count;pass=$pass;warn=$warn;fail=$fail;lookupErrors=$lookupErrors};applications=@($results)}
+$json=$report|ConvertTo-Json -Depth 30;if(-not(Test-Json -Json $json -SchemaFile $schemaPath)){throw 'Generated Release report does not match schema/repository-releases.schema.json.'}
+if (-not $NoWrite){$out=Abs $OutputPath;New-Item -ItemType Directory -Force -Path (Split-Path -Parent $out)|Out-Null;$json|Set-Content $out -Encoding utf8NoBOM;Write-Host "Release report written: $out"}
+Write-Host "PASS: $pass`nWARN: $warn`nFAIL: $fail`nLookup errors: $lookupErrors";if ($fail -gt 0){exit 1}

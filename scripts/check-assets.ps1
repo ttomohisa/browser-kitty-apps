@@ -6,382 +6,88 @@ param(
     [string]$OutputPath = 'reports/repository-quality.json',
     [string]$GitHubToken = $env:BROWSER_KITTY_GITHUB_TOKEN,
     [string]$ApiBaseUrl = 'https://api.github.com',
+    [int]$ThrottleLimit = 16,
     [switch]$NoWrite
 )
+$ErrorActionPreference='Stop'; Set-StrictMode -Version Latest
+function Get-AbsolutePath { param([Parameter(Mandatory)][string]$Path); if ([IO.Path]::IsPathRooted($Path)) {$Path} else {Join-Path $RepositoryRoot $Path} }
+function New-Issue { param([Parameter(Mandatory)][ValidateSet('WARN','FAIL')][string]$Severity,[Parameter(Mandatory)][string]$Code,[Parameter(Mandatory)][string]$Path,[Parameter(Mandatory)][string]$Message); [pscustomobject]@{severity=$Severity;code=$Code;path=$Path;message=$Message} }
 
-$ErrorActionPreference = 'Stop'
-Set-StrictMode -Version Latest
+$appsPath=Join-Path $RepositoryRoot 'apps.json'; $schemaPath=Join-Path $RepositoryRoot 'schema/repository-quality.schema.json'; $inventoryAbs=Get-AbsolutePath $InventoryPath
+foreach($p in @($appsPath,$schemaPath,$inventoryAbs)){ if(-not(Test-Path -LiteralPath $p -PathType Leaf)){throw "Required file not found: $p"} }
+$apps=@((Get-Content $appsPath -Raw -Encoding UTF8|ConvertFrom-Json -Depth 100).apps)
+$inventory=Get-Content $inventoryAbs -Raw -Encoding UTF8|ConvertFrom-Json -Depth 100
+$inventoryById=@{}; foreach($e in @($inventory.repositories)){$inventoryById[[string]$e.appId]=$e}
 
-function Get-AbsolutePath {
-    param([Parameter(Mandatory)][string]$Path)
-
-    if ([System.IO.Path]::IsPathRooted($Path)) {
-        return $Path
-    }
-    return Join-Path $RepositoryRoot $Path
-}
-
-$appsPath = Join-Path $RepositoryRoot 'apps.json'
-$qualitySchemaPath = Join-Path $RepositoryRoot 'schema/repository-quality.schema.json'
-$absoluteInventoryPath = Get-AbsolutePath -Path $InventoryPath
-
-foreach ($requiredPath in @($appsPath, $qualitySchemaPath, $absoluteInventoryPath)) {
-    if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
-        throw "Required file not found: $requiredPath"
-    }
-}
-
-$appsFile = Get-Content -LiteralPath $appsPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 100
-$apps = @($appsFile.apps)
-$inventory = Get-Content -LiteralPath $absoluteInventoryPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 100
-$inventoryByAppId = @{}
-foreach ($repository in @($inventory.repositories)) {
-    $inventoryByAppId[[string]$repository.appId] = $repository
-}
-
-$headers = @{
-    Accept                 = 'application/vnd.github+json'
-    'User-Agent'           = 'browser-kitty-apps'
-    'X-GitHub-Api-Version' = '2022-11-28'
-}
-if (-not [string]::IsNullOrWhiteSpace($GitHubToken)) {
-    $headers.Authorization = "Bearer $GitHubToken"
-}
-
-function Invoke-GitHubGet {
-    param(
-        [Parameter(Mandatory)][string]$Uri,
-        [int[]]$AllowedStatusCodes = @(200)
-    )
-
-    try {
-        $response = Invoke-WebRequest `
-            -Uri $Uri `
-            -Headers $headers `
-            -Method Get `
-            -SkipHttpErrorCheck `
-            -MaximumRedirection 5 `
-            -TimeoutSec 30
-    }
-    catch {
-        return [pscustomobject]@{
-            StatusCode = 0
-            Data       = $null
-            Error      = $_.Exception.Message
+$paths=@('README.md','LICENSE','app.config.json','package.json','assets/favicon.svg','assets/screenshot.png','assets/screenshot-en.png')
+$targets=[Collections.Generic.List[object]]::new()
+foreach($app in $apps){
+    $id=[string]$app.id
+    if($inventoryById.ContainsKey($id) -and [string]$inventoryById[$id].lookupStatus -eq 'ok' -and [bool]$inventoryById[$id].exists){
+        $branch=[string]$inventoryById[$id].defaultBranch; $repo=[string]$app.repository; $parts=$repo -split '/',2
+        foreach($path in $paths){
+            $segments=$path -split '/' | ForEach-Object {[Uri]::EscapeDataString($_)}
+            $url="https://raw.githubusercontent.com/$([Uri]::EscapeDataString($parts[0]))/$([Uri]::EscapeDataString($parts[1]))/refs/heads/$([Uri]::EscapeDataString($branch))/$($segments -join '/')"
+            $targets.Add([pscustomobject]@{appId=$id;path=$path;url=$url})
         }
     }
-
-    $statusCode = [int]$response.StatusCode
-    $data = $null
-    $errorMessage = $null
-
-    if (-not [string]::IsNullOrWhiteSpace([string]$response.Content)) {
-        try {
-            $data = $response.Content | ConvertFrom-Json -Depth 100
-        }
-        catch {
-            if ($AllowedStatusCodes -contains $statusCode) {
-                $errorMessage = "GitHub returned invalid JSON (HTTP $statusCode)."
-            }
-        }
-    }
-
-    if (-not ($AllowedStatusCodes -contains $statusCode)) {
-        if ($null -ne $data -and $null -ne $data.PSObject.Properties['message']) {
-            $errorMessage = "HTTP ${statusCode}: $($data.message)"
-        }
-        else {
-            $errorMessage = "HTTP $statusCode"
-        }
-    }
-
-    return [pscustomobject]@{
-        StatusCode = $statusCode
-        Data       = $data
-        Error      = $errorMessage
-    }
 }
-
-function New-Issue {
-    param(
-        [Parameter(Mandatory)][ValidateSet('WARN', 'FAIL')][string]$Severity,
-        [Parameter(Mandatory)][string]$Code,
-        [Parameter(Mandatory)][string]$Path,
-        [Parameter(Mandatory)][string]$Message
-    )
-
-    return [pscustomobject]@{
-        severity = $Severity
-        code     = $Code
-        path     = $Path
-        message  = $Message
-    }
-}
-
-function Test-PathInTree {
-    param(
-        [Parameter(Mandatory)][AllowEmptyCollection()][System.Collections.Generic.HashSet[string]]$PathSet,
-        [Parameter(Mandatory)][string]$Path
-    )
-
-    return $PathSet.Contains($Path)
-}
-
 Write-Host 'Browser Kitty repository quality check'
-Write-Host "Repository: $RepositoryRoot"
 Write-Host "Registered apps: $($apps.Count)"
-Write-Host "Inventory: $absoluteInventoryPath"
-Write-Host "Authenticated: $(-not [string]::IsNullOrWhiteSpace($GitHubToken))"
-Write-Host ''
+Write-Host "File probes: $($targets.Count) (raw.githubusercontent.com, throttle=$ThrottleLimit)"
 
-$results = [System.Collections.Generic.List[object]]::new()
-$passCount = 0
-$warnCount = 0
-$failCount = 0
-$lookupErrorCount = 0
+$probes=@($targets | ForEach-Object -Parallel {
+    $t=$_
+    try {
+        $r=Invoke-WebRequest -Uri $t.url -Method Head -SkipHttpErrorCheck -MaximumRedirection 3 -TimeoutSec 20
+        [pscustomobject]@{appId=$t.appId;path=$t.path;status=[int]$r.StatusCode;error=$null}
+    } catch {
+        [pscustomobject]@{appId=$t.appId;path=$t.path;status=0;error=$_.Exception.Message}
+    }
+} -ThrottleLimit $ThrottleLimit)
+$probeMap=@{}; foreach($p in $probes){$probeMap["$($p.appId)|$($p.path)"]=$p}
 
-foreach ($app in $apps) {
-    $appId = [string]$app.id
-    $repositoryName = [string]$app.repository
-    Write-Host "Checking $repositoryName ..." -NoNewline
-
-    if (-not $inventoryByAppId.ContainsKey($appId)) {
-        $entry = [ordered]@{
-            appId        = $appId
-            name         = [string]$app.name
-            repository   = $repositoryName
-            registryStatus = [string]$app.status
-            published    = [bool]$app.browserKitty.published
-            lookupStatus = 'error'
-            qualityStatus = 'FAIL'
-            defaultBranch = $null
-            treeTruncated = $false
-            files        = $null
-            issues       = @(
-                New-Issue -Severity FAIL -Code 'inventory_missing' -Path $InventoryPath -Message 'Repository is missing from the repository inventory.'
-            )
-            error        = 'Repository inventory entry is missing.'
+$results=[Collections.Generic.List[object]]::new(); $pass=0;$warn=0;$fail=0;$lookupErrors=0
+foreach($app in $apps){
+    $id=[string]$app.id; $repo=[string]$app.repository; Write-Host "Checking $repo ..." -NoNewline
+    if(-not $inventoryById.ContainsKey($id) -or [string]$inventoryById[$id].lookupStatus -ne 'ok' -or -not [bool]$inventoryById[$id].exists){
+        $results.Add([pscustomobject][ordered]@{appId=$id;name=[string]$app.name;repository=$repo;registryStatus=[string]$app.status;published=[bool]$app.browserKitty.published;lookupStatus='error';qualityStatus='FAIL';defaultBranch=$null;treeTruncated=$false;files=$null;issues=@(New-Issue FAIL 'repository_unavailable' $repo 'Repository is unavailable according to the inventory.');error='Repository unavailable.'})
+        $fail++;$lookupErrors++;Write-Host ' FAIL' -ForegroundColor Red;continue
+    }
+    $files=[ordered]@{readme=$false;license=$false;appConfig=$false;packageJson=$false;favicon=$false;screenshot=$false;screenshotEn=$false}
+    $mapping=@{'README.md'='readme';'LICENSE'='license';'app.config.json'='appConfig';'package.json'='packageJson';'assets/favicon.svg'='favicon';'assets/screenshot.png'='screenshot';'assets/screenshot-en.png'='screenshotEn'}
+    $issues=[Collections.Generic.List[object]]::new()
+    foreach($path in $paths){
+        $probe=$probeMap["$id|$path"]
+        if($null -eq $probe -or $probe.status -eq 0){
+            $probeError = if ($null -eq $probe) { 'Probe result missing.' } else { [string]$probe.error }
+            $issues.Add((New-Issue FAIL 'asset_probe_failed' $path "Could not check file presence: $probeError")); continue
         }
-        $results.Add([pscustomobject]$entry)
-        $failCount++
-        $lookupErrorCount++
-        Write-Host ' FAIL (inventory missing)' -ForegroundColor Red
-        continue
+        $files[$mapping[$path]]=($probe.status -eq 200)
+        if($probe.status -notin @(200,404)){ $issues.Add((New-Issue FAIL 'asset_probe_http_error' $path "Unexpected HTTP status $($probe.status) while checking file presence.")) }
     }
-
-    $inventoryEntry = $inventoryByAppId[$appId]
-    if ([string]$inventoryEntry.lookupStatus -ne 'ok' -or -not [bool]$inventoryEntry.exists) {
-        $entry = [ordered]@{
-            appId        = $appId
-            name         = [string]$app.name
-            repository   = $repositoryName
-            registryStatus = [string]$app.status
-            published    = [bool]$app.browserKitty.published
-            lookupStatus = 'error'
-            qualityStatus = 'FAIL'
-            defaultBranch = if ($null -eq $inventoryEntry.defaultBranch) { $null } else { [string]$inventoryEntry.defaultBranch }
-            treeTruncated = $false
-            files        = $null
-            issues       = @(
-                New-Issue -Severity FAIL -Code 'repository_unavailable' -Path $repositoryName -Message 'Repository is unavailable according to the repository inventory.'
-            )
-            error        = 'Cannot inspect files because the repository is unavailable.'
-        }
-        $results.Add([pscustomobject]$entry)
-        $failCount++
-        $lookupErrorCount++
-        Write-Host ' FAIL (repository unavailable)' -ForegroundColor Red
-        continue
+    foreach($required in @(
+      @{Key='readme';Path='README.md';Code='readme_missing';Message='README.md is required.'},
+      @{Key='license';Path='LICENSE';Code='license_missing';Message='LICENSE is required.'},
+      @{Key='favicon';Path='assets/favicon.svg';Code='favicon_missing';Message='assets/favicon.svg is required.'}
+    )){ if(-not [bool]$files[$required.Key]){$issues.Add((New-Issue FAIL $required.Code $required.Path $required.Message))} }
+    $profile=if($null -ne $app.PSObject.Properties['repositoryProfile']){[string]$app.repositoryProfile}else{'standard'}
+    if(-not [bool]$files.appConfig){
+        if($profile -eq 'legacy'){$issues.Add((New-Issue WARN 'legacy_app_config_missing' 'app.config.json' 'Legacy repository has no app.config.json; this is recorded as an expected migration gap.'))}
+        else{$issues.Add((New-Issue FAIL 'app_config_missing' 'app.config.json' 'app.config.json is required for standard Browser Kitty apps.'))}
     }
-
-    $defaultBranch = [string]$inventoryEntry.defaultBranch
-    if ([string]::IsNullOrWhiteSpace($defaultBranch)) {
-        $entry = [ordered]@{
-            appId        = $appId
-            name         = [string]$app.name
-            repository   = $repositoryName
-            registryStatus = [string]$app.status
-            published    = [bool]$app.browserKitty.published
-            lookupStatus = 'error'
-            qualityStatus = 'FAIL'
-            defaultBranch = $null
-            treeTruncated = $false
-            files        = $null
-            issues       = @(
-                New-Issue -Severity FAIL -Code 'default_branch_missing' -Path $repositoryName -Message 'Default branch is missing from the repository inventory.'
-            )
-            error        = 'Default branch is unavailable.'
-        }
-        $results.Add([pscustomobject]$entry)
-        $failCount++
-        $lookupErrorCount++
-        Write-Host ' FAIL (default branch missing)' -ForegroundColor Red
-        continue
-    }
-
-    $encodedRepository = ($repositoryName -split '/', 2 | ForEach-Object { [Uri]::EscapeDataString($_) }) -join '/'
-    $encodedBranch = [Uri]::EscapeDataString($defaultBranch)
-    $treeUri = "$($ApiBaseUrl.TrimEnd('/'))/repos/$encodedRepository/git/trees/${encodedBranch}?recursive=1"
-    $treeResponse = Invoke-GitHubGet -Uri $treeUri
-
-    if ($treeResponse.StatusCode -ne 200 -or $null -eq $treeResponse.Data) {
-        $message = if ([string]::IsNullOrWhiteSpace([string]$treeResponse.Error)) { 'Repository tree lookup failed.' } else { [string]$treeResponse.Error }
-        $entry = [ordered]@{
-            appId        = $appId
-            name         = [string]$app.name
-            repository   = $repositoryName
-            registryStatus = [string]$app.status
-            published    = [bool]$app.browserKitty.published
-            lookupStatus = 'error'
-            qualityStatus = 'FAIL'
-            defaultBranch = $defaultBranch
-            treeTruncated = $false
-            files        = $null
-            issues       = @(
-                New-Issue -Severity FAIL -Code 'tree_lookup_failed' -Path $defaultBranch -Message $message
-            )
-            error        = $message
-        }
-        $results.Add([pscustomobject]$entry)
-        $failCount++
-        $lookupErrorCount++
-        Write-Host ' FAIL (tree lookup)' -ForegroundColor Red
-        continue
-    }
-
-    $treeTruncated = $false
-    if ($null -ne $treeResponse.Data.PSObject.Properties['truncated']) {
-        $treeTruncated = [bool]$treeResponse.Data.truncated
-    }
-
-    $pathSet = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
-    foreach ($item in @($treeResponse.Data.tree)) {
-        if ([string]$item.type -eq 'blob') {
-            [void]$pathSet.Add([string]$item.path)
-        }
-    }
-
-    $files = [ordered]@{
-        readme       = Test-PathInTree -PathSet $pathSet -Path 'README.md'
-        license      = Test-PathInTree -PathSet $pathSet -Path 'LICENSE'
-        appConfig    = Test-PathInTree -PathSet $pathSet -Path 'app.config.json'
-        packageJson  = Test-PathInTree -PathSet $pathSet -Path 'package.json'
-        favicon      = Test-PathInTree -PathSet $pathSet -Path 'assets/favicon.svg'
-        screenshot   = Test-PathInTree -PathSet $pathSet -Path 'assets/screenshot.png'
-        screenshotEn = Test-PathInTree -PathSet $pathSet -Path 'assets/screenshot-en.png'
-    }
-
-    $issues = [System.Collections.Generic.List[object]]::new()
-
-    if ($treeTruncated) {
-        $issues.Add((New-Issue -Severity WARN -Code 'tree_truncated' -Path $defaultBranch -Message 'GitHub returned a truncated recursive tree; file-presence results may be incomplete.'))
-    }
-
-    foreach ($required in @(
-        @{ Key = 'readme';    Path = 'README.md';          Code = 'readme_missing';    Message = 'README.md is required.' },
-        @{ Key = 'license';   Path = 'LICENSE';            Code = 'license_missing';   Message = 'LICENSE is required.' },
-        @{ Key = 'appConfig'; Path = 'app.config.json';    Code = 'app_config_missing'; Message = 'app.config.json is required for managed Browser Kitty apps.' },
-        @{ Key = 'favicon';   Path = 'assets/favicon.svg'; Code = 'favicon_missing';   Message = 'assets/favicon.svg is required.' }
-    )) {
-        if (-not [bool]$files[$required.Key]) {
-            $issues.Add((New-Issue -Severity FAIL -Code $required.Code -Path $required.Path -Message $required.Message))
-        }
-    }
-
-    $isPublishedRelease = [bool]$app.browserKitty.published -and ([string]$app.status -in @('stable', 'maintenance'))
-    foreach ($screenshot in @(
-        @{ Key = 'screenshot';   Path = 'assets/screenshot.png';    Code = 'screenshot_missing';    Message = 'Japanese/default screenshot is missing.' },
-        @{ Key = 'screenshotEn'; Path = 'assets/screenshot-en.png'; Code = 'screenshot_en_missing'; Message = 'English screenshot is missing.' }
-    )) {
-        if (-not [bool]$files[$screenshot.Key]) {
-            $severity = if ($isPublishedRelease) { 'FAIL' } else { 'WARN' }
-            $message = if ($isPublishedRelease) {
-                "$($screenshot.Message) Published stable/maintenance apps require release screenshots."
-            }
-            else {
-                "$($screenshot.Message) Add it before the stable release."
-            }
-            $issues.Add((New-Issue -Severity $severity -Code $screenshot.Code -Path $screenshot.Path -Message $message))
-        }
-    }
-
-    # package.json is intentionally informational. The current htmlapps-template does not require Node/package.json.
-    $qualityStatus = 'PASS'
-    if (@($issues | Where-Object { $_.severity -eq 'FAIL' }).Count -gt 0) {
-        $qualityStatus = 'FAIL'
-    }
-    elseif (@($issues | Where-Object { $_.severity -eq 'WARN' }).Count -gt 0) {
-        $qualityStatus = 'WARN'
-    }
-
-    switch ($qualityStatus) {
-        'PASS' { $passCount++; Write-Host ' PASS' -ForegroundColor Green }
-        'WARN' { $warnCount++; Write-Host " WARN ($($issues.Count) issue(s))" -ForegroundColor Yellow }
-        'FAIL' { $failCount++; Write-Host " FAIL ($($issues.Count) issue(s))" -ForegroundColor Red }
-    }
-
-    $entry = [ordered]@{
-        appId          = $appId
-        name           = [string]$app.name
-        repository     = $repositoryName
-        registryStatus = [string]$app.status
-        published      = [bool]$app.browserKitty.published
-        lookupStatus   = 'ok'
-        qualityStatus  = $qualityStatus
-        defaultBranch  = $defaultBranch
-        treeTruncated  = $treeTruncated
-        files          = $files
-        issues         = @($issues)
-        error          = $null
-    }
-    $results.Add([pscustomobject]$entry)
+    $isPublishedRelease=[bool]$app.browserKitty.published -and ([string]$app.status -in @('stable','maintenance'))
+    foreach($s in @(
+      @{Key='screenshot';Path='assets/screenshot.png';Code='screenshot_missing';Message='Japanese/default screenshot is missing.'},
+      @{Key='screenshotEn';Path='assets/screenshot-en.png';Code='screenshot_en_missing';Message='English screenshot is missing.'}
+    )){ if(-not [bool]$files[$s.Key]){ $sev=if($isPublishedRelease){'FAIL'}else{'WARN'}; $issues.Add((New-Issue $sev $s.Code $s.Path $s.Message)) } }
+    $status=if(@($issues|Where-Object severity -eq 'FAIL').Count){'FAIL'}elseif(@($issues|Where-Object severity -eq 'WARN').Count){'WARN'}else{'PASS'}
+    switch($status){'PASS'{$pass++;Write-Host ' PASS' -ForegroundColor Green};'WARN'{$warn++;Write-Host ' WARN' -ForegroundColor Yellow};'FAIL'{$fail++;Write-Host ' FAIL' -ForegroundColor Red}}
+    $results.Add([pscustomobject][ordered]@{appId=$id;name=[string]$app.name;repository=$repo;registryStatus=[string]$app.status;published=[bool]$app.browserKitty.published;lookupStatus='ok';qualityStatus=$status;defaultBranch=[string]$inventoryById[$id].defaultBranch;treeTruncated=$false;files=$files;issues=@($issues);error=$null})
 }
-
-$quality = [ordered]@{
-    schemaVersion   = 1
-    generatedAt     = [DateTimeOffset]::UtcNow.ToString('o')
-    sourceRegistry  = 'apps.json'
-    sourceInventory = ($InventoryPath -replace '\\', '/')
-    githubApi       = $ApiBaseUrl
-    authenticated   = -not [string]::IsNullOrWhiteSpace($GitHubToken)
-    policy          = [ordered]@{
-        requiredCoreFiles = @('README.md', 'LICENSE', 'app.config.json', 'assets/favicon.svg')
-        releaseScreenshotFiles = @('assets/screenshot.png', 'assets/screenshot-en.png')
-        packageJsonRequired = $false
-    }
-    summary         = [ordered]@{
-        registeredApps = $apps.Count
-        checkedApps     = $results.Count
-        pass            = $passCount
-        warn            = $warnCount
-        fail            = $failCount
-        lookupErrors    = $lookupErrorCount
-    }
-    repositories    = @($results)
-}
-
-$qualityJson = $quality | ConvertTo-Json -Depth 30
-if (-not (Test-Json -Json $qualityJson -SchemaFile $qualitySchemaPath)) {
-    throw 'Generated repository quality report does not match schema/repository-quality.schema.json.'
-}
-
-if (-not $NoWrite) {
-    $absoluteOutputPath = Get-AbsolutePath -Path $OutputPath
-    $outputDirectory = Split-Path -Parent $absoluteOutputPath
-    if (-not [string]::IsNullOrWhiteSpace($outputDirectory)) {
-        New-Item -ItemType Directory -Path $outputDirectory -Force | Out-Null
-    }
-    $qualityJson | Set-Content -LiteralPath $absoluteOutputPath -Encoding utf8NoBOM
-    Write-Host ''
-    Write-Host "Quality report written: $absoluteOutputPath"
-}
-
-Write-Host ''
-Write-Host "PASS: $passCount"
-Write-Host "WARN: $warnCount"
-Write-Host "FAIL: $failCount"
-Write-Host "Lookup errors: $lookupErrorCount"
-
-if ($failCount -gt 0) {
-    exit 1
-}
+$report=[ordered]@{schemaVersion=1;generatedAt=[DateTimeOffset]::UtcNow.ToString('o');sourceRegistry='apps.json';sourceInventory=($InventoryPath-replace '\\','/');githubApi=$ApiBaseUrl;authenticated=-not [string]::IsNullOrWhiteSpace($GitHubToken);policy=[ordered]@{requiredCoreFiles=@('README.md','LICENSE','app.config.json','assets/favicon.svg');releaseScreenshotFiles=@('assets/screenshot.png','assets/screenshot-en.png');packageJsonRequired=$false;legacyAppConfigOptional=$true};summary=[ordered]@{registeredApps=$apps.Count;checkedApps=$results.Count;pass=$pass;warn=$warn;fail=$fail;lookupErrors=$lookupErrors};repositories=@($results)}
+$json=$report|ConvertTo-Json -Depth 30
+if(-not(Test-Json -Json $json -SchemaFile $schemaPath)){throw 'Generated repository quality report does not match schema/repository-quality.schema.json.'}
+if(-not $NoWrite){$out=Get-AbsolutePath $OutputPath;New-Item -ItemType Directory -Force -Path (Split-Path -Parent $out)|Out-Null;$json|Set-Content $out -Encoding utf8NoBOM;Write-Host "Quality report written: $out"}
+Write-Host "PASS: $pass`nWARN: $warn`nFAIL: $fail`nLookup errors: $lookupErrors"
+if($fail -gt 0){exit 1}

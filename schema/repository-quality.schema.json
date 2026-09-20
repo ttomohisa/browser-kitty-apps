@@ -16,47 +16,111 @@
     "repositories"
   ],
   "properties": {
-    "schemaVersion": { "type": "integer", "const": 1 },
-    "generatedAt": { "type": "string", "minLength": 1 },
-    "sourceRegistry": { "type": "string", "const": "apps.json" },
-    "sourceInventory": { "type": "string", "minLength": 1 },
-    "githubApi": { "type": "string", "pattern": "^https://" },
-    "authenticated": { "type": "boolean" },
-    "policy": { "$ref": "#/definitions/policy" },
-    "summary": { "$ref": "#/definitions/summary" },
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceRegistry": {
+      "type": "string",
+      "const": "apps.json"
+    },
+    "sourceInventory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "githubApi": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "authenticated": {
+      "type": "boolean"
+    },
+    "policy": {
+      "$ref": "#/definitions/policy"
+    },
+    "summary": {
+      "$ref": "#/definitions/summary"
+    },
     "repositories": {
       "type": "array",
-      "items": { "$ref": "#/definitions/repository" }
+      "items": {
+        "$ref": "#/definitions/repository"
+      }
     }
   },
   "definitions": {
     "policy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["requiredCoreFiles", "releaseScreenshotFiles", "packageJsonRequired"],
+      "required": [
+        "requiredCoreFiles",
+        "releaseScreenshotFiles",
+        "packageJsonRequired",
+        "legacyAppConfigOptional"
+      ],
       "properties": {
         "requiredCoreFiles": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 }
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "releaseScreenshotFiles": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 }
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         },
-        "packageJsonRequired": { "type": "boolean" }
+        "packageJsonRequired": {
+          "type": "boolean"
+        },
+        "legacyAppConfigOptional": {
+          "type": "boolean"
+        }
       }
     },
     "summary": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["registeredApps", "checkedApps", "pass", "warn", "fail", "lookupErrors"],
+      "required": [
+        "registeredApps",
+        "checkedApps",
+        "pass",
+        "warn",
+        "fail",
+        "lookupErrors"
+      ],
       "properties": {
-        "registeredApps": { "type": "integer", "minimum": 0 },
-        "checkedApps": { "type": "integer", "minimum": 0 },
-        "pass": { "type": "integer", "minimum": 0 },
-        "warn": { "type": "integer", "minimum": 0 },
-        "fail": { "type": "integer", "minimum": 0 },
-        "lookupErrors": { "type": "integer", "minimum": 0 }
+        "registeredApps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "checkedApps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pass": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warn": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fail": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lookupErrors": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     },
     "repository": {
@@ -77,54 +141,144 @@
         "error"
       ],
       "properties": {
-        "appId": { "type": "string", "minLength": 1 },
-        "name": { "type": "string", "minLength": 1 },
-        "repository": { "type": "string", "minLength": 1 },
+        "appId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
         "registryStatus": {
           "type": "string",
-          "enum": ["development", "rc", "stable", "maintenance", "archived"]
+          "enum": [
+            "development",
+            "rc",
+            "stable",
+            "maintenance",
+            "archived"
+          ]
         },
-        "published": { "type": "boolean" },
-        "lookupStatus": { "type": "string", "enum": ["ok", "error"] },
-        "qualityStatus": { "type": "string", "enum": ["PASS", "WARN", "FAIL"] },
-        "defaultBranch": { "type": ["string", "null"] },
-        "treeTruncated": { "type": "boolean" },
+        "published": {
+          "type": "boolean"
+        },
+        "lookupStatus": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "error"
+          ]
+        },
+        "qualityStatus": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "WARN",
+            "FAIL"
+          ]
+        },
+        "defaultBranch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "treeTruncated": {
+          "type": "boolean"
+        },
         "files": {
           "oneOf": [
-            { "type": "null" },
-            { "$ref": "#/definitions/files" }
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/files"
+            }
           ]
         },
         "issues": {
           "type": "array",
-          "items": { "$ref": "#/definitions/issue" }
+          "items": {
+            "$ref": "#/definitions/issue"
+          }
         },
-        "error": { "type": ["string", "null"] }
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "files": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["readme", "license", "appConfig", "packageJson", "favicon", "screenshot", "screenshotEn"],
+      "required": [
+        "readme",
+        "license",
+        "appConfig",
+        "packageJson",
+        "favicon",
+        "screenshot",
+        "screenshotEn"
+      ],
       "properties": {
-        "readme": { "type": "boolean" },
-        "license": { "type": "boolean" },
-        "appConfig": { "type": "boolean" },
-        "packageJson": { "type": "boolean" },
-        "favicon": { "type": "boolean" },
-        "screenshot": { "type": "boolean" },
-        "screenshotEn": { "type": "boolean" }
+        "readme": {
+          "type": "boolean"
+        },
+        "license": {
+          "type": "boolean"
+        },
+        "appConfig": {
+          "type": "boolean"
+        },
+        "packageJson": {
+          "type": "boolean"
+        },
+        "favicon": {
+          "type": "boolean"
+        },
+        "screenshot": {
+          "type": "boolean"
+        },
+        "screenshotEn": {
+          "type": "boolean"
+        }
       }
     },
     "issue": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["severity", "code", "path", "message"],
+      "required": [
+        "severity",
+        "code",
+        "path",
+        "message"
+      ],
       "properties": {
-        "severity": { "type": "string", "enum": ["WARN", "FAIL"] },
-        "code": { "type": "string", "minLength": 1 },
-        "path": { "type": "string", "minLength": 1 },
-        "message": { "type": "string", "minLength": 1 }
+        "severity": {
+          "type": "string",
+          "enum": [
+            "WARN",
+            "FAIL"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
   }

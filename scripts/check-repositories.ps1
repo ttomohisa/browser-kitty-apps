@@ -13,270 +13,111 @@ Set-StrictMode -Version Latest
 
 $appsPath = Join-Path $RepositoryRoot 'apps.json'
 $inventorySchemaPath = Join-Path $RepositoryRoot 'schema/repository-inventory.schema.json'
-if (-not (Test-Path -LiteralPath $appsPath -PathType Leaf)) {
-    throw "Required file not found: $appsPath"
+foreach ($requiredPath in @($appsPath, $inventorySchemaPath)) {
+    if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) { throw "Required file not found: $requiredPath" }
 }
 
 $appsFile = Get-Content -LiteralPath $appsPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 100
 $apps = @($appsFile.apps)
-
 $headers = @{
-    Accept                 = 'application/vnd.github+json'
-    'User-Agent'           = 'browser-kitty-apps'
-    'X-GitHub-Api-Version' = '2022-11-28'
+    Accept='application/vnd.github+json'; 'User-Agent'='browser-kitty-apps'; 'X-GitHub-Api-Version'='2022-11-28'
 }
-if (-not [string]::IsNullOrWhiteSpace($GitHubToken)) {
-    $headers.Authorization = "Bearer $GitHubToken"
-}
+if (-not [string]::IsNullOrWhiteSpace($GitHubToken)) { $headers.Authorization = "Bearer $GitHubToken" }
 
 function Invoke-GitHubGet {
-    param(
-        [Parameter(Mandatory)][string]$Uri,
-        [int[]]$AllowedStatusCodes = @(200)
-    )
-
+    param([Parameter(Mandatory)][string]$Uri, [int[]]$AllowedStatusCodes=@(200))
     try {
-        $response = Invoke-WebRequest `
-            -Uri $Uri `
-            -Headers $headers `
-            -Method Get `
-            -SkipHttpErrorCheck `
-            -MaximumRedirection 5 `
-            -TimeoutSec 30
+        $response = Invoke-WebRequest -Uri $Uri -Headers $headers -Method Get -SkipHttpErrorCheck -MaximumRedirection 5 -TimeoutSec 30
+    } catch {
+        return [pscustomobject]@{ StatusCode=0; Data=$null; Error=$_.Exception.Message }
     }
-    catch {
-        return [pscustomobject]@{
-            StatusCode = 0
-            Data       = $null
-            Error      = $_.Exception.Message
-            Headers    = $null
-        }
-    }
-
-    $statusCode = [int]$response.StatusCode
-    $data = $null
-    $errorMessage = $null
-
+    $statusCode=[int]$response.StatusCode; $data=$null; $errorMessage=$null
     if (-not [string]::IsNullOrWhiteSpace([string]$response.Content)) {
-        try {
-            $data = $response.Content | ConvertFrom-Json -Depth 100
-        }
-        catch {
-            if ($AllowedStatusCodes -contains $statusCode) {
-                $errorMessage = "GitHub returned invalid JSON (HTTP $statusCode)."
-            }
-        }
+        try { $data=$response.Content | ConvertFrom-Json -Depth 100 }
+        catch { if ($AllowedStatusCodes -contains $statusCode) { $errorMessage="GitHub returned invalid JSON (HTTP $statusCode)." } }
     }
-
     if (-not ($AllowedStatusCodes -contains $statusCode)) {
-        if ($null -ne $data -and $null -ne $data.PSObject.Properties['message']) {
-            $errorMessage = "HTTP ${statusCode}: $($data.message)"
-        }
-        else {
-            $errorMessage = "HTTP $statusCode"
-        }
+        if ($null -ne $data -and $null -ne $data.PSObject.Properties['message']) { $errorMessage="HTTP ${statusCode}: $($data.message)" }
+        else { $errorMessage="HTTP $statusCode" }
     }
-
-    return [pscustomobject]@{
-        StatusCode = $statusCode
-        Data       = $data
-        Error      = $errorMessage
-        Headers    = $response.Headers
-    }
+    [pscustomobject]@{ StatusCode=$statusCode; Data=$data; Error=$errorMessage }
 }
-
-function Get-AbsoluteOutputPath {
-    param([Parameter(Mandatory)][string]$Path)
-
-    if ([System.IO.Path]::IsPathRooted($Path)) {
-        return $Path
-    }
-    return Join-Path $RepositoryRoot $Path
-}
+function Get-AbsoluteOutputPath { param([Parameter(Mandatory)][string]$Path); if ([IO.Path]::IsPathRooted($Path)) { $Path } else { Join-Path $RepositoryRoot $Path } }
 
 Write-Host 'Browser Kitty repository inventory'
 Write-Host "Repository: $RepositoryRoot"
 Write-Host "Registered apps: $($apps.Count)"
-Write-Host "GitHub API: $ApiBaseUrl"
-Write-Host "Authenticated: $(-not [string]::IsNullOrWhiteSpace($GitHubToken))"
+Write-Host 'Lookup mode: owner-batched public repository inventory'
 Write-Host ''
 
-$results = [System.Collections.Generic.List[object]]::new()
-$missingCount = 0
-$errorCount = 0
-$warningCount = 0
-$privateCount = 0
-$archivedCount = 0
-$releaseCount = 0
+# Full Registry can exceed GitHub's unauthenticated 60 requests/hour limit if each repo is queried separately.
+# Fetch each owner's public repositories in pages of 100, then match locally.
+$repoIndex=@{}; $ownerErrors=@{}
+$owners=@($apps | ForEach-Object { ([string]$_.repository -split '/',2)[0] } | Sort-Object -Unique)
+foreach ($owner in $owners) {
+    $page=1
+    while ($true) {
+        $encodedOwner=[Uri]::EscapeDataString($owner)
+        $uri="$($ApiBaseUrl.TrimEnd('/'))/users/$encodedOwner/repos?type=owner&sort=full_name&per_page=100&page=$page"
+        $response=Invoke-GitHubGet -Uri $uri
+        if ($response.StatusCode -ne 200 -or $null -eq $response.Data) {
+            $ownerErrors[$owner]=if ([string]::IsNullOrWhiteSpace([string]$response.Error)) { 'Owner repository listing failed.' } else { [string]$response.Error }
+            break
+        }
+        $pageItems=@($response.Data)
+        foreach ($repo in $pageItems) {
+            $fullName=[string]$repo.full_name
+            if (-not [string]::IsNullOrWhiteSpace($fullName)) { $repoIndex[$fullName.ToLowerInvariant()]=$repo }
+        }
+        if ($pageItems.Count -lt 100) { break }
+        $page++
+    }
+}
 
+$results=[Collections.Generic.List[object]]::new(); $missingCount=0; $errorCount=0; $warningCount=0; $privateCount=0; $archivedCount=0
 foreach ($app in $apps) {
-    $repository = [string]$app.repository
-    $encodedRepository = ($repository -split '/', 2 | ForEach-Object { [Uri]::EscapeDataString($_) }) -join '/'
-    $repositoryUri = "$($ApiBaseUrl.TrimEnd('/'))/repos/$encodedRepository"
-
+    $repository=[string]$app.repository; $owner=($repository -split '/',2)[0]
     Write-Host "Checking $repository ..." -NoNewline
-    $repoResponse = Invoke-GitHubGet -Uri $repositoryUri -AllowedStatusCodes @(200, 404)
-
-    $entryWarnings = [System.Collections.Generic.List[string]]::new()
-    $entry = [ordered]@{
-        appId             = [string]$app.id
-        name              = [string]$app.name
-        repository        = $repository
-        registryStatus    = [string]$app.status
-        registeredVersion = [string]$app.release.version
-        lookupStatus      = 'ok'
-        exists            = $true
-        visibility        = $null
-        private           = $null
-        archived          = $null
-        defaultBranch     = $null
-        htmlUrl           = $null
-        pushedAt          = $null
-        updatedAt         = $null
-        releaseLookupStatus = 'none'
-        hasLatestRelease  = $false
-        latestRelease     = $null
-        warnings          = @()
-        error             = $null
+    $entry=[ordered]@{
+        appId=[string]$app.id; name=[string]$app.name; repository=$repository; registryStatus=[string]$app.status; registeredVersion=[string]$app.release.version
+        lookupStatus='ok'; exists=$true; visibility=$null; private=$null; archived=$null; defaultBranch=$null; htmlUrl=$null; pushedAt=$null; updatedAt=$null
+        releaseLookupStatus='not-checked'; hasLatestRelease=$false; latestRelease=$null; warnings=@(); error=$null
     }
-
-    if ($repoResponse.StatusCode -eq 404) {
-        $entry.lookupStatus = 'missing'
-        $entry.exists = $false
-        $entry.error = 'Repository was not found or is not accessible with the current token.'
-        $missingCount++
-        $errorCount++
-        Write-Host ' MISSING' -ForegroundColor Red
-        $results.Add([pscustomobject]$entry)
-        continue
+    if ($ownerErrors.ContainsKey($owner)) {
+        $entry.lookupStatus='error'; $entry.exists=$false; $entry.error=[string]$ownerErrors[$owner]; $errorCount++; $results.Add([pscustomobject]$entry)
+        Write-Host ' ERROR' -ForegroundColor Red; continue
     }
-
-    if ($repoResponse.StatusCode -ne 200 -or $null -eq $repoResponse.Data) {
-        $entry.lookupStatus = 'error'
-        $entry.exists = $false
-        $entry.error = if ([string]::IsNullOrWhiteSpace([string]$repoResponse.Error)) {
-            'Repository lookup failed.'
-        }
-        else {
-            [string]$repoResponse.Error
-        }
-        $errorCount++
-        Write-Host ' ERROR' -ForegroundColor Red
-        $results.Add([pscustomobject]$entry)
-        continue
+    $key=$repository.ToLowerInvariant()
+    if (-not $repoIndex.ContainsKey($key)) {
+        $entry.lookupStatus='missing'; $entry.exists=$false; $entry.error='Repository was not found in the owner public-repository listing.'; $missingCount++; $errorCount++
+        $results.Add([pscustomobject]$entry); Write-Host ' MISSING' -ForegroundColor Red; continue
     }
-
-    $repo = $repoResponse.Data
-    $entry.visibility = if ($null -ne $repo.PSObject.Properties['visibility']) { [string]$repo.visibility } elseif ([bool]$repo.private) { 'private' } else { 'public' }
-    $entry.private = [bool]$repo.private
-    $entry.archived = [bool]$repo.archived
-    $entry.defaultBranch = [string]$repo.default_branch
-    $entry.htmlUrl = [string]$repo.html_url
-    $entry.pushedAt = [string]$repo.pushed_at
-    $entry.updatedAt = [string]$repo.updated_at
-
-    if ($entry.private) {
-        $privateCount++
-        $entryWarnings.Add('Repository is private; Browser Kitty application repositories are normally public.')
-    }
-
-    if ($entry.archived) {
-        $archivedCount++
-        if ([string]$app.status -ne 'archived') {
-            $entryWarnings.Add("Repository is archived but registry status is '$($app.status)'.")
-        }
-    }
-    elseif ([string]$app.status -eq 'archived') {
-        $entryWarnings.Add('Registry status is archived but the GitHub repository is not archived.')
-    }
-
-    $releaseUri = "$repositoryUri/releases/latest"
-    $releaseResponse = Invoke-GitHubGet -Uri $releaseUri -AllowedStatusCodes @(200, 404)
-
-    if ($releaseResponse.StatusCode -eq 200 -and $null -ne $releaseResponse.Data) {
-        $release = $releaseResponse.Data
-        $entry.releaseLookupStatus = 'ok'
-        $entry.hasLatestRelease = $true
-        $entry.latestRelease = [ordered]@{
-            tagName     = [string]$release.tag_name
-            name        = if ($null -eq $release.name) { $null } else { [string]$release.name }
-            draft       = [bool]$release.draft
-            prerelease  = [bool]$release.prerelease
-            publishedAt = if ($null -eq $release.published_at) { $null } else { [string]$release.published_at }
-            htmlUrl     = [string]$release.html_url
-        }
-        $releaseCount++
-    }
-    elseif ($releaseResponse.StatusCode -ne 404) {
-        $entry.releaseLookupStatus = 'error'
-        $entryWarnings.Add("Latest Release lookup failed: $($releaseResponse.Error)")
-        $errorCount++
-    }
-
-    $entry.warnings = @($entryWarnings)
-    $warningCount += $entryWarnings.Count
-
-    if ($entryWarnings.Count -gt 0) {
-        Write-Host " OK ($($entryWarnings.Count) warning(s))" -ForegroundColor Yellow
-    }
-    else {
-        Write-Host ' OK' -ForegroundColor Green
-    }
-
+    $repo=$repoIndex[$key]; $warnings=[Collections.Generic.List[string]]::new()
+    $entry.visibility=if ($null -ne $repo.PSObject.Properties['visibility']) {[string]$repo.visibility} else {'public'}
+    $entry.private=if ($null -ne $repo.PSObject.Properties['private']) {[bool]$repo.private} else {$false}
+    $entry.archived=if ($null -ne $repo.PSObject.Properties['archived']) {[bool]$repo.archived} else {$false}
+    $entry.defaultBranch=[string]$repo.default_branch; $entry.htmlUrl=[string]$repo.html_url; $entry.pushedAt=[string]$repo.pushed_at; $entry.updatedAt=[string]$repo.updated_at
+    if ($entry.private) { $privateCount++; $warnings.Add('Repository is private; Browser Kitty application repositories are normally public.') }
+    if ($entry.archived -and [string]$app.status -ne 'archived') { $archivedCount++; $warnings.Add("Repository is archived but registry status is '$($app.status)'.") }
+    elseif (-not $entry.archived -and [string]$app.status -eq 'archived') { $warnings.Add('Registry status is archived but the GitHub repository is not archived.') }
+    $entry.warnings=@($warnings); $warningCount += $warnings.Count
     $results.Add([pscustomobject]$entry)
+    if ($warnings.Count) { Write-Host " OK ($($warnings.Count) warning(s))" -ForegroundColor Yellow } else { Write-Host ' OK' -ForegroundColor Green }
 }
 
-$inventory = [ordered]@{
-    schemaVersion = 1
-    generatedAt   = [DateTimeOffset]::UtcNow.ToString('o')
-    sourceRegistry = 'apps.json'
-    githubApi     = $ApiBaseUrl
-    authenticated = -not [string]::IsNullOrWhiteSpace($GitHubToken)
-    summary       = [ordered]@{
-        registeredApps       = $apps.Count
-        checkedRepositories  = $results.Count
-        existingRepositories = @($results | Where-Object { $_.exists }).Count
-        missingRepositories  = $missingCount
-        privateRepositories  = $privateCount
-        archivedRepositories = $archivedCount
-        withLatestRelease    = $releaseCount
-        withoutLatestRelease = @($results | Where-Object { $_.exists -and -not $_.hasLatestRelease }).Count
-        warnings             = $warningCount
-        errors               = $errorCount
+$inventory=[ordered]@{
+    schemaVersion=1; generatedAt=[DateTimeOffset]::UtcNow.ToString('o'); sourceRegistry='apps.json'; githubApi=$ApiBaseUrl; authenticated=-not [string]::IsNullOrWhiteSpace($GitHubToken)
+    summary=[ordered]@{
+        registeredApps=$apps.Count; checkedRepositories=$results.Count; existingRepositories=@($results|Where-Object{$_.exists}).Count; missingRepositories=$missingCount
+        privateRepositories=$privateCount; archivedRepositories=$archivedCount; withLatestRelease=0; withoutLatestRelease=0
+        warnings=$warningCount; errors=$errorCount
     }
-    repositories  = @($results)
+    repositories=@($results)
 }
-
-$inventoryJson = $inventory | ConvertTo-Json -Depth 20
-if (Test-Path -LiteralPath $inventorySchemaPath -PathType Leaf) {
-    if (-not (Test-Json -Json $inventoryJson -SchemaFile $inventorySchemaPath)) {
-        throw 'Generated repository inventory does not match schema/repository-inventory.schema.json.'
-    }
-}
-else {
-    throw "Required file not found: $inventorySchemaPath"
-}
-
-if (-not $NoWrite) {
-    $absoluteOutputPath = Get-AbsoluteOutputPath -Path $OutputPath
-    $outputDirectory = Split-Path -Parent $absoluteOutputPath
-    if (-not [string]::IsNullOrWhiteSpace($outputDirectory)) {
-        New-Item -ItemType Directory -Path $outputDirectory -Force | Out-Null
-    }
-
-    $inventoryJson | Set-Content -LiteralPath $absoluteOutputPath -Encoding utf8NoBOM
-    Write-Host ''
-    Write-Host "Inventory written: $absoluteOutputPath"
-}
-
-Write-Host ''
-Write-Host "Existing: $($inventory.summary.existingRepositories)/$($inventory.summary.registeredApps)"
-Write-Host "Private: $($inventory.summary.privateRepositories)"
-Write-Host "Archived: $($inventory.summary.archivedRepositories)"
-Write-Host "Latest Release found: $($inventory.summary.withLatestRelease)"
-Write-Host "Warnings: $($inventory.summary.warnings)"
-Write-Host "Errors: $($inventory.summary.errors)"
-
-if ($errorCount -gt 0) {
-    exit 1
-}
+$json=$inventory|ConvertTo-Json -Depth 20
+if (-not (Test-Json -Json $json -SchemaFile $inventorySchemaPath)) { throw 'Generated repository inventory does not match schema/repository-inventory.schema.json.' }
+if (-not $NoWrite) { $out=Get-AbsoluteOutputPath -Path $OutputPath; New-Item -ItemType Directory -Force -Path (Split-Path -Parent $out)|Out-Null; $json|Set-Content -LiteralPath $out -Encoding utf8NoBOM; Write-Host "Inventory written: $out" }
+Write-Host "Existing: $(@($results|Where-Object{$_.exists}).Count) / $($apps.Count)"
+Write-Host "Warnings: $warningCount"
+Write-Host "Errors: $errorCount"
+if ($errorCount -gt 0) { exit 1 }

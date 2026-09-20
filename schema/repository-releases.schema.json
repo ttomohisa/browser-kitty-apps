@@ -193,7 +193,8 @@
           "type": "string",
           "enum": [
             "ok",
-            "error"
+            "error",
+            "legacy-none"
           ]
         },
         "appConfigVersion": {

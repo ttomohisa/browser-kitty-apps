@@ -60,16 +60,46 @@
         "errors"
       ],
       "properties": {
-        "registeredApps": { "type": "integer", "minimum": 0 },
-        "checkedRepositories": { "type": "integer", "minimum": 0 },
-        "existingRepositories": { "type": "integer", "minimum": 0 },
-        "missingRepositories": { "type": "integer", "minimum": 0 },
-        "privateRepositories": { "type": "integer", "minimum": 0 },
-        "archivedRepositories": { "type": "integer", "minimum": 0 },
-        "withLatestRelease": { "type": "integer", "minimum": 0 },
-        "withoutLatestRelease": { "type": "integer", "minimum": 0 },
-        "warnings": { "type": "integer", "minimum": 0 },
-        "errors": { "type": "integer", "minimum": 0 }
+        "registeredApps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "checkedRepositories": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "existingRepositories": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "missingRepositories": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "privateRepositories": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "archivedRepositories": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "withLatestRelease": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "withoutLatestRelease": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warnings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "errors": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     },
     "repository": {
@@ -97,55 +127,157 @@
         "error"
       ],
       "properties": {
-        "appId": { "type": "string", "minLength": 1 },
-        "name": { "type": "string", "minLength": 1 },
-        "repository": { "type": "string", "minLength": 1 },
+        "appId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
         "registryStatus": {
           "type": "string",
-          "enum": ["development", "rc", "stable", "maintenance", "archived"]
+          "enum": [
+            "development",
+            "rc",
+            "stable",
+            "maintenance",
+            "archived"
+          ]
         },
-        "registeredVersion": { "type": "string", "minLength": 1 },
+        "registeredVersion": {
+          "type": "string",
+          "minLength": 1
+        },
         "lookupStatus": {
           "type": "string",
-          "enum": ["ok", "missing", "error"]
+          "enum": [
+            "ok",
+            "missing",
+            "error"
+          ]
         },
-        "exists": { "type": "boolean" },
-        "visibility": { "type": ["string", "null"] },
-        "private": { "type": ["boolean", "null"] },
-        "archived": { "type": ["boolean", "null"] },
-        "defaultBranch": { "type": ["string", "null"] },
-        "htmlUrl": { "type": ["string", "null"] },
-        "pushedAt": { "type": ["string", "null"] },
-        "updatedAt": { "type": ["string", "null"] },
+        "exists": {
+          "type": "boolean"
+        },
+        "visibility": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "private": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "archived": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "defaultBranch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "htmlUrl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pushedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "updatedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "releaseLookupStatus": {
           "type": "string",
-          "enum": ["ok", "none", "error"]
+          "enum": [
+            "ok",
+            "none",
+            "error",
+            "not-checked"
+          ]
         },
-        "hasLatestRelease": { "type": "boolean" },
+        "hasLatestRelease": {
+          "type": "boolean"
+        },
         "latestRelease": {
           "oneOf": [
-            { "type": "null" },
-            { "$ref": "#/definitions/release" }
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/release"
+            }
           ]
         },
         "warnings": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "error": { "type": ["string", "null"] }
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "release": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["tagName", "name", "draft", "prerelease", "publishedAt", "htmlUrl"],
+      "required": [
+        "tagName",
+        "name",
+        "draft",
+        "prerelease",
+        "publishedAt",
+        "htmlUrl"
+      ],
       "properties": {
-        "tagName": { "type": "string" },
-        "name": { "type": ["string", "null"] },
-        "draft": { "type": "boolean" },
-        "prerelease": { "type": "boolean" },
-        "publishedAt": { "type": ["string", "null"] },
-        "htmlUrl": { "type": "string" }
+        "tagName": {
+          "type": "string"
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "draft": {
+          "type": "boolean"
+        },
+        "prerelease": {
+          "type": "boolean"
+        },
+        "publishedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "htmlUrl": {
+          "type": "string"
+        }
       }
     }
   }

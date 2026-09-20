@@ -143,7 +143,11 @@ foreach ($app in $apps) {
             }
             else {
                 $releaseEntry = $releaseByAppId[$appId]
-                if ([string]$releaseEntry.appConfigLookupStatus -ne 'ok') {
+                if ([string]$releaseEntry.appConfigLookupStatus -eq 'legacy-none') {
+                    $issues.Add((New-Issue -Severity WARN -Code 'legacy_app_config_unavailable' -Message 'Legacy repository has no app.config.json; build-output and runtime-network policy comparisons are skipped.'))
+                    $appConfigData = $null
+                }
+                elseif ([string]$releaseEntry.appConfigLookupStatus -ne 'ok') {
                     $issues.Add((New-Issue -Severity FAIL -Code 'app_config_unavailable' -Message 'app.config.json was not available to the release/version check.'))
                     $errorMessage = 'app.config.json metadata is unavailable.'
                     $lookupErrorCount++

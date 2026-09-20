@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.7.0
+
+- Expanded `apps.json` from 11 representative apps to 75 registered Browser Kitty apps.
+- Added explicit `repositoryProfile` (`standard` / `legacy`) to support older published repositories without `app.config.json`.
+- Added verified legacy entries for PDF Organizer, Parquet Viewer, and Temporary Links.
+- Excluded templates, WASM builders, shared cores, and duplicate legacy repository aliases from the application registry.
+- Reworked repository inventory to fetch public repository metadata per owner instead of one REST request per app.
+- Reworked asset checks to use throttled raw-file HEAD probes, avoiding GitHub REST API exhaustion at full-registry scale.
+- Moved release lookup out of inventory; release/version checks now use the GitHub latest-release redirect and `git ls-remote` for tags.
+- Normalized legacy two-component versions such as `1.0` to SemVer `1.0.0` for registry comparison.
+- Added legacy handling to Release and Runtime checks so missing `app.config.json` is an explicit migration warning rather than a false hard failure.
+
 All notable changes to this repository are documented here.
 
 ## [0.6.2] - 2026-09-20
