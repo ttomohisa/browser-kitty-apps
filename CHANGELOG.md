@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.9.0
+
+### Added
+
+- Added `VERSION` as the repository release-version marker.
+- Added `RELEASE_CHECKLIST.md` with the RC gate and v1.0.0 promotion procedure.
+- Added `scripts/check-release-candidate.ps1` to generate a final JSON/Markdown readiness report.
+- Added `schema/release-candidate.schema.json` for machine validation of the RC report.
+
+### Changed
+
+- `Validate registry` now runs the static release-candidate gate.
+- `Repository health` now runs the RC gate with the freshly generated consolidated health report and uploads RC JSON/Markdown alongside the health artifact.
+- Release Candidate policy requires zero blocking FAILs while retaining non-blocking WARNs for visibility and follow-up.
+
 ## v0.8.0
 
 ### Added

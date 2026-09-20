@@ -67,3 +67,12 @@ Writes both:
 The consolidated report consumes the five reports above. A missing or invalid source report becomes a global `FAIL`; the affected app check is marked `UNKNOWN` and the app overall result becomes `FAIL`. Warnings do not fail CI. Any application `FAIL`, or any global `FAIL`, makes the consolidated step exit with code 1.
 
 In GitHub Actions the source checks use `continue-on-error` so that one failing check does not prevent the remaining reports from being collected. `generate-report.ps1` is the final health gate, and the upload step runs with `if: always()` so diagnostic reports remain available on failed runs.
+## Release candidate reports
+
+`check-release-candidate.ps1` writes:
+
+- `release-candidate.json` — machine-readable RC gate result
+- `release-candidate.md` — human-readable readiness summary
+
+The static validation pass does not require Repository Health. The Repository Health workflow reruns the same gate with `-RequireHealthReport`; any blocking health failure then blocks the RC. Non-blocking health warnings remain visible in the RC report.
+

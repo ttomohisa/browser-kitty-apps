@@ -1,5 +1,9 @@
 # Browser Kitty Apps
 
+## v0.9.0
+
+v0.9.0 is the Release Candidate milestone. It adds a repository-level RC gate with explicit version consistency, required-file checks, published/export coverage checks, lifecycle checks, and optional integration with the latest consolidated Repository Health report. A release candidate passes with **0 blocking FAILs**; non-blocking WARNs remain visible in the generated RC report instead of being hidden.
+
 ## v0.8.0
 
 v0.8.0 adds a deterministic public export for the private Browser Kitty website repository. `generated/apps.public.json` is derived only from `apps.json` and `categories.json`, contains published applications only, excludes repository-health/internal deployment fields, and is intended for **build-time** consumption so Browser Kitty does not gain a runtime dependency on this registry. CI verifies that the committed export is current.
@@ -34,6 +38,7 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `schema/repository-runtime.schema.json` — standalone/runtime report JSON Schema
 - `schema/repository-health.schema.json` — consolidated health report JSON Schema
 - `schema/public-apps.schema.json` — Browser Kitty public export JSON Schema
+- `schema/release-candidate.schema.json` — release-candidate report JSON Schema
 - `scripts/check-registry.ps1` — registry validation
 - `scripts/check-powershell.ps1` — PowerShell syntax / strict UTF-8 preflight
 - `scripts/check-repositories.ps1` — owner-batched repository existence / visibility / archive / default-branch inventory
@@ -44,12 +49,15 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `scripts/generate-report.ps1` — consolidate all repository checks into final JSON/Markdown health reports
 - `scripts/test-generate-report.ps1` — smoke-test the consolidated report with empty issue collections
 - `scripts/generate-public-export.ps1` — generate or verify the Browser Kitty public export
+- `scripts/check-release-candidate.ps1` — final RC gate for version/docs/export/health readiness
 - `generated/apps.public.json` — committed build-time export for the Browser Kitty website
+- `VERSION` — repository release version used by the RC gate
+- `RELEASE_CHECKLIST.md` — release-candidate and v1.0.0 promotion checklist
 - `.github/workflows/repository-health.yml` — scheduled and on-change health checks
 - `reports/README.md` — generated report behavior
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
 
-The registry contains 75 applications in v0.8.0, including three explicitly marked legacy repositories.
+The registry contains 75 applications in v0.9.0, including three explicitly marked legacy repositories.
 
 ## Registry
 
@@ -111,6 +119,8 @@ PowerShell 7で実行します。
 
 ```powershell
 ./scripts/check-registry.ps1
+./scripts/generate-public-export.ps1 -Check
+./scripts/check-release-candidate.ps1
 ```
 
 検証内容:
@@ -325,7 +335,7 @@ htmlapps-*                 Public / individual applications
 - v0.7.1 — Full Registry health-policy calibration ✅
 - v0.7.0 — Full Registry / scalable cross-repository checks ✅
 - v0.8.0 — Browser Kitty Export ✅
-- v0.9.0 — Release Candidate
+- v0.9.0 — Release Candidate ✅
 - v1.0.0 — Production Registry
 
 ## License

@@ -9,6 +9,11 @@ on:
       - schema/**
       - scripts/**
       - generated/**
+      - VERSION
+      - README.md
+      - CHANGELOG.md
+      - REGISTRY_SPEC.md
+      - RELEASE_CHECKLIST.md
       - .github/workflows/validate-registry.yml
   pull_request:
     branches: [main]
@@ -18,6 +23,11 @@ on:
       - schema/**
       - scripts/**
       - generated/**
+      - VERSION
+      - README.md
+      - CHANGELOG.md
+      - REGISTRY_SPEC.md
+      - RELEASE_CHECKLIST.md
       - .github/workflows/validate-registry.yml
   workflow_dispatch:
 
@@ -47,3 +57,7 @@ jobs:
       - name: Smoke test repository health report
         shell: pwsh
         run: ./scripts/test-generate-report.ps1
+
+      - name: Release candidate static gate
+        shell: pwsh
+        run: ./scripts/check-release-candidate.ps1

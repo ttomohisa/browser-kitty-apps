@@ -5,6 +5,13 @@ on:
     branches: [main]
     paths:
       - apps.json
+      - categories.json
+      - generated/**
+      - VERSION
+      - README.md
+      - CHANGELOG.md
+      - REGISTRY_SPEC.md
+      - RELEASE_CHECKLIST.md
       - schema/**
       - scripts/**
       - .github/workflows/repository-health.yml
@@ -12,6 +19,13 @@ on:
     branches: [main]
     paths:
       - apps.json
+      - categories.json
+      - generated/**
+      - VERSION
+      - README.md
+      - CHANGELOG.md
+      - REGISTRY_SPEC.md
+      - RELEASE_CHECKLIST.md
       - schema/**
       - scripts/**
       - .github/workflows/repository-health.yml
@@ -37,6 +51,10 @@ jobs:
       - name: Validate registry
         shell: pwsh
         run: ./scripts/check-registry.ps1
+
+      - name: Verify public export is current
+        shell: pwsh
+        run: ./scripts/generate-public-export.ps1 -Check
 
       - name: Smoke test repository health report
         id: health-report-smoke
@@ -80,6 +98,13 @@ jobs:
         shell: pwsh
         run: ./scripts/generate-report.ps1
 
+      - name: Release candidate gate
+        if: always()
+        id: release-candidate
+        continue-on-error: true
+        shell: pwsh
+        run: ./scripts/check-release-candidate.ps1 -RequireHealthReport
+
       - name: Upload repository health reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -93,10 +118,15 @@ jobs:
             reports/repository-runtime.json
             reports/repository-status.json
             reports/repository-status.md
+            reports/release-candidate.json
+            reports/release-candidate.md
           if-no-files-found: warn
           retention-days: 14
       - name: Enforce health report smoke test result
         if: ${{ always() && steps.health-report-smoke.outcome != 'success' }}
         shell: pwsh
         run: throw 'Repository health report smoke test failed. See the earlier smoke-test step for details.'
-
+      - name: Enforce release candidate gate result
+        if: ${{ always() && steps.release-candidate.outcome != 'success' }}
+        shell: pwsh
+        run: throw 'Release candidate gate failed. See reports/release-candidate.md in the uploaded artifact.'

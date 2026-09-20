@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 0.8.0 current / 1.0.0 target
+Version: 0.9.0 current / 1.0.0 target
 
 ## Purpose
 
@@ -50,9 +50,16 @@ Not every application must pass through every state.
 - v0.7.1 — Full Registry health-policy calibration (implemented)
 - v0.7.0 — Full Registry / scalable health checks (implemented)
 - v0.8.0 — Browser Kitty Export (implemented)
-- v0.9.0 — Release Candidate
+- v0.9.0 — Release Candidate (implemented)
 - v1.0.0 — Production Registry
 
+
+
+## v0.9.0 implementation note
+
+The Release Candidate milestone adds `VERSION`, `RELEASE_CHECKLIST.md`, `schema/release-candidate.schema.json`, and `scripts/check-release-candidate.ps1`. The RC gate verifies release-version consistency across repository documentation, required release files, registry/public-export coverage, published lifecycle state, and—when run by Repository Health—the consolidated live health report.
+
+RC policy is intentionally strict about blocking failures without converting repository-hygiene debt into false outages: a candidate requires **0 FAIL**, while existing non-blocking WARNs remain visible in the RC JSON/Markdown output. `Validate registry` runs the static RC gate; `Repository health` runs it again with `-RequireHealthReport` and publishes the resulting RC reports with the health artifact.
 
 ## v0.2.0 implementation note
 
