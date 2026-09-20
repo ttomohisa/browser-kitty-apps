@@ -143,7 +143,12 @@
         "standalone",
         "standalonePath",
         "localProcessing",
-        "networkAccess"
+        "networkAccess",
+        "crossOriginIsolated",
+        "requiresWasm",
+        "requiresWorker",
+        "requiresWebGPU",
+        "requiresWebCodecs"
       ],
       "properties": {
         "standalone": {

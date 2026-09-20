@@ -94,6 +94,32 @@ function Invoke-GitHubGet {
     }
 }
 
+function Invoke-TextGet {
+    param(
+        [Parameter(Mandatory)][string]$Uri,
+        [int[]]$AllowedStatusCodes = @(200)
+    )
+
+    try {
+        $response = Invoke-WebRequest `
+            -Uri $Uri `
+            -Method Get `
+            -SkipHttpErrorCheck `
+            -MaximumRedirection 5 `
+            -TimeoutSec 30
+    }
+    catch {
+        return [pscustomobject]@{ StatusCode = 0; Content = $null; Error = $_.Exception.Message }
+    }
+
+    $statusCode = [int]$response.StatusCode
+    $errorMessage = $null
+    if (-not ($AllowedStatusCodes -contains $statusCode)) {
+        $errorMessage = "HTTP $statusCode"
+    }
+    return [pscustomobject]@{ StatusCode = $statusCode; Content = [string]$response.Content; Error = $errorMessage }
+}
+
 function Get-AbsoluteOutputPath {
     param([Parameter(Mandatory)][string]$Path)
 
@@ -152,6 +178,8 @@ foreach ($app in $apps) {
     $defaultBranch = $null
     $appConfigLookupStatus = 'error'
     $appConfigVersion = $null
+    $appConfigBuildOutputs = @()
+    $appConfigBlockRuntimeNetwork = $null
     $registryMatchesAppConfig = $null
     $releaseLookupStatus = 'error'
     $releaseTag = $null
@@ -176,19 +204,44 @@ foreach ($app in $apps) {
         }
         else {
             $defaultBranch = [string]$inventoryEntry.defaultBranch
-            $encodedRepository = ($repository -split '/', 2 | ForEach-Object { [Uri]::EscapeDataString($_) }) -join '/'
+            $repositoryParts = $repository -split '/', 2
+            $ownerSegment = [Uri]::EscapeDataString([string]$repositoryParts[0])
+            $repoSegment = [Uri]::EscapeDataString([string]$repositoryParts[1])
+            $encodedRepository = "$ownerSegment/$repoSegment"
             $encodedBranch = [Uri]::EscapeDataString($defaultBranch)
             $repositoryUri = "$($ApiBaseUrl.TrimEnd('/'))/repos/$encodedRepository"
 
-            $configUri = "${repositoryUri}/contents/app.config.json?ref=$encodedBranch"
-            $configResponse = Invoke-GitHubGet -Uri $configUri
-            if ($configResponse.StatusCode -eq 200 -and $null -ne $configResponse.Data -and $null -ne $configResponse.Data.PSObject.Properties['content']) {
+            # app.config.json is read from raw.githubusercontent.com so this high-frequency
+            # cross-repository check does not consume an extra GitHub REST API request per app.
+            $configUri = "https://raw.githubusercontent.com/$ownerSegment/$repoSegment/refs/heads/$encodedBranch/app.config.json"
+            $configResponse = Invoke-TextGet -Uri $configUri
+            if ($configResponse.StatusCode -eq 200) {
                 try {
-                    $base64 = ([string]$configResponse.Data.content) -replace '\s', ''
-                    $configJson = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($base64))
-                    $config = $configJson | ConvertFrom-Json -Depth 100
+                    $config = $configResponse.Content | ConvertFrom-Json -Depth 100
                     $appConfigVersion = [string]$config.version
                     $appConfigLookupStatus = 'ok'
+                    $buildOutputs = [System.Collections.Generic.List[string]]::new()
+                    if ($null -ne $config.PSObject.Properties['build']) {
+                        $build = $config.build
+                        foreach ($propertyName in @('output', 'multiThreadOutput')) {
+                            if ($null -ne $build.PSObject.Properties[$propertyName]) {
+                                $value = [string]$build.$propertyName
+                                if (-not [string]::IsNullOrWhiteSpace($value) -and -not $buildOutputs.Contains($value)) { $buildOutputs.Add($value) }
+                            }
+                        }
+                        if ($null -ne $build.PSObject.Properties['selfExtract'] -and $null -ne $build.selfExtract) {
+                            foreach ($propertyName in @('output', 'multiThreadOutput')) {
+                                if ($null -ne $build.selfExtract.PSObject.Properties[$propertyName]) {
+                                    $value = [string]$build.selfExtract.$propertyName
+                                    if (-not [string]::IsNullOrWhiteSpace($value) -and -not $buildOutputs.Contains($value)) { $buildOutputs.Add($value) }
+                                }
+                            }
+                        }
+                        if ($null -ne $build.PSObject.Properties['blockRuntimeNetwork']) {
+                            $appConfigBlockRuntimeNetwork = [bool]$build.blockRuntimeNetwork
+                        }
+                    }
+                    $appConfigBuildOutputs = @($buildOutputs)
                     $registryMatchesAppConfig = $registeredVersion -eq $appConfigVersion
                     if (-not $registryMatchesAppConfig) {
                         $issues.Add((New-Issue -Severity WARN -Code 'app_config_version_mismatch' -Message "Registry version '$registeredVersion' differs from app.config.json version '$appConfigVersion'."))
@@ -196,7 +249,7 @@ foreach ($app in $apps) {
                 }
                 catch {
                     $appConfigLookupStatus = 'error'
-                    $issues.Add((New-Issue -Severity FAIL -Code 'app_config_invalid' -Message "app.config.json could not be decoded or parsed: $($_.Exception.Message)"))
+                    $issues.Add((New-Issue -Severity FAIL -Code 'app_config_invalid' -Message "app.config.json could not be parsed: $($_.Exception.Message)"))
                     $lookupErrorCount++
                 }
             }
@@ -274,6 +327,8 @@ foreach ($app in $apps) {
         releaseStatus            = $releaseStatus
         appConfigLookupStatus    = $appConfigLookupStatus
         appConfigVersion         = $appConfigVersion
+        appConfigBuildOutputs    = @($appConfigBuildOutputs)
+        appConfigBlockRuntimeNetwork = $appConfigBlockRuntimeNetwork
         registryMatchesAppConfig = $registryMatchesAppConfig
         releaseLookupStatus      = $releaseLookupStatus
         latestReleaseTag         = $releaseTag

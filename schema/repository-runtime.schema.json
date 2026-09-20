@@ -1,0 +1,308 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://browser-kitty.com/schema/repository-runtime.schema.json",
+  "title": "Browser Kitty Repository Runtime Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "sourceRegistry",
+    "sourceInventory",
+    "sourceReleases",
+    "githubApi",
+    "authenticated",
+    "policy",
+    "summary",
+    "repositories"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceRegistry": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceInventory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "githubApi": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authenticated": {
+      "type": "boolean"
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "explicitCapabilityFlags",
+        "requiredIsolationHeaders"
+      ],
+      "properties": {
+        "explicitCapabilityFlags": {
+          "type": "boolean"
+        },
+        "requiredIsolationHeaders": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "registeredApps",
+        "checkedApps",
+        "pass",
+        "warn",
+        "fail",
+        "lookupErrors"
+      ],
+      "properties": {
+        "registeredApps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "checkedApps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pass": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warn": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fail": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lookupErrors": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/repository"
+      }
+    },
+    "sourceReleases": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "definitions": {
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "WARN",
+            "FAIL"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "standalone",
+        "standalonePath",
+        "localProcessing",
+        "networkAccess",
+        "crossOriginIsolated",
+        "requiresWasm",
+        "requiresWorker",
+        "requiresWebGPU",
+        "requiresWebCodecs"
+      ],
+      "properties": {
+        "standalone": {
+          "type": "boolean"
+        },
+        "standalonePath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "localProcessing": {
+          "type": "boolean"
+        },
+        "networkAccess": {
+          "type": "boolean"
+        },
+        "crossOriginIsolated": {
+          "type": "boolean"
+        },
+        "requiresWasm": {
+          "type": "boolean"
+        },
+        "requiresWorker": {
+          "type": "boolean"
+        },
+        "requiresWebGPU": {
+          "type": "boolean"
+        },
+        "requiresWebCodecs": {
+          "type": "boolean"
+        }
+      }
+    },
+    "appConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "buildOutputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blockRuntimeNetwork": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dependenciesLookupStatus",
+        "wasmAssets",
+        "workerAssets"
+      ],
+      "properties": {
+        "dependenciesLookupStatus": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "none",
+            "error"
+          ]
+        },
+        "wasmAssets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "workerAssets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "appId",
+        "name",
+        "repository",
+        "runtimeStatus",
+        "defaultBranch",
+        "runtime",
+        "appConfig",
+        "evidence",
+        "issues",
+        "error"
+      ],
+      "properties": {
+        "appId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "repository": {
+          "type": "string"
+        },
+        "runtimeStatus": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "WARN",
+            "FAIL"
+          ]
+        },
+        "defaultBranch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "runtime": {
+          "$ref": "#/definitions/runtime"
+        },
+        "appConfig": {
+          "$ref": "#/definitions/appConfig"
+        },
+        "evidence": {
+          "$ref": "#/definitions/evidence"
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/issue"
+          }
+        },
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

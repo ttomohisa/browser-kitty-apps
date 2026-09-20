@@ -4,9 +4,9 @@ Browser Kittyで公開している各アプリを、独立したGitHub Repositor
 
 このRepositoryはmonorepoではありません。各アプリのソースコード・Release・GitHub Pagesは従来どおり各Repositoryで管理し、ここではアプリ一覧、公開情報、実行条件、今後のRepository Health Checkに必要なメタデータを管理します。
 
-## v0.4.0
+## v0.5.0
 
-v0.4.0 adds publication and version-consistency checks on top of the Registry, Repository Inventory, and Repository Quality checks. GitHub Pages URLs are checked without downloading the full standalone HTML, and registry versions are compared with each repository's `app.config.json`, latest GitHub Release when present, and Git tag refs.
+v0.5.0 adds standalone/runtime consistency checks. Runtime capability flags are now explicit for every registered app, and the registry is checked against each repository's `app.config.json` and optional `dependencies.json` without trying to guess capabilities from arbitrary application code.
 
 - `apps.json` — Browser Kitty application registry
 - `categories.json` — category definitions
@@ -15,12 +15,14 @@ v0.4.0 adds publication and version-consistency checks on top of the Registry, R
 - `schema/repository-quality.schema.json` — repository quality JSON Schema
 - `schema/repository-pages.schema.json` — GitHub Pages report JSON Schema
 - `schema/repository-releases.schema.json` — release/version report JSON Schema
+- `schema/repository-runtime.schema.json` — standalone/runtime report JSON Schema
 - `scripts/check-registry.ps1` — registry validation
 - `scripts/check-powershell.ps1` — PowerShell syntax / strict UTF-8 preflight
 - `scripts/check-repositories.ps1` — repository existence / visibility / archive / default branch / latest Release inventory
 - `scripts/check-assets.ps1` — README / LICENSE / app.config / favicon / screenshot quality check
 - `scripts/check-pages.ps1` — published Pages reachability and response check
 - `scripts/check-releases.ps1` — registry / app.config / Release / tag version consistency check
+- `scripts/check-runtime.ps1` — standalone output, runtime network policy, isolation, WASM/Worker metadata consistency check
 - `.github/workflows/repository-health.yml` — scheduled and on-change health checks
 - `reports/README.md` — generated report behavior
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
@@ -186,9 +188,26 @@ reports/repository-quality.json
 - Latest GitHub Release tag（存在する場合）
 - Git tag refs（存在する場合）
 
-GitHub Releaseやtagそのものは必須ではありません。存在する場合にだけRegistry版との不一致を`WARN`として検出します。tagは `1.2.3` と `v1.2.3` を同じversionとして扱います。GitHub API取得失敗や `app.config.json` の取得・解析失敗は`FAIL`です。
+GitHub Releaseやtagそのものは必須ではありません。存在する場合にだけRegistry版との不一致を`WARN`として検出します。tagは `1.2.3` と `v1.2.3` を同じversionとして扱います。GitHub API取得失敗や `app.config.json` の取得・解析失敗は`FAIL`です。`app.config.json` は公開Repoのraw contentから取得し、tag / Repository metadata用のREST API枠を消費しないようにしています。
 
-GitHub ActionsではInventory / Quality / Pages / Releaseの4 JSONを14日間Artifact保存します。各JSONは専用Schemaで検証します。
+GitHub ActionsではInventory / Quality / Pages / Release / Runtimeの5 JSONを14日間Artifact保存します。各JSONは専用Schemaで検証します。
+
+## Standalone / runtime metadata
+
+```powershell
+./scripts/check-runtime.ps1
+```
+
+既定の出力先は `reports/repository-runtime.json` です。各アプリのRuntime宣言を確認します。`app.config.json` のbuild情報は直前の `repository-releases.json` を再利用し、`dependencies.json` は公開Repoのraw contentから取得するため、同じGitHub REST API情報を二重取得しません。
+
+確認内容:
+
+- `standalonePath` が `app.config.json` の通常 / MT / self-extract build outputのいずれかと一致すること
+- `networkAccess=false` のアプリで `build.blockRuntimeNetwork=true` になっていること
+- `crossOriginIsolated=true` の場合にCOOP / COEP / CORPのhosting宣言が揃っていること
+- `dependencies.json` にWASM/Worker assetがあるのにRegistry側のcapability flagがfalseになっていないこと
+
+`crossOriginIsolated` / `requiresWasm` / `requiresWorker` / `requiresWebGPU` / `requiresWebCodecs` はv0.5.0から全アプリで明示必須です。これは「コードを検索して自動推測した値」ではなく、Registryで管理する宣言値です。機械的に確認できない能力を無理にFAILへせず、Repository metadataと明確に矛盾する場合だけ警告または失敗にします。
 
 ## Add an application
 
@@ -215,7 +234,7 @@ htmlapps-*                 Public / individual applications
 - v0.2.0 — Repository Inventory ✅
 - v0.3.0 — Assets / Repository Quality ✅
 - v0.4.0 — GitHub Pages / Release ✅
-- v0.5.0 — Standalone / Runtime Metadata
+- v0.5.0 — Standalone / Runtime Metadata ✅
 - v0.6.0 — Repository Health Report
 - v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export

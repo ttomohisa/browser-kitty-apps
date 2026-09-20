@@ -60,6 +60,10 @@ jobs:
           BROWSER_KITTY_GITHUB_TOKEN: ${{ secrets.BROWSER_KITTY_GITHUB_TOKEN }}
         run: ./scripts/check-releases.ps1
 
+      - name: Check standalone and runtime metadata
+        shell: pwsh
+        run: ./scripts/check-runtime.ps1
+
       - name: Upload repository health reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -70,5 +74,6 @@ jobs:
             reports/repository-quality.json
             reports/repository-pages.json
             reports/repository-releases.json
+            reports/repository-runtime.json
           if-no-files-found: warn
           retention-days: 14

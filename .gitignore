@@ -7,3 +7,4 @@ reports/repository-inventory.json
 reports/repository-quality.json
 reports/repository-pages.json
 reports/repository-releases.json
+reports/repository-runtime.json

@@ -23,7 +23,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -47,7 +52,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -71,7 +81,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -98,7 +113,9 @@
         "networkAccess": false,
         "crossOriginIsolated": true,
         "requiresWasm": true,
-        "requiresWorker": true
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       },
       "hosting": {
         "crossOriginIsolated": true,
@@ -130,7 +147,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -154,7 +176,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -178,7 +205,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -202,7 +234,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -226,7 +263,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -250,7 +292,12 @@
         "standalone": true,
         "standalonePath": "dist/index.html",
         "localProcessing": true,
-        "networkAccess": false
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -275,7 +322,11 @@
         "standalonePath": "dist/index.html",
         "localProcessing": true,
         "networkAccess": false,
-        "requiresWasm": true
+        "crossOriginIsolated": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     }
   ]

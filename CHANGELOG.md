@@ -2,6 +2,26 @@
 
 All notable changes to this repository are documented here.
 
+## [0.5.0] - 2026-09-20
+
+### Added
+
+- Added standalone/runtime consistency checks and `repository-runtime.json` output.
+- Added JSON Schema validation for the generated runtime report.
+- Added explicit runtime capability flags for every registered application: cross-origin isolation, WASM, Worker, WebGPU, and WebCodecs.
+- Added build-output matching between `runtime.standalonePath` and `app.config.json`, including multi-thread and self-extract outputs.
+- Added runtime network-policy comparison with `build.blockRuntimeNetwork`.
+- Added COOP / COEP / CORP declaration validation for cross-origin-isolated applications.
+- Added optional `dependencies.json` evidence checks for WASM and Worker declarations.
+- Added runtime report generation to the Repository Health workflow and workflow artifact.
+- Reused `app.config.json` build metadata from the release report and raw public content for dependency manifests to avoid duplicate GitHub REST API calls.
+
+### Changed
+
+- Marked PDF Review Notes as requiring a Worker because its pinned PDF.js dependency includes the PDF worker asset.
+- Marked Local Video Compressor as requiring both WASM and Worker based on its pinned FFmpeg runtime and current application source.
+- Runtime capability fields are now required rather than optional, so `false` is distinguishable from missing metadata.
+
 ## [0.4.0] - 2026-09-20
 
 ### Added

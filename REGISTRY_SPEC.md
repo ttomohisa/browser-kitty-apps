@@ -43,7 +43,7 @@ Not every application must pass through every state.
 - v0.3.0 — Assets / Repository Quality (implemented)
 - v0.3.1 — PowerShell CI parser hardening (implemented)
 - v0.4.0 — GitHub Pages / Release (implemented)
-- v0.5.0 — Standalone / Runtime Metadata
+- v0.5.0 — Standalone / Runtime Metadata (implemented)
 - v0.6.0 — Repository Health Report
 - v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
@@ -62,6 +62,15 @@ The inventory does not rely on the built-in Actions `GITHUB_TOKEN` for child-rep
 
 
 
+
+
+## v0.5.0 implementation note
+
+`check-runtime.ps1` validates runtime declarations without turning source-code heuristics into a source of truth. Every registered app must explicitly declare `crossOriginIsolated`, `requiresWasm`, `requiresWorker`, `requiresWebGPU`, and `requiresWebCodecs`. The checker compares `runtime.standalonePath` with build outputs exposed by `app.config.json`, checks `networkAccess=false` against `build.blockRuntimeNetwork=true`, and validates COOP / COEP / CORP declarations for cross-origin-isolated apps.
+
+When `dependencies.json` exists, WASM and worker assets are treated as supporting evidence. A manifest that clearly contains a WASM/worker asset while the registry declares the corresponding capability as false produces a warning. The reverse is intentionally not treated as an error, because an application may embed or generate runtime assets through a different build path. This keeps the registry fact-based and avoids unreliable inference from arbitrary source strings.
+
+The Repository Health workflow now produces five schema-validated reports: inventory, quality, Pages, release/version, and runtime metadata. Runtime validation reuses the release report's `app.config.json` build metadata and reads optional dependency manifests through public raw content so the same per-repository REST API data is not fetched twice.
 
 ## v0.4.0 implementation note
 

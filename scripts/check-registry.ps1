@@ -117,11 +117,31 @@ foreach ($app in @($appsFile.Value.apps)) {
     if ([bool]$app.runtime.standalone -and [string]::IsNullOrWhiteSpace([string]$app.runtime.standalonePath)) {
         Add-ValidationError "Standalone app '$id' must have runtime.standalonePath."
     }
+    elseif (-not [bool]$app.runtime.standalone -and $null -ne $app.runtime.standalonePath) {
+        Add-ValidationError "Non-standalone app '$id' must set runtime.standalonePath to null."
+    }
 
-    if ($null -ne $app.PSObject.Properties['hosting']) {
-        if ([bool]$app.hosting.crossOriginIsolated -ne [bool]$app.runtime.crossOriginIsolated) {
-            Add-ValidationError "crossOriginIsolated mismatch between runtime and hosting for '$id'."
+    foreach ($capability in @('crossOriginIsolated', 'requiresWasm', 'requiresWorker', 'requiresWebGPU', 'requiresWebCodecs')) {
+        if ($null -eq $app.runtime.PSObject.Properties[$capability]) {
+            Add-ValidationError "Runtime capability '$capability' must be explicitly declared for '$id'."
         }
+    }
+
+    if ([bool]$app.runtime.crossOriginIsolated) {
+        if ($null -eq $app.PSObject.Properties['hosting'] -or -not [bool]$app.hosting.crossOriginIsolated) {
+            Add-ValidationError "crossOriginIsolated app '$id' must declare hosting.crossOriginIsolated=true."
+        }
+        else {
+            $hostingHeaders = @($app.hosting.headers | ForEach-Object { [string]$_ })
+            foreach ($requiredHeader in @('Cross-Origin-Opener-Policy', 'Cross-Origin-Embedder-Policy', 'Cross-Origin-Resource-Policy')) {
+                if (-not ($hostingHeaders -contains $requiredHeader)) {
+                    Add-ValidationError "crossOriginIsolated app '$id' is missing hosting header declaration: $requiredHeader"
+                }
+            }
+        }
+    }
+    elseif ($null -ne $app.PSObject.Properties['hosting'] -and [bool]$app.hosting.crossOriginIsolated) {
+        Add-ValidationError "hosting.crossOriginIsolated is true while runtime.crossOriginIsolated is false for '$id'."
     }
 }
 
