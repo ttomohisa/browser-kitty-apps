@@ -39,30 +39,40 @@ jobs:
         run: ./scripts/check-registry.ps1
 
       - name: Build repository inventory
+        continue-on-error: true
         shell: pwsh
         env:
           BROWSER_KITTY_GITHUB_TOKEN: ${{ secrets.BROWSER_KITTY_GITHUB_TOKEN }}
         run: ./scripts/check-repositories.ps1
 
       - name: Check repository assets and quality
+        continue-on-error: true
         shell: pwsh
         env:
           BROWSER_KITTY_GITHUB_TOKEN: ${{ secrets.BROWSER_KITTY_GITHUB_TOKEN }}
         run: ./scripts/check-assets.ps1
 
       - name: Check GitHub Pages reachability
+        continue-on-error: true
         shell: pwsh
         run: ./scripts/check-pages.ps1
 
       - name: Check release and version consistency
+        continue-on-error: true
         shell: pwsh
         env:
           BROWSER_KITTY_GITHUB_TOKEN: ${{ secrets.BROWSER_KITTY_GITHUB_TOKEN }}
         run: ./scripts/check-releases.ps1
 
       - name: Check standalone and runtime metadata
+        continue-on-error: true
         shell: pwsh
         run: ./scripts/check-runtime.ps1
+
+      - name: Generate repository health report
+        if: always()
+        shell: pwsh
+        run: ./scripts/generate-report.ps1
 
       - name: Upload repository health reports
         if: always()
@@ -75,5 +85,7 @@ jobs:
             reports/repository-pages.json
             reports/repository-releases.json
             reports/repository-runtime.json
+            reports/repository-status.json
+            reports/repository-status.md
           if-no-files-found: warn
           retention-days: 14

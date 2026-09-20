@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 0.4.0 current / 1.0.0 target
+Version: 0.6.0 current / 1.0.0 target
 
 ## Purpose
 
@@ -44,7 +44,7 @@ Not every application must pass through every state.
 - v0.3.1 — PowerShell CI parser hardening (implemented)
 - v0.4.0 — GitHub Pages / Release (implemented)
 - v0.5.0 — Standalone / Runtime Metadata (implemented)
-- v0.6.0 — Repository Health Report
+- v0.6.0 — Repository Health Report (implemented)
 - v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate
@@ -63,6 +63,15 @@ The inventory does not rely on the built-in Actions `GITHUB_TOKEN` for child-rep
 
 
 
+
+
+## v0.6.0 implementation note
+
+`generate-report.ps1` consolidates the inventory, quality, Pages, release/version, and runtime reports into `reports/repository-status.json` and `reports/repository-status.md`. The JSON report is validated by `schema/repository-health.schema.json`; the Markdown report is designed for direct inspection in CI artifacts.
+
+Each application receives one final `PASS / WARN / FAIL` result plus the five component states. Source issue objects retain their originating check, code, message, and optional path so the final report remains actionable rather than reducing failures to a single count. If a required source report is missing or cannot be parsed, the source is marked unavailable, affected per-app checks become `UNKNOWN`, and the consolidated result becomes `FAIL`.
+
+The Repository Health workflow treats the five lower-level checks as collectors by using `continue-on-error`. This prevents an early repository failure from hiding Pages, release, or runtime results for the remaining applications. The consolidated report step is the final CI gate: warnings are visible but do not fail the job; any application failure or global source-report failure returns exit code 1. Report upload runs with `if: always()` so diagnostics are retained even on failed health runs.
 
 ## v0.5.0 implementation note
 

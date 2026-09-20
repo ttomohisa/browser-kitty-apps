@@ -1,6 +1,6 @@
 # Reports
 
-`reports/` contains generated output from Browser Kitty Apps registry checks. Generated JSON files are not committed; GitHub Actions uploads them as the `browser-kitty-repository-health` artifact.
+`reports/` contains generated output from Browser Kitty Apps registry checks. Generated report files are not committed; GitHub Actions uploads them as the `browser-kitty-repository-health` artifact.
 
 ## Repository inventory
 
@@ -52,3 +52,18 @@ Checks include:
 - `dependencies.json` WebAssembly/worker assets do not contradict `requiresWasm` / `requiresWorker` flags.
 
 The capability flags are declarations, not heuristic guesses. Absence of detectable evidence does not make a declared capability fail; the checker only flags contradictions it can support from repository metadata.
+
+## Consolidated Repository Health
+
+```powershell
+./scripts/generate-report.ps1
+```
+
+Writes both:
+
+- `reports/repository-status.json` — schema-validated machine-readable final health report.
+- `reports/repository-status.md` — human-readable summary with per-app check status and issue details.
+
+The consolidated report consumes the five reports above. A missing or invalid source report becomes a global `FAIL`; the affected app check is marked `UNKNOWN` and the app overall result becomes `FAIL`. Warnings do not fail CI. Any application `FAIL`, or any global `FAIL`, makes the consolidated step exit with code 1.
+
+In GitHub Actions the source checks use `continue-on-error` so that one failing check does not prevent the remaining reports from being collected. `generate-report.ps1` is the final health gate, and the upload step runs with `if: always()` so diagnostic reports remain available on failed runs.

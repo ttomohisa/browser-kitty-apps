@@ -4,9 +4,9 @@ Browser Kittyで公開している各アプリを、独立したGitHub Repositor
 
 このRepositoryはmonorepoではありません。各アプリのソースコード・Release・GitHub Pagesは従来どおり各Repositoryで管理し、ここではアプリ一覧、公開情報、実行条件、今後のRepository Health Checkに必要なメタデータを管理します。
 
-## v0.5.0
+## v0.6.0
 
-v0.5.0 adds standalone/runtime consistency checks. Runtime capability flags are now explicit for every registered app, and the registry is checked against each repository's `app.config.json` and optional `dependencies.json` without trying to guess capabilities from arbitrary application code.
+v0.6.0 adds the consolidated Repository Health Report. The five lower-level reports are normalized into one per-application health view, with a machine-readable JSON report and a human-readable Markdown report. Source checks continue far enough to collect their reports; the consolidated health step is the final CI gate.
 
 - `apps.json` — Browser Kitty application registry
 - `categories.json` — category definitions
@@ -16,6 +16,7 @@ v0.5.0 adds standalone/runtime consistency checks. Runtime capability flags are 
 - `schema/repository-pages.schema.json` — GitHub Pages report JSON Schema
 - `schema/repository-releases.schema.json` — release/version report JSON Schema
 - `schema/repository-runtime.schema.json` — standalone/runtime report JSON Schema
+- `schema/repository-health.schema.json` — consolidated health report JSON Schema
 - `scripts/check-registry.ps1` — registry validation
 - `scripts/check-powershell.ps1` — PowerShell syntax / strict UTF-8 preflight
 - `scripts/check-repositories.ps1` — repository existence / visibility / archive / default branch / latest Release inventory
@@ -23,6 +24,7 @@ v0.5.0 adds standalone/runtime consistency checks. Runtime capability flags are 
 - `scripts/check-pages.ps1` — published Pages reachability and response check
 - `scripts/check-releases.ps1` — registry / app.config / Release / tag version consistency check
 - `scripts/check-runtime.ps1` — standalone output, runtime network policy, isolation, WASM/Worker metadata consistency check
+- `scripts/generate-report.ps1` — consolidate all repository checks into final JSON/Markdown health reports
 - `.github/workflows/repository-health.yml` — scheduled and on-change health checks
 - `reports/README.md` — generated report behavior
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
@@ -190,7 +192,7 @@ reports/repository-quality.json
 
 GitHub Releaseやtagそのものは必須ではありません。存在する場合にだけRegistry版との不一致を`WARN`として検出します。tagは `1.2.3` と `v1.2.3` を同じversionとして扱います。GitHub API取得失敗や `app.config.json` の取得・解析失敗は`FAIL`です。`app.config.json` は公開Repoのraw contentから取得し、tag / Repository metadata用のREST API枠を消費しないようにしています。
 
-GitHub ActionsではInventory / Quality / Pages / Release / Runtimeの5 JSONを14日間Artifact保存します。各JSONは専用Schemaで検証します。
+GitHub ActionsではInventory / Quality / Pages / Release / Runtimeの5つのソースJSONに加え、統合後の`repository-status.json`と`repository-status.md`を14日間Artifact保存します。JSON出力はそれぞれ専用Schemaで検証します。
 
 ## Standalone / runtime metadata
 
@@ -208,6 +210,29 @@ GitHub ActionsではInventory / Quality / Pages / Release / Runtimeの5 JSONを1
 - `dependencies.json` にWASM/Worker assetがあるのにRegistry側のcapability flagがfalseになっていないこと
 
 `crossOriginIsolated` / `requiresWasm` / `requiresWorker` / `requiresWebGPU` / `requiresWebCodecs` はv0.5.0から全アプリで明示必須です。これは「コードを検索して自動推測した値」ではなく、Registryで管理する宣言値です。機械的に確認できない能力を無理にFAILへせず、Repository metadataと明確に矛盾する場合だけ警告または失敗にします。
+
+## Repository Health Report
+
+```powershell
+./scripts/generate-report.ps1
+```
+
+既定では、先に生成された5つのレポートを統合します。
+
+```text
+reports/repository-inventory.json
+reports/repository-quality.json
+reports/repository-pages.json
+reports/repository-releases.json
+reports/repository-runtime.json
+        ↓
+reports/repository-status.json
+reports/repository-status.md
+```
+
+アプリ単位で `PASS / WARN / FAIL` を決定し、Inventory / Quality / Pages / Release / Runtime の各状態を横断表示します。元レポートが欠落・破損している場合も黙って無視せず `UNKNOWN` として扱い、最終判定は `FAIL` になります。`WARN` だけならCIは成功し、`FAIL` が1件以上ある場合、または統合元レポート自体に重大な問題がある場合に最終ステップがexit code 1を返します。
+
+GitHub Actionsでは各ソースチェックを結果収集として最後まで実行し、`generate-report.ps1`を唯一のRepository Health最終ゲートにします。これにより途中で1チェックが失敗しても、可能な限り他の結果と最終レポートをArtifactへ残せます。
 
 ## Add an application
 
@@ -235,7 +260,7 @@ htmlapps-*                 Public / individual applications
 - v0.3.0 — Assets / Repository Quality ✅
 - v0.4.0 — GitHub Pages / Release ✅
 - v0.5.0 — Standalone / Runtime Metadata ✅
-- v0.6.0 — Repository Health Report
+- v0.6.0 — Repository Health Report ✅
 - v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate

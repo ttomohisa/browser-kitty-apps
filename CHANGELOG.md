@@ -2,6 +2,22 @@
 
 All notable changes to this repository are documented here.
 
+## [0.6.0] - 2026-09-20
+
+### Added
+
+- Added `generate-report.ps1` to consolidate Inventory, Quality, Pages, Release/version, and Runtime results.
+- Added `repository-status.json` with per-application final health, component check states, issue counts, and source-preserving issue details.
+- Added `repository-status.md` for a human-readable health summary in CI artifacts.
+- Added `schema/repository-health.schema.json` for final report validation.
+- Added explicit handling for missing or invalid source reports; affected checks become `UNKNOWN` and the final result fails safely.
+
+### Changed
+
+- Repository Health source checks now use `continue-on-error` so one failure does not hide later diagnostics.
+- The consolidated health report is now the final CI gate: warnings remain successful, while application/global failures return exit code 1.
+- Workflow artifacts now include both consolidated JSON and Markdown reports.
+
 ## [0.5.0] - 2026-09-20
 
 ### Added
