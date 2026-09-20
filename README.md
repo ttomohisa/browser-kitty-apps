@@ -1,5 +1,9 @@
 # Browser Kitty Apps
 
+## v0.8.0
+
+v0.8.0 adds a deterministic public export for the private Browser Kitty website repository. `generated/apps.public.json` is derived only from `apps.json` and `categories.json`, contains published applications only, excludes repository-health/internal deployment fields, and is intended for **build-time** consumption so Browser Kitty does not gain a runtime dependency on this registry. CI verifies that the committed export is current.
+
 ## v0.7.2
 
 v0.7.2 corrects the remaining Face Redactor Pages issue found by the first Full Registry health run. The registry now tracks the canonical GitHub Pages root URL that corresponds to `dist/index.html`; the Face Redactor repository itself must include the standard `deploy-pages.yml` workflow and have GitHub Pages set to **GitHub Actions**. No health rule is relaxed in this patch.
@@ -29,6 +33,7 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `schema/repository-releases.schema.json` — release/version report JSON Schema
 - `schema/repository-runtime.schema.json` — standalone/runtime report JSON Schema
 - `schema/repository-health.schema.json` — consolidated health report JSON Schema
+- `schema/public-apps.schema.json` — Browser Kitty public export JSON Schema
 - `scripts/check-registry.ps1` — registry validation
 - `scripts/check-powershell.ps1` — PowerShell syntax / strict UTF-8 preflight
 - `scripts/check-repositories.ps1` — owner-batched repository existence / visibility / archive / default-branch inventory
@@ -38,11 +43,13 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `scripts/check-runtime.ps1` — standalone output, runtime network policy, isolation, WASM/Worker metadata consistency check
 - `scripts/generate-report.ps1` — consolidate all repository checks into final JSON/Markdown health reports
 - `scripts/test-generate-report.ps1` — smoke-test the consolidated report with empty issue collections
+- `scripts/generate-public-export.ps1` — generate or verify the Browser Kitty public export
+- `generated/apps.public.json` — committed build-time export for the Browser Kitty website
 - `.github/workflows/repository-health.yml` — scheduled and on-change health checks
 - `reports/README.md` — generated report behavior
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
 
-The registry contains 75 applications in v0.7.2, including three explicitly marked legacy repositories.
+The registry contains 75 applications in v0.8.0, including three explicitly marked legacy repositories.
 
 ## Registry
 
@@ -147,7 +154,7 @@ reports/repository-inventory.json
 
 Repositoryが見つからない、またはRepository lookup自体に失敗した場合はexit code 1とします。Private / Archiveの状態不整合はwarningとしてInventoryへ残します。Latest Releaseが存在しない404は`releaseLookupStatus: none`として正常に記録します。一方、Release APIの認証・rate limit・サーバーエラーなどで取得自体に失敗した場合は`error`としてCIを失敗させます。
 
-GitHub Actionsでは `repository-health.yml` がPush・定期実行・手動実行に対応します。現在の11Repoは匿名APIでも必要リクエスト数が小さいためそのまま動作します。登録数が増えてAPI rate limitが問題になる場合は、必要な公開Repositoryを読める専用tokenをRepository Secret `BROWSER_KITTY_GITHUB_TOKEN` として任意設定します。
+GitHub Actionsでは `repository-health.yml` がPush・定期実行・手動実行に対応します。Full RegistryではRepository metadataをowner単位でまとめて取得し、raw file / Pages / tag checksもREST API依存を抑えているため、75アプリでも匿名実行を前提にできます。GitHub API rate limitが実際に問題になる場合だけ、必要な公開Repositoryを読める専用tokenをRepository Secret `BROWSER_KITTY_GITHUB_TOKEN` として任意設定します。
 
 ## Repository quality
 
@@ -252,6 +259,40 @@ reports/repository-status.md
 
 GitHub Actionsでは各ソースチェックを結果収集として最後まで実行し、`generate-report.ps1`を唯一のRepository Health最終ゲートにします。これにより途中で1チェックが失敗しても、可能な限り他の結果と最終レポートをArtifactへ残せます。
 
+## Browser Kitty public export
+
+Browser Kitty本体向けの公開用データは次で生成します。
+
+```powershell
+./scripts/generate-public-export.ps1
+```
+
+生成先:
+
+```text
+generated/apps.public.json
+```
+
+公開exportは`browserKitty.published=true`のアプリだけを含み、現在は75アプリ・7カテゴリです。Browser Kitty本体で必要な次の情報だけを残します。
+
+- アプリID / 日英名称 / slug / category
+- lifecycle status / version
+- GitHub Pages URL
+- Repository名 / GitHub URL
+- 完全ローカル処理・runtime capabilityの公開可能な宣言
+
+一方、`repositoryProfile`、`standalonePath`、hosting header、template情報、Health Check結果などの運用内部情報はexportしません。`generatedAt`も持たせず、同じRegistry入力から同じJSONが生成される決定的な形式にしています。
+
+CIでは次を実行し、`apps.json` / `categories.json`変更後に生成物を更新し忘れた場合は失敗します。
+
+```powershell
+./scripts/generate-public-export.ps1 -Check
+```
+
+Browser Kitty本体はこのJSONを**ビルド時入力**として取り込み、静的ページへ反映する想定です。ブラウザ実行時に`browser-kitty-apps`へfetchする構成にはせず、Browser Kittyのランタイム外部依存を増やしません。
+
+`generated/apps.public.json`は派生生成物であり、一次情報ではありません。変更は必ず`apps.json` / `categories.json`へ行い、生成スクリプトで更新します。
+
 ## Add an application
 
 1. `categories.json` に対象カテゴリがあることを確認します。
@@ -259,7 +300,7 @@ GitHub Actionsでは各ソースチェックを結果収集として最後まで
 3. `./scripts/check-registry.ps1` を実行します。
 4. Pull Request / PushのGitHub Actionsが成功することを確認します。
 
-`generated/` のような将来の生成物をRegistryの一次情報として手編集する設計にはしません。
+`generated/` はRegistryから作る派生データです。手編集せず、生成スクリプトで更新します。
 
 ## Repository roles
 
@@ -283,7 +324,7 @@ htmlapps-*                 Public / individual applications
 - v0.7.2 — Face Redactor Pages correction ✅
 - v0.7.1 — Full Registry health-policy calibration ✅
 - v0.7.0 — Full Registry / scalable cross-repository checks ✅
-- v0.8.0 — Browser Kitty Export
+- v0.8.0 — Browser Kitty Export ✅
 - v0.9.0 — Release Candidate
 - v1.0.0 — Production Registry
 

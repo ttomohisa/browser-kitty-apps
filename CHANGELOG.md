@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.8.0
+
+### Added
+
+- Added `generated/apps.public.json`, a deterministic public export for build-time consumption by the private Browser Kitty website repository.
+- Added `schema/public-apps.schema.json` to define the exported data contract.
+- Added `scripts/generate-public-export.ps1` with normal generation and `-Check` drift-detection modes.
+- Added `generated/README.md` documenting generated-data ownership and build-time use.
+
+### Changed
+
+- Validate Registry now fails when the committed public export is missing or stale.
+- Public export intentionally omits repository-profile, build-path, hosting-header, template, health-report, and generation-timestamp data.
+- Documented that Browser Kitty consumes the export at build time rather than fetching the registry at browser runtime.
+
 ## v0.7.2
 
 ### Fixed

@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 0.6.1 current / 1.0.0 target
+Version: 0.8.0 current / 1.0.0 target
 
 ## Purpose
 
@@ -49,7 +49,7 @@ Not every application must pass through every state.
 - v0.7.2 — Face Redactor Pages correction (implemented)
 - v0.7.1 — Full Registry health-policy calibration (implemented)
 - v0.7.0 — Full Registry / scalable health checks (implemented)
-- v0.8.0 — Browser Kitty Export
+- v0.8.0 — Browser Kitty Export (implemented)
 - v0.9.0 — Release Candidate
 - v1.0.0 — Production Registry
 
@@ -125,6 +125,19 @@ The health-report smoke test must not assume `$LASTEXITCODE` exists after invoki
 The Repository Health workflow gives the smoke step `continue-on-error` only to preserve diagnostics: Inventory, Quality, Pages, Release/version, Runtime, the consolidated report, and artifact upload still run. A final enforcement step checks `steps.health-report-smoke.outcome` and fails the job when the smoke test failed. The Validate Registry workflow continues to fail immediately on a smoke-test failure.
 
 
+
+
+## v0.8.0 Browser Kitty Export
+
+`generated/apps.public.json` is the stable, build-time data contract between this public registry and the separate private Browser Kitty website repository. It is generated from `apps.json` and `categories.json`; it is never an independent source of truth.
+
+The export includes only applications with `browserKitty.published=true`. Public fields are intentionally limited to identity, names, slug, category, lifecycle status, version, application URL, source repository URL, and runtime/privacy capability declarations that Browser Kitty may need to render factual UI. Repository migration state, build paths, hosting headers, template metadata, and health findings remain internal to registry operations and are not exported.
+
+The output deliberately omits timestamps so identical registry inputs produce byte-stable JSON. Category and app ordering follows the source registry order. Breaking changes to the public shape require a `schemaVersion` change and a corresponding update to `schema/public-apps.schema.json`.
+
+`generate-public-export.ps1` writes the committed export, while `generate-public-export.ps1 -Check` regenerates the expected content in memory and fails when the committed file is missing or stale. Validate Registry runs this check on changes to registry, schema, scripts, or generated output.
+
+Browser Kitty should consume this export at build time and emit its own static pages. The public website and individual tools must not fetch this registry during browser runtime; this preserves Browser Kitty's no-unnecessary-runtime-dependency principle.
 
 ## v0.7.2 Pages deployment correction
 

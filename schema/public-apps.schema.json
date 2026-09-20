@@ -1,0 +1,140 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://browser-kitty.com/schema/public-apps.schema.json",
+  "title": "Browser Kitty Public Apps Export",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "categories",
+    "apps"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/category"
+      }
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/app"
+      }
+    }
+  },
+  "definitions": {
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "nameJa"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nameJa": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "app": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "nameJa",
+        "slug",
+        "category",
+        "status",
+        "version",
+        "appUrl",
+        "repository",
+        "repositoryUrl",
+        "runtime"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nameJa": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["development", "rc", "stable", "maintenance", "archived"]
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+        },
+        "appUrl": {
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "repository": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "repositoryUrl": {
+          "type": "string",
+          "pattern": "^https://github\\.com/"
+        },
+        "runtime": {
+          "$ref": "#/definitions/runtime"
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "localProcessing",
+        "networkAccess",
+        "standalone",
+        "crossOriginIsolated",
+        "requiresWasm",
+        "requiresWorker",
+        "requiresWebGPU",
+        "requiresWebCodecs"
+      ],
+      "properties": {
+        "localProcessing": { "type": "boolean" },
+        "networkAccess": { "type": "boolean" },
+        "standalone": { "type": "boolean" },
+        "crossOriginIsolated": { "type": "boolean" },
+        "requiresWasm": { "type": "boolean" },
+        "requiresWorker": { "type": "boolean" },
+        "requiresWebGPU": { "type": "boolean" },
+        "requiresWebCodecs": { "type": "boolean" }
+      }
+    }
+  }
+}

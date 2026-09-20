@@ -8,6 +8,7 @@ on:
       - categories.json
       - schema/**
       - scripts/**
+      - generated/**
       - .github/workflows/validate-registry.yml
   pull_request:
     branches: [main]
@@ -16,6 +17,7 @@ on:
       - categories.json
       - schema/**
       - scripts/**
+      - generated/**
       - .github/workflows/validate-registry.yml
   workflow_dispatch:
 
@@ -37,6 +39,10 @@ jobs:
       - name: Validate registry
         shell: pwsh
         run: ./scripts/check-registry.ps1
+
+      - name: Verify public export is current
+        shell: pwsh
+        run: ./scripts/generate-public-export.ps1 -Check
 
       - name: Smoke test repository health report
         shell: pwsh
