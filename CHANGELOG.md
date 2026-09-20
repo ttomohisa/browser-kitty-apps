@@ -2,6 +2,18 @@
 
 All notable changes to this repository are documented here.
 
+## [0.6.1] - 2026-09-20
+
+### Fixed
+
+- Allowed empty mandatory collection parameters in `generate-report.ps1`, fixing the normal zero-global-issues / zero-app-issues path that previously failed PowerShell parameter binding.
+- Applied the same empty-collection allowance to `check-assets.ps1` tree path sets for defensive consistency.
+
+### Added
+
+- Added `test-generate-report.ps1`, which builds all-PASS fixture reports with empty issue arrays and executes the consolidated report generator end-to-end.
+- Added the health-report smoke test to both validation and repository-health workflows so binding/runtime regressions are caught before network-backed checks.
+
 ## [0.6.0] - 2026-09-20
 
 ### Added

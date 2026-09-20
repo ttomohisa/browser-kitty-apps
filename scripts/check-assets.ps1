@@ -120,7 +120,7 @@ function New-Issue {
 
 function Test-PathInTree {
     param(
-        [Parameter(Mandatory)][System.Collections.Generic.HashSet[string]]$PathSet,
+        [Parameter(Mandatory)][AllowEmptyCollection()][System.Collections.Generic.HashSet[string]]$PathSet,
         [Parameter(Mandatory)][string]$Path
     )
 

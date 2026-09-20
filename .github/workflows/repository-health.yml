@@ -38,6 +38,10 @@ jobs:
         shell: pwsh
         run: ./scripts/check-registry.ps1
 
+      - name: Smoke test repository health report
+        shell: pwsh
+        run: ./scripts/test-generate-report.ps1
+
       - name: Build repository inventory
         continue-on-error: true
         shell: pwsh

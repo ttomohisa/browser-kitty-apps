@@ -46,7 +46,7 @@ function Read-SourceReport {
     param(
         [Parameter(Mandatory)][string]$Name,
         [Parameter(Mandatory)][string]$Path,
-        [Parameter(Mandatory)][System.Collections.Generic.List[object]]$GlobalIssues
+        [Parameter(Mandatory)][AllowEmptyCollection()][System.Collections.Generic.List[object]]$GlobalIssues
     )
 
     $absolutePath = Get-AbsolutePath -Path $Path
@@ -113,7 +113,7 @@ function New-EntryMap {
 
 function Add-IssueObjects {
     param(
-        [Parameter(Mandatory)][System.Collections.Generic.List[object]]$Target,
+        [Parameter(Mandatory)][AllowEmptyCollection()][System.Collections.Generic.List[object]]$Target,
         [Parameter(Mandatory)][string]$Source,
         [AllowNull()]$SourceIssues
     )
