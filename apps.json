@@ -438,7 +438,7 @@
         "version": "1.0.0"
       },
       "pages": {
-        "url": "https://ttomohisa.github.io/htmlapps-face-redactor/"
+        "url": "https://ttomohisa.github.io/htmlapps-face-redactor/face-redactor.html"
       },
       "runtime": {
         "standalone": true,
@@ -777,7 +777,7 @@
         "networkAccess": false,
         "crossOriginIsolated": false,
         "requiresWasm": false,
-        "requiresWorker": false,
+        "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
       }
@@ -896,8 +896,8 @@
         "localProcessing": true,
         "networkAccess": false,
         "crossOriginIsolated": false,
-        "requiresWasm": false,
-        "requiresWorker": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
       }
@@ -986,8 +986,8 @@
         "localProcessing": true,
         "networkAccess": false,
         "crossOriginIsolated": false,
-        "requiresWasm": false,
-        "requiresWorker": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
       }
@@ -1077,7 +1077,7 @@
         "networkAccess": false,
         "crossOriginIsolated": false,
         "requiresWasm": false,
-        "requiresWorker": false,
+        "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
       }
@@ -1594,7 +1594,7 @@
         "localProcessing": true,
         "networkAccess": false,
         "crossOriginIsolated": false,
-        "requiresWasm": false,
+        "requiresWasm": true,
         "requiresWorker": false,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
@@ -1744,7 +1744,7 @@
         "localProcessing": true,
         "networkAccess": false,
         "crossOriginIsolated": false,
-        "requiresWasm": false,
+        "requiresWasm": true,
         "requiresWorker": false,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
@@ -2044,7 +2044,7 @@
         "localProcessing": true,
         "networkAccess": false,
         "crossOriginIsolated": false,
-        "requiresWasm": false,
+        "requiresWasm": true,
         "requiresWorker": false,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
@@ -2134,7 +2134,7 @@
         "localProcessing": true,
         "networkAccess": false,
         "crossOriginIsolated": false,
-        "requiresWasm": false,
+        "requiresWasm": true,
         "requiresWorker": false,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
@@ -2167,7 +2167,7 @@
         "requiresWasm": true,
         "requiresWorker": true,
         "requiresWebGPU": false,
-        "requiresWebCodecs": false
+        "requiresWebCodecs": true
       }
     },
     {

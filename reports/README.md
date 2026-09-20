@@ -16,7 +16,7 @@ Writes `reports/repository-inventory.json` with repository existence, visibility
 ./scripts/check-assets.ps1
 ```
 
-Writes `reports/repository-quality.json`. It checks `README.md`, `LICENSE`, `app.config.json`, `assets/favicon.svg`, Japanese/default and English screenshots, plus informational `package.json` presence. The result is `PASS`, `WARN`, or `FAIL`.
+Writes `reports/repository-quality.json`. It checks `README.md`, `LICENSE`, `app.config.json`, `assets/favicon.svg`, Japanese/default and English screenshots, plus informational `package.json` presence. Missing README/LICENSE or a standard-profile `app.config.json` is blocking; missing favicon/screenshots are repository-hygiene `WARN`s so historical asset debt does not make an otherwise working app fail the health gate.
 
 ## GitHub Pages
 

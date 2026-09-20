@@ -1,5 +1,9 @@
 # Browser Kitty Apps
 
+## v0.7.1
+
+v0.7.1 calibrates the Full Registry health gate after the first 75-app live run. Missing screenshots and favicon files are now repository-hygiene warnings rather than CI-blocking failures; README, LICENSE, repository availability, standard `app.config.json`, Pages reachability, and hard runtime inconsistencies remain blocking. The release also fixes the Face Redactor Pages URL, accepts the dependency-manifest shapes already used across Browser Kitty (`assets`, single `asset`, and `files`), and corrects WASM / Worker capability declarations found by the first full scan.
+
 ## v0.7.0
 
 v0.7.0 expands the registry from the representative 11 apps to a full 75-app inventory based on the current public Browser Kitty application repositories. Standard template-era repositories and three verified legacy repositories are distinguished with `repositoryProfile`. Repository inventory now batches GitHub metadata by owner so the full registry does not consume one REST request per app; asset checks use throttled `raw.githubusercontent.com` HEAD probes, and release/tag checks use the public release redirect plus `git ls-remote`.
@@ -34,7 +38,7 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `reports/README.md` — generated report behavior
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
 
-The registry contains 75 applications in v0.7.0, including three explicitly marked legacy repositories.
+The registry contains 75 applications in v0.7.1, including three explicitly marked legacy repositories.
 
 ## Registry
 
@@ -157,16 +161,15 @@ reports/repository-quality.json
 
 判定は `PASS / WARN / FAIL` の3段階です。
 
-**必須ファイル:**
+**CIを止める必須ファイル:**
 
 - `README.md`
 - `LICENSE`
-- `app.config.json`
-- `assets/favicon.svg`
+- standard Repository の `app.config.json`
 
-これらが欠けた場合は `FAIL` です。
+これらが欠けた場合は `FAIL` です。legacy Repositoryの`app.config.json`不足は移行差分として`WARN`にします。
 
-`assets/screenshot.png` と `assets/screenshot-en.png` は、Browser Kittyへ公開済みの `stable` / `maintenance` アプリではリリース品質要件として扱い、欠けた場合は `FAIL` とします。`development` / `rc` ではリリース前に追加すべき項目として `WARN` に留めます。
+`assets/favicon.svg`、`assets/screenshot.png`、`assets/screenshot-en.png` はBrowser Kittyのリリース整備項目ですが、Full Registryでは既存アプリの整備負債と実行不能を分離するため、不足は `WARN` とします。Health CIを止めず、更新時に順次整備します。
 
 `package.json` は存在確認だけ行います。現在の `htmlapps-template` はNode/package.jsonを必須としていないため、存在しなくても警告・失敗にはしません。
 
@@ -273,8 +276,8 @@ htmlapps-*                 Public / individual applications
 - v0.5.0 — Standalone / Runtime Metadata ✅
 - v0.6.0 — Repository Health Report ✅
 - v0.6.2 — Empty-collection binding fix / health report smoke test ✅
+- v0.7.1 — Full Registry health-policy calibration ✅
 - v0.7.0 — Full Registry / scalable cross-repository checks ✅
-- v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate
 - v1.0.0 — Production Registry

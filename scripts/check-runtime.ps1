@@ -202,11 +202,22 @@ foreach ($app in $apps) {
                     $dependencies = $dependenciesResponse.Content | ConvertFrom-Json -Depth 100
                     $dependenciesLookupStatus = 'ok'
                     foreach ($dependency in @($dependencies.dependencies)) {
-                        foreach ($asset in @($dependency.assets)) {
-                            $path = if ($null -eq $asset.PSObject.Properties['path']) { '' } else { [string]$asset.path }
-                            $key = if ($null -eq $asset.PSObject.Properties['key']) { '' } else { [string]$asset.key }
+                        $dependencyAssets = [System.Collections.Generic.List[object]]::new()
+                        if ($null -ne $dependency.PSObject.Properties['assets']) {
+                            foreach ($asset in @($dependency.assets)) { if ($null -ne $asset) { $dependencyAssets.Add($asset) } }
+                        }
+                        if ($null -ne $dependency.PSObject.Properties['asset'] -and $null -ne $dependency.asset) {
+                            $dependencyAssets.Add($dependency.asset)
+                        }
+                        if ($null -ne $dependency.PSObject.Properties['files']) {
+                            foreach ($asset in @($dependency.files)) { if ($null -ne $asset) { $dependencyAssets.Add($asset) } }
+                        }
+
+                        foreach ($asset in @($dependencyAssets)) {
+                            $path = if ($null -ne $asset.PSObject.Properties['path']) { [string]$asset.path } elseif ($null -ne $asset.PSObject.Properties['file']) { [string]$asset.file } else { '' }
+                            $key = if ($null -ne $asset.PSObject.Properties['key']) { [string]$asset.key } elseif ($null -ne $asset.PSObject.Properties['id']) { [string]$asset.id } else { '' }
                             $mime = if ($null -eq $asset.PSObject.Properties['mime']) { '' } else { [string]$asset.mime }
-                            if ($mime -eq 'application/wasm' -or $path -match '(?i)\.wasm$') {
+                            if ($mime -eq 'application/wasm' -or $path -match '(?i)\.wasm(?:\.gz)?$') {
                                 if (-not [string]::IsNullOrWhiteSpace($path) -and -not $wasmAssets.Contains($path)) { $wasmAssets.Add($path) }
                             }
                             if ($key -match '(?i)worker' -or $path -match '(?i)worker') {

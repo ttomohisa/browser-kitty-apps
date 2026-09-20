@@ -58,7 +58,8 @@
       "additionalProperties": false,
       "required": [
         "requiredCoreFiles",
-        "releaseScreenshotFiles",
+        "advisoryVisualFiles",
+        "visualAssetSeverity",
         "packageJsonRequired",
         "legacyAppConfigOptional"
       ],
@@ -70,18 +71,22 @@
             "minLength": 1
           }
         },
-        "releaseScreenshotFiles": {
+        "packageJsonRequired": {
+          "type": "boolean"
+        },
+        "legacyAppConfigOptional": {
+          "type": "boolean"
+        },
+        "advisoryVisualFiles": {
           "type": "array",
           "items": {
             "type": "string",
             "minLength": 1
           }
         },
-        "packageJsonRequired": {
-          "type": "boolean"
-        },
-        "legacyAppConfigOptional": {
-          "type": "boolean"
+        "visualAssetSeverity": {
+          "type": "string",
+          "const": "WARN"
         }
       }
     },

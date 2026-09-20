@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.7.1
+
+### Fixed
+
+- Reclassified missing favicon and screenshot assets from `FAIL` to `WARN` so repository-hygiene debt does not block the full registry health gate.
+- Corrected Face Redactor Pages URL to the repository's published `face-redactor.html` entry point.
+- Updated runtime dependency inspection to accept `dependencies.json` entries using `assets`, single `asset`, or `files` layouts without StrictMode property errors.
+- Updated runtime capability declarations found by the first 75-app scan: PDF Compare, Gesture Presentation, Presentation Remote, Large Print Tiler, Pop-up Face Check-in, Same Spot Diff, Lossless Video Cutter, Video Contact Sheet, and Video Face Redactor.
+
+### Policy
+
+- `README.md`, `LICENSE`, standard-profile `app.config.json`, repository availability, published Pages availability, and hard runtime contradictions remain blocking `FAIL`s.
+- `assets/favicon.svg`, `assets/screenshot.png`, and `assets/screenshot-en.png` are tracked as non-blocking `WARN`s for gradual cleanup.
+
 ## v0.7.0
 
 - Expanded `apps.json` from 11 representative apps to 75 registered Browser Kitty apps.

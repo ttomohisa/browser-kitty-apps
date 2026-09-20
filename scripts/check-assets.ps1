@@ -68,24 +68,23 @@ foreach($app in $apps){
     }
     foreach($required in @(
       @{Key='readme';Path='README.md';Code='readme_missing';Message='README.md is required.'},
-      @{Key='license';Path='LICENSE';Code='license_missing';Message='LICENSE is required.'},
-      @{Key='favicon';Path='assets/favicon.svg';Code='favicon_missing';Message='assets/favicon.svg is required.'}
+      @{Key='license';Path='LICENSE';Code='license_missing';Message='LICENSE is required.'}
     )){ if(-not [bool]$files[$required.Key]){$issues.Add((New-Issue FAIL $required.Code $required.Path $required.Message))} }
     $profile=if($null -ne $app.PSObject.Properties['repositoryProfile']){[string]$app.repositoryProfile}else{'standard'}
     if(-not [bool]$files.appConfig){
         if($profile -eq 'legacy'){$issues.Add((New-Issue WARN 'legacy_app_config_missing' 'app.config.json' 'Legacy repository has no app.config.json; this is recorded as an expected migration gap.'))}
         else{$issues.Add((New-Issue FAIL 'app_config_missing' 'app.config.json' 'app.config.json is required for standard Browser Kitty apps.'))}
     }
-    $isPublishedRelease=[bool]$app.browserKitty.published -and ([string]$app.status -in @('stable','maintenance'))
+    if(-not [bool]$files.favicon){$issues.Add((New-Issue WARN 'favicon_missing' 'assets/favicon.svg' 'assets/favicon.svg is missing; add it when the repository is refreshed.'))}
     foreach($s in @(
       @{Key='screenshot';Path='assets/screenshot.png';Code='screenshot_missing';Message='Japanese/default screenshot is missing.'},
       @{Key='screenshotEn';Path='assets/screenshot-en.png';Code='screenshot_en_missing';Message='English screenshot is missing.'}
-    )){ if(-not [bool]$files[$s.Key]){ $sev=if($isPublishedRelease){'FAIL'}else{'WARN'}; $issues.Add((New-Issue $sev $s.Code $s.Path $s.Message)) } }
+    )){ if(-not [bool]$files[$s.Key]){ $issues.Add((New-Issue WARN $s.Code $s.Path $s.Message)) } }
     $status=if(@($issues|Where-Object severity -eq 'FAIL').Count){'FAIL'}elseif(@($issues|Where-Object severity -eq 'WARN').Count){'WARN'}else{'PASS'}
     switch($status){'PASS'{$pass++;Write-Host ' PASS' -ForegroundColor Green};'WARN'{$warn++;Write-Host ' WARN' -ForegroundColor Yellow};'FAIL'{$fail++;Write-Host ' FAIL' -ForegroundColor Red}}
     $results.Add([pscustomobject][ordered]@{appId=$id;name=[string]$app.name;repository=$repo;registryStatus=[string]$app.status;published=[bool]$app.browserKitty.published;lookupStatus='ok';qualityStatus=$status;defaultBranch=[string]$inventoryById[$id].defaultBranch;treeTruncated=$false;files=$files;issues=@($issues);error=$null})
 }
-$report=[ordered]@{schemaVersion=1;generatedAt=[DateTimeOffset]::UtcNow.ToString('o');sourceRegistry='apps.json';sourceInventory=($InventoryPath-replace '\\','/');githubApi=$ApiBaseUrl;authenticated=-not [string]::IsNullOrWhiteSpace($GitHubToken);policy=[ordered]@{requiredCoreFiles=@('README.md','LICENSE','app.config.json','assets/favicon.svg');releaseScreenshotFiles=@('assets/screenshot.png','assets/screenshot-en.png');packageJsonRequired=$false;legacyAppConfigOptional=$true};summary=[ordered]@{registeredApps=$apps.Count;checkedApps=$results.Count;pass=$pass;warn=$warn;fail=$fail;lookupErrors=$lookupErrors};repositories=@($results)}
+$report=[ordered]@{schemaVersion=1;generatedAt=[DateTimeOffset]::UtcNow.ToString('o');sourceRegistry='apps.json';sourceInventory=($InventoryPath-replace '\\','/');githubApi=$ApiBaseUrl;authenticated=-not [string]::IsNullOrWhiteSpace($GitHubToken);policy=[ordered]@{requiredCoreFiles=@('README.md','LICENSE','app.config.json');advisoryVisualFiles=@('assets/favicon.svg','assets/screenshot.png','assets/screenshot-en.png');visualAssetSeverity='WARN';packageJsonRequired=$false;legacyAppConfigOptional=$true};summary=[ordered]@{registeredApps=$apps.Count;checkedApps=$results.Count;pass=$pass;warn=$warn;fail=$fail;lookupErrors=$lookupErrors};repositories=@($results)}
 $json=$report|ConvertTo-Json -Depth 30
 if(-not(Test-Json -Json $json -SchemaFile $schemaPath)){throw 'Generated repository quality report does not match schema/repository-quality.schema.json.'}
 if(-not $NoWrite){$out=Get-AbsolutePath $OutputPath;New-Item -ItemType Directory -Force -Path (Split-Path -Parent $out)|Out-Null;$json|Set-Content $out -Encoding utf8NoBOM;Write-Host "Quality report written: $out"}

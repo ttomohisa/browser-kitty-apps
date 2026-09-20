@@ -46,8 +46,8 @@ Not every application must pass through every state.
 - v0.5.0 — Standalone / Runtime Metadata (implemented)
 - v0.6.0 — Repository Health Report (implemented)
 - v0.6.2 — Empty-collection binding fix / report smoke test (implemented)
+- v0.7.1 — Full Registry health-policy calibration (implemented)
 - v0.7.0 — Full Registry / scalable health checks (implemented)
-- v0.7.0 — Full Registry
 - v0.8.0 — Browser Kitty Export
 - v0.9.0 — Release Candidate
 - v1.0.0 — Production Registry
@@ -123,6 +123,13 @@ The health-report smoke test must not assume `$LASTEXITCODE` exists after invoki
 
 The Repository Health workflow gives the smoke step `continue-on-error` only to preserve diagnostics: Inventory, Quality, Pages, Release/version, Runtime, the consolidated report, and artifact upload still run. A final enforcement step checks `steps.health-report-smoke.outcome` and fails the job when the smoke test failed. The Validate Registry workflow continues to fail immediately on a smoke-test failure.
 
+
+
+## v0.7.1 Health gate calibration
+
+The first live 75-app health run showed that repository hygiene debt and application availability must be separated. The consolidated CI gate therefore treats missing `assets/favicon.svg`, `assets/screenshot.png`, and `assets/screenshot-en.png` as `WARN`. Missing `README.md`, `LICENSE`, a standard-profile `app.config.json`, unavailable repositories, published Pages failures, and hard runtime contradictions remain `FAIL`.
+
+Runtime dependency inspection accepts all dependency-manifest layouts already present in Browser Kitty: an `assets` array, a single `asset` object, or a `files` array. Dependency evidence is advisory metadata evidence; the Registry remains the explicit source for capability flags.
 
 ## v0.7.0 Full Registry notes
 
