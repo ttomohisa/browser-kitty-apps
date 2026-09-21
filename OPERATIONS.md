@@ -90,6 +90,8 @@ The final states are:
 
 Production policy requires **0 FAIL**. WARNs are not silently suppressed and should be reduced when the relevant child repository is next maintained.
 
+GitHub Pages probes use bounded retries only for transient request failures and HTTP `408`, `425`, `429`, `500`, `502`, `503`, and `504`. The default is three attempts with a short linear backoff. Persistent responses such as `404` are not retried and remain blocking for published applications. This prevents a momentary hosting-side `503` from becoming a false production outage while preserving real failure detection.
+
 ## Scheduled checks
 
 `.github/workflows/repository-health.yml` runs on relevant changes, manual dispatch, and the scheduled cron. It collects all source reports even when an individual source check reports an error, then uses the consolidated health report as the final health result.

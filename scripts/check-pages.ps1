@@ -4,6 +4,8 @@ param(
     [string]$RepositoryRoot = (Split-Path -Parent $PSScriptRoot),
     [string]$OutputPath = 'reports/repository-pages.json',
     [int]$TimeoutSec = 30,
+    [ValidateRange(1, 5)][int]$MaxAttempts = 3,
+    [ValidateRange(0, 30)][int]$RetryDelaySec = 2,
     [switch]$NoWrite
 )
 
@@ -51,11 +53,13 @@ $handler.MaxAutomaticRedirections = 5
 $client = [System.Net.Http.HttpClient]::new($handler)
 $client.Timeout = [TimeSpan]::FromSeconds($TimeoutSec)
 $client.DefaultRequestHeaders.UserAgent.ParseAdd('browser-kitty-apps')
+$transientStatusCodes = @(408, 425, 429, 500, 502, 503, 504)
 
 Write-Host 'Browser Kitty GitHub Pages check'
 Write-Host "Repository: $RepositoryRoot"
 Write-Host "Registered apps: $($apps.Count)"
 Write-Host "Timeout: ${TimeoutSec}s"
+Write-Host "Transient retry: max $MaxAttempts attempts, ${RetryDelaySec}s linear backoff"
 Write-Host ''
 
 $results = [System.Collections.Generic.List[object]]::new()
@@ -77,41 +81,86 @@ try {
         $contentType = $null
         $errorMessage = $null
         $issues = [System.Collections.Generic.List[object]]::new()
-        $response = $null
-        $request = $null
+        $attempts = 0
 
-        try {
-            $request = [System.Net.Http.HttpRequestMessage]::new([System.Net.Http.HttpMethod]::Head, $url)
-            $response = $client.SendAsync($request, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead).GetAwaiter().GetResult()
+        while ($attempts -lt $MaxAttempts) {
+            $attempts++
+            $attemptLookupStatus = 'ok'
+            $attemptStatusCode = $null
+            $attemptFinalUrl = $null
+            $attemptContentType = $null
+            $attemptErrorMessage = $null
+            $response = $null
+            $request = $null
 
-            if ([int]$response.StatusCode -in @(405, 501)) {
-                $response.Dispose()
-                $request.Dispose()
-                $response = $null
-                $request = [System.Net.Http.HttpRequestMessage]::new([System.Net.Http.HttpMethod]::Get, $url)
+            try {
+                $request = [System.Net.Http.HttpRequestMessage]::new([System.Net.Http.HttpMethod]::Head, $url)
                 $response = $client.SendAsync($request, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead).GetAwaiter().GetResult()
+
+                if ([int]$response.StatusCode -in @(405, 501)) {
+                    $response.Dispose()
+                    $request.Dispose()
+                    $response = $null
+                    $request = [System.Net.Http.HttpRequestMessage]::new([System.Net.Http.HttpMethod]::Get, $url)
+                    $response = $client.SendAsync($request, [System.Net.Http.HttpCompletionOption]::ResponseHeadersRead).GetAwaiter().GetResult()
+                }
+
+                $attemptStatusCode = [int]$response.StatusCode
+                if ($null -ne $response.RequestMessage -and $null -ne $response.RequestMessage.RequestUri) {
+                    $attemptFinalUrl = [string]$response.RequestMessage.RequestUri.AbsoluteUri
+                }
+                if ($null -ne $response.Content -and $null -ne $response.Content.Headers.ContentType) {
+                    $attemptContentType = [string]$response.Content.Headers.ContentType.MediaType
+                }
+            }
+            catch {
+                $attemptLookupStatus = 'error'
+                $attemptErrorMessage = $_.Exception.Message
+            }
+            finally {
+                if ($null -ne $response) {
+                    $response.Dispose()
+                }
+                if ($null -ne $request) {
+                    $request.Dispose()
+                }
             }
 
-            $statusCode = [int]$response.StatusCode
-            if ($null -ne $response.RequestMessage -and $null -ne $response.RequestMessage.RequestUri) {
-                $finalUrl = [string]$response.RequestMessage.RequestUri.AbsoluteUri
+            $shouldRetry = $false
+            if ($attempts -lt $MaxAttempts) {
+                if ($attemptLookupStatus -eq 'error') {
+                    $shouldRetry = $true
+                }
+                elseif ($attemptStatusCode -in $transientStatusCodes) {
+                    $shouldRetry = $true
+                }
             }
-            if ($null -ne $response.Content -and $null -ne $response.Content.Headers.ContentType) {
-                $contentType = [string]$response.Content.Headers.ContentType.MediaType
+
+            if ($shouldRetry) {
+                $delaySeconds = $RetryDelaySec * $attempts
+                if ($attemptLookupStatus -eq 'error') {
+                    Write-Host " retry $attempts/$MaxAttempts after request error" -ForegroundColor Yellow
+                }
+                else {
+                    Write-Host " retry $attempts/$MaxAttempts after HTTP $attemptStatusCode" -ForegroundColor Yellow
+                }
+                if ($delaySeconds -gt 0) {
+                    Start-Sleep -Seconds $delaySeconds
+                }
+                Write-Host "Checking $url ..." -NoNewline
+                continue
             }
+
+            $lookupStatus = $attemptLookupStatus
+            $statusCode = $attemptStatusCode
+            $finalUrl = $attemptFinalUrl
+            $contentType = $attemptContentType
+            $errorMessage = $attemptErrorMessage
+            break
         }
-        catch {
-            $lookupStatus = 'error'
-            $errorMessage = $_.Exception.Message
+
+        if ($lookupStatus -eq 'error') {
             $errorCount++
-        }
-        finally {
-            if ($null -ne $response) {
-                $response.Dispose()
-            }
-            if ($null -ne $request) {
-                $request.Dispose()
-            }
         }
 
         if ($lookupStatus -eq 'error') {
@@ -149,6 +198,7 @@ try {
             finalUrl       = $finalUrl
             contentType    = $contentType
             issues         = @($issues)
+            attempts       = $attempts
             error          = $errorMessage
         })
     }
@@ -167,6 +217,10 @@ $report = [ordered]@{
         acceptedContentTypes = @('text/html', 'application/xhtml+xml')
         maxRedirects = 5
         requestMethod = 'HEAD (GET fallback for 405/501)'
+        transientRetryStatusCodes = @($transientStatusCodes)
+        maxAttempts = $MaxAttempts
+        retryDelaySeconds = $RetryDelaySec
+        retryStrategy = 'linear backoff'
     }
     summary = [ordered]@{
         registeredApps = $apps.Count

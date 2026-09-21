@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 1.0.0 production
+Version: 1.0.1 production
 
 ## Purpose
 
@@ -54,6 +54,10 @@ Not every application must pass through every state.
 - v1.0.0 — Production Registry (implemented)
 
 
+
+## v1.0.1 production maintenance
+
+v1.0.1 keeps the v1.0.0 production contract unchanged and hardens only the Pages health probe. Transient platform/server responses (`408`, `425`, `429`, `500`, `502`, `503`, `504`) and request exceptions are retried with bounded linear backoff before they can become a blocking Pages failure. Persistent errors, including `404`, remain blocking for published applications.
 
 ## v1.0.0 production contract
 

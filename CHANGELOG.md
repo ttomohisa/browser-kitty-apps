@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.0.1
+
+### Fixed
+
+- Added bounded retries to GitHub Pages health checks for transient HTTP `408`, `425`, `429`, `500`, `502`, `503`, and `504` responses and request exceptions.
+- Kept persistent HTTP errors such as `404` blocking; this patch reduces false production failures without weakening outage detection.
+- Added retry diagnostics (`attempts`, retry status policy, max attempts, delay, and strategy) to the Pages health report/schema.
+- Addresses the scheduled production-health failure where OneFile Album returned a single HTTP `503` while its repository, release, runtime, quality, and latest Pages deployment were otherwise healthy.
+
 ## v1.0.0
 
 ### Production

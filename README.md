@@ -1,5 +1,9 @@
 # Browser Kitty Apps
 
+## v1.0.1
+
+v1.0.1 hardens GitHub Pages health monitoring against transient platform responses. Pages checks now retry temporary HTTP statuses (`408`, `425`, `429`, `500`, `502`, `503`, `504`) and request exceptions up to three attempts with a short linear backoff. Persistent errors such as `404` remain blocking failures. The report records the attempt count and retry policy for diagnostics.
+
 ## v1.0.0
 
 v1.0.0 is the **Production Registry** milestone. The repository now provides a stable 75-application registry, cross-repository health checks, deterministic Browser Kitty build-time export, and a release-readiness gate for ongoing production maintenance. The v0.9.0 candidate passed both GitHub Actions workflows with all 75 applications covered and **0 blocking FAILs**; non-blocking repository-hygiene and legacy-migration WARNs remain visible for follow-up.
@@ -64,7 +68,7 @@ v0.6.2 fixes the health-report smoke test under PowerShell StrictMode: a success
 - `reports/README.md` — generated report behavior
 - `standards/BROWSER_KITTY_GUIDE.md` — Browser Kitty shared guide
 
-The production registry contains 75 applications in v1.0.0, including three explicitly marked legacy repositories.
+The production registry contains 75 applications in v1.0.1, including three explicitly marked legacy repositories.
 
 ## Registry
 
@@ -344,6 +348,7 @@ htmlapps-*                 Public / individual applications
 - v0.8.0 — Browser Kitty Export ✅
 - v0.9.0 — Release Candidate ✅
 - v1.0.0 — Production Registry ✅
+- v1.0.1 — Pages health retry hardening ✅
 
 ## License
 

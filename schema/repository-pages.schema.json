@@ -4,68 +4,263 @@
   "title": "Browser Kitty Pages Report",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "generatedAt", "sourceRegistry", "policy", "summary", "applications"],
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "sourceRegistry",
+    "policy",
+    "summary",
+    "applications"
+  ],
   "properties": {
-    "schemaVersion": { "type": "integer", "const": 1 },
-    "generatedAt": { "type": "string", "minLength": 1 },
-    "sourceRegistry": { "type": "string", "const": "apps.json" },
-    "policy": { "$ref": "#/definitions/policy" },
-    "summary": { "$ref": "#/definitions/summary" },
-    "applications": { "type": "array", "items": { "$ref": "#/definitions/application" } }
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceRegistry": {
+      "type": "string",
+      "const": "apps.json"
+    },
+    "policy": {
+      "$ref": "#/definitions/policy"
+    },
+    "summary": {
+      "$ref": "#/definitions/summary"
+    },
+    "applications": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/application"
+      }
+    }
   },
   "definitions": {
     "policy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["publishedRequires2xx", "acceptedContentTypes", "maxRedirects", "requestMethod"],
+      "required": [
+        "publishedRequires2xx",
+        "acceptedContentTypes",
+        "maxRedirects",
+        "requestMethod",
+        "transientRetryStatusCodes",
+        "maxAttempts",
+        "retryDelaySeconds",
+        "retryStrategy"
+      ],
       "properties": {
-        "publishedRequires2xx": { "type": "boolean" },
-        "acceptedContentTypes": { "type": "array", "items": { "type": "string", "minLength": 1 } },
-        "maxRedirects": { "type": "integer", "minimum": 0 },
-        "requestMethod": { "type": "string", "minLength": 1 }
+        "publishedRequires2xx": {
+          "type": "boolean"
+        },
+        "acceptedContentTypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "maxRedirects": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "requestMethod": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transientRetryStatusCodes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 599
+          },
+          "minItems": 1
+        },
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "retryDelaySeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30
+        },
+        "retryStrategy": {
+          "type": "string",
+          "const": "linear backoff"
+        }
       }
     },
     "summary": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["registeredApps", "checkedApps", "pass", "warn", "fail", "lookupErrors"],
+      "required": [
+        "registeredApps",
+        "checkedApps",
+        "pass",
+        "warn",
+        "fail",
+        "lookupErrors"
+      ],
       "properties": {
-        "registeredApps": { "type": "integer", "minimum": 0 },
-        "checkedApps": { "type": "integer", "minimum": 0 },
-        "pass": { "type": "integer", "minimum": 0 },
-        "warn": { "type": "integer", "minimum": 0 },
-        "fail": { "type": "integer", "minimum": 0 },
-        "lookupErrors": { "type": "integer", "minimum": 0 }
+        "registeredApps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "checkedApps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pass": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "warn": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fail": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lookupErrors": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     },
     "application": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["appId", "name", "repository", "registryStatus", "published", "url", "lookupStatus", "pagesStatus", "httpStatus", "finalUrl", "contentType", "issues", "error"],
+      "required": [
+        "appId",
+        "name",
+        "repository",
+        "registryStatus",
+        "published",
+        "url",
+        "lookupStatus",
+        "pagesStatus",
+        "httpStatus",
+        "finalUrl",
+        "contentType",
+        "issues",
+        "attempts",
+        "error"
+      ],
       "properties": {
-        "appId": { "type": "string", "minLength": 1 },
-        "name": { "type": "string", "minLength": 1 },
-        "repository": { "type": "string", "minLength": 1 },
-        "registryStatus": { "type": "string", "enum": ["development", "rc", "stable", "maintenance", "archived"] },
-        "published": { "type": "boolean" },
-        "url": { "type": "string", "pattern": "^https://" },
-        "lookupStatus": { "type": "string", "enum": ["ok", "error"] },
-        "pagesStatus": { "type": "string", "enum": ["PASS", "WARN", "FAIL"] },
-        "httpStatus": { "type": ["integer", "null"], "minimum": 100, "maximum": 599 },
-        "finalUrl": { "type": ["string", "null"] },
-        "contentType": { "type": ["string", "null"] },
-        "issues": { "type": "array", "items": { "$ref": "#/definitions/issue" } },
-        "error": { "type": ["string", "null"] }
+        "appId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "registryStatus": {
+          "type": "string",
+          "enum": [
+            "development",
+            "rc",
+            "stable",
+            "maintenance",
+            "archived"
+          ]
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https://"
+        },
+        "lookupStatus": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "error"
+          ]
+        },
+        "pagesStatus": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "WARN",
+            "FAIL"
+          ]
+        },
+        "httpStatus": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 100,
+          "maximum": 599
+        },
+        "finalUrl": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contentType": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/issue"
+          }
+        },
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
       }
     },
     "issue": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["severity", "code", "message"],
+      "required": [
+        "severity",
+        "code",
+        "message"
+      ],
       "properties": {
-        "severity": { "type": "string", "enum": ["WARN", "FAIL"] },
-        "code": { "type": "string", "minLength": 1 },
-        "message": { "type": "string", "minLength": 1 }
+        "severity": {
+          "type": "string",
+          "enum": [
+            "WARN",
+            "FAIL"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     }
   }

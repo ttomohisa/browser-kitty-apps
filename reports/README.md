@@ -24,7 +24,7 @@ Writes `reports/repository-quality.json`. It checks `README.md`, `LICENSE`, `app
 ./scripts/check-pages.ps1
 ```
 
-Writes `reports/repository-pages.json`. Published applications must resolve through redirects to a 2xx HTTP response. The checker uses `HEAD` and falls back to a headers-only `GET` when the server rejects `HEAD`, avoiding full standalone HTML downloads. A successful non-HTML content type is reported as `WARN`.
+Writes `reports/repository-pages.json`. Published applications must resolve through redirects to a 2xx HTTP response. The checker uses `HEAD` and falls back to a headers-only `GET` when the server rejects `HEAD`, avoiding full standalone HTML downloads. Transient request failures and HTTP `408`, `425`, `429`, `500`, `502`, `503`, and `504` are retried up to three attempts with a short linear backoff; persistent errors such as `404` remain immediate blocking failures. A successful non-HTML content type is reported as `WARN`. The report records the final attempt count for each application.
 
 ## Release and version consistency
 
