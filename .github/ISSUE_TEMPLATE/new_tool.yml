@@ -1,0 +1,33 @@
+name: New tool idea
+description: Suggest a new browser-only tool for Browser Kitty.
+title: "[Tool idea] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Browser Kitty focuses on small tools that work in the browser with no account or installation. Local processing is preferred when the task allows it.
+  - type: textarea
+    id: task
+    attributes:
+      label: What should the tool do?
+      description: Describe the job the tool should help with.
+      placeholder: I want a browser tool that...
+    validations:
+      required: true
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Example use case
+      description: What would you put into the tool, and what result would you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: How do you handle this today?
+      description: Optional. Existing apps, manual steps, desktop software, or other workarounds are useful context.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes
+      description: Optional links or examples. Do not attach private or sensitive files.

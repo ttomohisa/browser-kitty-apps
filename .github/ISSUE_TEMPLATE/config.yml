@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Open Browser Kitty
+    url: https://browser-kitty.com/
+    about: Use the published Browser Kitty tools.
+  - name: Security reports
+    url: https://github.com/ttomohisa/browser-kitty-apps/security/policy
+    about: Read the security reporting policy before sharing security-sensitive details.

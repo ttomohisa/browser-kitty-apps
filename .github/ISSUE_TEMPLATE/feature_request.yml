@@ -1,0 +1,42 @@
+name: Feature request
+description: Suggest an improvement to an existing Browser Kitty tool.
+title: "[Feature] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. You do not need to find the individual app repository first; requests opened here can be routed later.
+  - type: input
+    id: tool
+    attributes:
+      label: Tool
+      description: Which Browser Kitty tool would you like to improve?
+      placeholder: e.g. PDF Organizer
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Tool URL
+      description: Optional. Paste the Browser Kitty or GitHub Pages URL if you have it.
+      placeholder: https://browser-kitty.com/tools/...
+  - type: textarea
+    id: request
+    attributes:
+      label: What would you like to do?
+      description: Describe the task or improvement from the user's point of view.
+      placeholder: I would like to...
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why would this be useful?
+      description: A short use case helps us understand the priority and expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes or examples
+      description: Optional screenshots, examples, or related tools. Do not attach private or sensitive files.
