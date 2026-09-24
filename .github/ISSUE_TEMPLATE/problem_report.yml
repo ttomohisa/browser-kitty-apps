@@ -1,0 +1,55 @@
+name: Problem report
+description: Report a broken Browser Kitty page, tool, link, or registry entry.
+title: "[Problem] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. If you know the individual app repository you may report it there, but reporting it here is also fine.
+  - type: input
+    id: tool
+    attributes:
+      label: Tool or page
+      description: Which Browser Kitty tool or page has the problem?
+      placeholder: e.g. Video Compressor
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: Paste the page URL if available.
+      placeholder: https://browser-kitty.com/tools/...
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the problem and any error message you saw.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the shortest steps that reproduce the problem.
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Press ...
+  - type: input
+    id: environment
+    attributes:
+      label: Browser / device
+      description: Optional. Browser name, OS, and whether you are on desktop or mobile.
+      placeholder: e.g. Chrome 146 / Android
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional information
+      description: Optional screenshots or notes. Do not attach confidential documents or sensitive files.
