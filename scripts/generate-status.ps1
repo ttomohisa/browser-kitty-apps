@@ -99,7 +99,13 @@ $lines.Add('[Live Repository Health](https://github.com/ttomohisa/browser-kitty-
 $lines.Add('')
 $lines.Add('> This file is generated from `reports/repository-status.json`. A committed copy is a snapshot; the GitHub Actions Job Summary is the live view.')
 $lines.Add('')
-$lines.Add("Last checked: **$([string]$report.generatedAt)**")
+$generatedAtText = try {
+    ([DateTimeOffset]$report.generatedAt).ToUniversalTime().ToString('o')
+}
+catch {
+    [string]$report.generatedAt
+}
+$lines.Add("Last checked: **$generatedAtText**")
 $lines.Add('')
 $overallText = if ([string]$report.overallStatus -eq 'FAIL') { 'FAIL — blocking problems detected' } elseif ([string]$report.overallStatus -eq 'WARN') { 'WARN — no blocking failures, follow-up items remain' } else { 'PASS — no detected issues' }
 $lines.Add('## Overall')

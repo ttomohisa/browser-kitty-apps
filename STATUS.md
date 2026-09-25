@@ -2,14 +2,13 @@
 
 [Live Repository Health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml) · [App catalog](CATALOG.md) · [Browser Kitty](https://browser-kitty.com/)
 
-> This is a committed **snapshot** of Repository Health. For the latest result, open the live workflow above. Each health run regenerates this human-readable view and publishes it in the GitHub Actions Job Summary and workflow artifact.
+> This file is generated from `reports/repository-status.json`. A committed copy is a snapshot; the GitHub Actions Job Summary is the live view.
 
-Last checked: **2026-09-25T03:53:51.5757181+00:00**  
-Source: successful Repository Health run **#25**
+Last checked: **2026-09-25T04:16:36Z**
 
 ## Overall
 
-**WARN — no blocking failures**
+**WARN — no blocking failures, follow-up items remain**
 
 | Status | Apps |
 |---|---:|
@@ -24,7 +23,7 @@ Global issues: **0**
 
 ## Blocking problems
 
-No blocking application failures were detected in this snapshot.
+No blocking application failures were detected.
 
 ## Warnings by reason
 
@@ -35,48 +34,48 @@ No blocking application failures were detected in this snapshot.
 | 4 | Default / Japanese screenshot missing | `screenshot_missing` |
 | 3 | Legacy runtime metadata unavailable | `legacy_app_config_unavailable` |
 | 2 | Build output metadata incomplete | `build_output_unknown` |
-| 2 | Runtime network policy metadata incomplete | `runtime_network_policy_unknown` |
 | 2 | Favicon missing | `favicon_missing` |
+| 2 | Runtime network policy metadata incomplete | `runtime_network_policy_unknown` |
+| 1 | Registered version tag missing | `registered_version_tag_missing` |
 | 1 | Registry / app.config version mismatch | `app_config_version_mismatch` |
 | 1 | Registry / latest release version mismatch | `release_version_mismatch` |
-| 1 | Registered version tag missing | `registered_version_tag_missing` |
 | 1 | WASM dependency is not declared in registry metadata | `wasm_dependency_not_declared` |
 
 ## Apps needing attention
 
-| App | Issues |
-|---|---:|
-| Archive Explorer | 1 |
-| JSON / YAML / CSV Viewer | 1 |
-| Parquet Viewer | 5 |
-| Text Inspector | 3 |
-| Face Redactor | 1 |
-| Photo Privacy Inspector | 1 |
-| Smart Image Sorter | 1 |
-| Office Image Extractor | 1 |
-| PDF Compare | 1 |
-| PDF Organizer | 4 |
-| Gesture Presentation | 3 |
-| Developer Toolbox | 1 |
-| Device Check | 1 |
-| Engineering Calculator | 1 |
-| FFmpeg Filter Builder | 3 |
-| Markdown Preview Lab | 1 |
-| Music Practice Kit | 3 |
-| Optical File | 1 |
-| Pocket Level | 1 |
-| Pocket Teleprompter | 1 |
-| Pomodoro Timer | 1 |
-| Pop-up Face Check-in | 1 |
-| QR Reader | 1 |
-| Same Spot Diff | 1 |
-| Signal Screen | 1 |
-| Temporary Links | 4 |
-| Way Back | 3 |
-| Lossless Video Cutter | 1 |
-| Media Inspector | 2 |
-| Video Contact Sheet | 1 |
-| Video Face Redactor | 1 |
+| Status | App | Inventory | Quality | Pages | Release | Runtime | Issues | Reasons |
+|---|---|---|---|---|---|---|---:|---|
+| WARN | Archive Explorer | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Developer Toolbox | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Device Check | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Engineering Calculator | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Face Redactor | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | FFmpeg Filter Builder | PASS | PASS | PASS | WARN | PASS | 3 | Registry / app.config version mismatch; Registry / latest release version mismatch; Registered version tag missing |
+| WARN | Gesture Presentation | PASS | WARN | PASS | PASS | PASS | 3 | Favicon missing; Default / Japanese screenshot missing; English screenshot missing |
+| WARN | JSON / YAML / CSV Viewer | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Lossless Video Cutter | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Markdown Preview Lab | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Media Inspector | PASS | WARN | PASS | PASS | WARN | 2 | English screenshot missing; WASM dependency is not declared in registry metadata |
+| WARN | Music Practice Kit | PASS | WARN | PASS | PASS | WARN | 3 | English screenshot missing; Build output metadata incomplete; Runtime network policy metadata incomplete |
+| WARN | Office Image Extractor | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Optical File | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Parquet Viewer | PASS | WARN | PASS | WARN | WARN | 5 | Legacy app config missing; Default / Japanese screenshot missing; English screenshot missing; Legacy runtime metadata unavailable |
+| WARN | PDF Compare | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | PDF Organizer | PASS | WARN | PASS | WARN | WARN | 4 | Legacy app config missing; English screenshot missing; Legacy runtime metadata unavailable |
+| WARN | Photo Privacy Inspector | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Pocket Level | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Pocket Teleprompter | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Pomodoro Timer | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Pop-up Face Check-in | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | QR Reader | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Same Spot Diff | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Signal Screen | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Smart Image Sorter | PASS | WARN | PASS | PASS | PASS | 1 | Default / Japanese screenshot missing |
+| WARN | Temporary Links | PASS | WARN | PASS | WARN | WARN | 4 | Legacy app config missing; English screenshot missing; Legacy runtime metadata unavailable |
+| WARN | Text Inspector | PASS | WARN | PASS | PASS | WARN | 3 | English screenshot missing; Build output metadata incomplete; Runtime network policy metadata incomplete |
+| WARN | Video Contact Sheet | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Video Face Redactor | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Way Back | PASS | WARN | PASS | PASS | PASS | 3 | Favicon missing; Default / Japanese screenshot missing; English screenshot missing |
 
 ## Status meanings
 
@@ -84,4 +83,4 @@ No blocking application failures were detected in this snapshot.
 - **WARN** — non-blocking repository hygiene, legacy migration, or metadata debt needs follow-up.
 - **FAIL** — a blocking publication, repository, or runtime problem needs attention.
 
-The detailed machine-readable report remains `reports/repository-status.json`; the existing detailed Markdown report remains `reports/repository-status.md`.
+The detailed machine-readable report remains `reports/repository-status.json`; the detailed source-oriented Markdown report remains `reports/repository-status.md`.
