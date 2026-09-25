@@ -84,6 +84,8 @@ else {
 $requiredFiles = @(
     'README.md',
     'README.ja.md',
+    'CATALOG.md',
+    'STATUS.md',
     'CHANGELOG.md',
     'LICENSE',
     'REGISTRY_SPEC.md',

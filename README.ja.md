@@ -4,13 +4,15 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.0.2-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.1.0-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
 **Browser Kitty** は、ブラウザだけで使える小さなツールを公開するWebサイトです。登録やインストールは不要で、各ツールはドキュメントに記載した範囲で、ユーザーのファイルやデータをできるだけ端末内で処理する構成にしています。
 
 ### [Browser Kittyを開く →](https://browser-kitty.com/)
+
+[アプリ一覧](CATALOG.md) · [Healthスナップショット](STATUS.md) · [最新Health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml) · [改善要望](https://github.com/ttomohisa/browser-kitty-apps/issues)
 
 このRepositoryは、Browser Kittyの公開 **アプリ台帳・Health Check・フィードバック窓口** です。各アプリのソースコードは従来どおり個別のPublic Repositoryで管理します。このRepositoryはmonorepoではなく、Browser Kittyのブラウザ実行時の依存先でもありません。
 
@@ -142,11 +144,13 @@ Registryを変更した場合は次を実行します。
 | [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) | Release Readiness Checklist |
 | [reports/README.md](reports/README.md) | Health Reportの仕様 |
 | [standards/BROWSER_KITTY_GUIDE.md](standards/BROWSER_KITTY_GUIDE.md) | Browser Kitty共通ガイド |
+| [CATALOG.md](CATALOG.md) | 人間向けアプリ一覧 |
+| [STATUS.md](STATUS.md) | 人間向けRepository Healthスナップショット |
 | [CHANGELOG.md](CHANGELOG.md) | Version履歴 |
 
-## v1.0.2
+## v1.1.0
 
-v1.0.2では、GitHubの匿名REST APIのrate limitに到達した場合でも、Public Git RepositoryへのfallbackでRepositoryの存在確認とdefault branch確認を継続できるようにしました。また、READMEなどドキュメントだけの変更では75RepositoryのFull Healthを起動せず、軽量なValidationだけを実行します。詳細は [CHANGELOG.md](CHANGELOG.md) を参照してください。
+v1.1.0では、RegistryとRepository Healthを人がそのまま読める表示を追加しました。`CATALOG.md`はRegistryから決定的に生成するアプリ一覧、`STATUS.md`はHealthスナップショットです。Repository Health実行時には同じ人間向けStatusを再生成し、GitHub ActionsのJob Summaryにも直接表示します。詳細は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## License
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.1.0
+
+### Added
+
+- Added deterministic `CATALOG.md`, generated from `apps.json` and `categories.json`, with category-grouped app names, versions, lifecycle state, local-processing declaration, runtime capabilities, and Browser Kitty / app / source links.
+- Added `scripts/generate-catalog.ps1` with generation and `-Check` drift detection.
+- Added human-readable `STATUS.md` and `scripts/generate-status.ps1`, including blocking-failure summary, warning-reason aggregation, and an actionable list of apps that need attention.
+- Repository Health now publishes the generated human-readable status directly to the GitHub Actions Job Summary and includes `STATUS.md` in the workflow artifact.
+
+### Changed
+
+- README and README.ja.md now expose direct links to the app catalog, health snapshot, live Repository Health, and feedback entry points.
+- Validate Registry now verifies that the committed catalog is current.
+- Release Readiness now requires the human-readable catalog and status files.
+
+
 ## v1.0.2
 
 ### Fixed

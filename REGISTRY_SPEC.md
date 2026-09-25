@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 1.0.2 production
+Version: 1.1.0 production
 
 ## Purpose
 
@@ -54,6 +54,12 @@ Not every application must pass through every state.
 - v1.0.0 — Production Registry (implemented)
 
 
+
+## v1.1.0 human-readable registry and health
+
+v1.1.0 adds human-readable derived views without changing the machine-readable registry contract. `CATALOG.md` is generated deterministically from `apps.json` and `categories.json` and is checked for drift by CI. It provides category-grouped application names, versions, lifecycle state, local-processing declarations, runtime capability notes, and links to Browser Kitty, the published application, and source repository.
+
+`STATUS.md` is the human-readable Repository Health view. A committed copy is explicitly a snapshot, while every live Repository Health run regenerates the same style of view from `reports/repository-status.json`, publishes it to the GitHub Actions Job Summary, and uploads it with the health artifact. The view prioritizes blocking failures, aggregates warning reasons, and lists applications needing attention. The JSON health report remains the machine-readable source of truth.
 
 ## v1.0.2 production maintenance
 
