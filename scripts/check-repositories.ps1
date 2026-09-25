@@ -44,6 +44,137 @@ function Invoke-GitHubGet {
 }
 function Get-AbsoluteOutputPath { param([Parameter(Mandatory)][string]$Path); if ([IO.Path]::IsPathRooted($Path)) { $Path } else { Join-Path $RepositoryRoot $Path } }
 
+function Get-GitRepositoryFallback {
+    param([Parameter(Mandatory)][string]$Repository)
+
+    $remoteUrl = "https://github.com/$Repository.git"
+    try {
+        $output = @(& git ls-remote --symref $remoteUrl HEAD 2>&1 | ForEach-Object { [string]$_ })
+        $exitCode = $LASTEXITCODE
+    }
+    catch {
+        return [pscustomobject]@{ Success=$false; DefaultBranch=$null; Error=$_.Exception.Message }
+    }
+
+    if ($exitCode -ne 0) {
+        $message = ($output -join ' ').Trim()
+        if ([string]::IsNullOrWhiteSpace($message)) { $message = "git ls-remote exited with code $exitCode." }
+        return [pscustomobject]@{ Success=$false; DefaultBranch=$null; Error=$message }
+    }
+
+    $defaultBranch = $null
+    foreach ($line in $output) {
+        if ($line -match '^ref:\s+refs/heads/(?<branch>\S+)\s+HEAD
+Write-Host "Repository: $RepositoryRoot"
+Write-Host "Registered apps: $($apps.Count)"
+Write-Host 'Lookup mode: owner-batched public repository inventory'
+Write-Host ''
+
+# Full Registry can exceed GitHub's unauthenticated 60 requests/hour limit if each repo is queried separately.
+# Fetch each owner's public repositories in pages of 100, then match locally.
+$repoIndex=@{}; $ownerErrors=@{}
+$owners=@($apps | ForEach-Object { ([string]$_.repository -split '/',2)[0] } | Sort-Object -Unique)
+foreach ($owner in $owners) {
+    $page=1
+    while ($true) {
+        $encodedOwner=[Uri]::EscapeDataString($owner)
+        $uri="$($ApiBaseUrl.TrimEnd('/'))/users/$encodedOwner/repos?type=owner&sort=full_name&per_page=100&page=$page"
+        $response=Invoke-GitHubGet -Uri $uri
+        if ($response.StatusCode -ne 200 -or $null -eq $response.Data) {
+            $ownerErrors[$owner]=if ([string]::IsNullOrWhiteSpace([string]$response.Error)) { 'Owner repository listing failed.' } else { [string]$response.Error }
+            break
+        }
+        $pageItems=@($response.Data)
+        foreach ($repo in $pageItems) {
+            $fullName=[string]$repo.full_name
+            if (-not [string]::IsNullOrWhiteSpace($fullName)) { $repoIndex[$fullName.ToLowerInvariant()]=$repo }
+        }
+        if ($pageItems.Count -lt 100) { break }
+        $page++
+    }
+}
+
+$results=[Collections.Generic.List[object]]::new(); $missingCount=0; $errorCount=0; $warningCount=0; $privateCount=0; $archivedCount=0
+foreach ($app in $apps) {
+    $repository=[string]$app.repository; $owner=($repository -split '/',2)[0]
+    Write-Host "Checking $repository ..." -NoNewline
+    $entry=[ordered]@{
+        appId=[string]$app.id; name=[string]$app.name; repository=$repository; registryStatus=[string]$app.status; registeredVersion=[string]$app.release.version
+        lookupStatus='ok'; exists=$true; visibility=$null; private=$null; archived=$null; defaultBranch=$null; htmlUrl=$null; pushedAt=$null; updatedAt=$null
+        releaseLookupStatus='not-checked'; hasLatestRelease=$false; latestRelease=$null; warnings=@(); error=$null
+    }
+    if ($ownerErrors.ContainsKey($owner)) {
+        $apiError=[string]$ownerErrors[$owner]
+        $fallback=Get-GitRepositoryFallback -Repository $repository
+        if ($fallback.Success) {
+            $warnings=[Collections.Generic.List[string]]::new()
+            $warnings.Add("GitHub API owner listing was unavailable; repository existence/default branch were verified with git fallback. API error: $apiError")
+            $entry.visibility='public'
+            $entry.private=$false
+            $entry.archived=$null
+            $entry.defaultBranch=[string]$fallback.DefaultBranch
+            $entry.htmlUrl="https://github.com/$repository"
+            $entry.warnings=@($warnings)
+            $warningCount += $warnings.Count
+            $results.Add([pscustomobject]$entry)
+            Write-Host ' OK (git fallback)' -ForegroundColor Yellow
+            continue
+        }
+
+        $entry.lookupStatus='error'
+        $entry.exists=$false
+        $entry.error="$apiError Git fallback also failed: $($fallback.Error)"
+        $errorCount++
+        $results.Add([pscustomobject]$entry)
+        Write-Host ' ERROR' -ForegroundColor Red
+        continue
+    }
+    $key=$repository.ToLowerInvariant()
+    if (-not $repoIndex.ContainsKey($key)) {
+        $entry.lookupStatus='missing'; $entry.exists=$false; $entry.error='Repository was not found in the owner public-repository listing.'; $missingCount++; $errorCount++
+        $results.Add([pscustomobject]$entry); Write-Host ' MISSING' -ForegroundColor Red; continue
+    }
+    $repo=$repoIndex[$key]; $warnings=[Collections.Generic.List[string]]::new()
+    $entry.visibility=if ($null -ne $repo.PSObject.Properties['visibility']) {[string]$repo.visibility} else {'public'}
+    $entry.private=if ($null -ne $repo.PSObject.Properties['private']) {[bool]$repo.private} else {$false}
+    $entry.archived=if ($null -ne $repo.PSObject.Properties['archived']) {[bool]$repo.archived} else {$false}
+    $entry.defaultBranch=[string]$repo.default_branch; $entry.htmlUrl=[string]$repo.html_url; $entry.pushedAt=[string]$repo.pushed_at; $entry.updatedAt=[string]$repo.updated_at
+    if ($entry.private) { $privateCount++; $warnings.Add('Repository is private; Browser Kitty application repositories are normally public.') }
+    if ($entry.archived -and [string]$app.status -ne 'archived') { $archivedCount++; $warnings.Add("Repository is archived but registry status is '$($app.status)'.") }
+    elseif (-not $entry.archived -and [string]$app.status -eq 'archived') { $warnings.Add('Registry status is archived but the GitHub repository is not archived.') }
+    $entry.warnings=@($warnings); $warningCount += $warnings.Count
+    $results.Add([pscustomobject]$entry)
+    if ($warnings.Count) { Write-Host " OK ($($warnings.Count) warning(s))" -ForegroundColor Yellow } else { Write-Host ' OK' -ForegroundColor Green }
+}
+
+$inventory=[ordered]@{
+    schemaVersion=1; generatedAt=[DateTimeOffset]::UtcNow.ToString('o'); sourceRegistry='apps.json'; githubApi=$ApiBaseUrl; authenticated=-not [string]::IsNullOrWhiteSpace($GitHubToken)
+    summary=[ordered]@{
+        registeredApps=$apps.Count; checkedRepositories=$results.Count; existingRepositories=@($results|Where-Object{$_.exists}).Count; missingRepositories=$missingCount
+        privateRepositories=$privateCount; archivedRepositories=$archivedCount; withLatestRelease=0; withoutLatestRelease=0
+        warnings=$warningCount; errors=$errorCount
+    }
+    repositories=@($results)
+}
+$json=$inventory|ConvertTo-Json -Depth 20
+if (-not (Test-Json -Json $json -SchemaFile $inventorySchemaPath)) { throw 'Generated repository inventory does not match schema/repository-inventory.schema.json.' }
+if (-not $NoWrite) { $out=Get-AbsoluteOutputPath -Path $OutputPath; New-Item -ItemType Directory -Force -Path (Split-Path -Parent $out)|Out-Null; $json|Set-Content -LiteralPath $out -Encoding utf8NoBOM; Write-Host "Inventory written: $out" }
+Write-Host "Existing: $(@($results|Where-Object{$_.exists}).Count) / $($apps.Count)"
+Write-Host "Warnings: $warningCount"
+Write-Host "Errors: $errorCount"
+if ($errorCount -gt 0) { exit 1 }
+) {
+            $defaultBranch = [string]$Matches['branch']
+            break
+        }
+    }
+    if ([string]::IsNullOrWhiteSpace($defaultBranch)) {
+        return [pscustomobject]@{ Success=$false; DefaultBranch=$null; Error='Could not determine the default branch from git ls-remote.' }
+    }
+
+    return [pscustomobject]@{ Success=$true; DefaultBranch=$defaultBranch; Error=$null }
+}
+
 Write-Host 'Browser Kitty repository inventory'
 Write-Host "Repository: $RepositoryRoot"
 Write-Host "Registered apps: $($apps.Count)"

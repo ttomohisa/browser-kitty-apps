@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 1.0.1 production
+Version: 1.0.2 production
 
 ## Purpose
 
@@ -54,6 +54,12 @@ Not every application must pass through every state.
 - v1.0.0 — Production Registry (implemented)
 
 
+
+## v1.0.2 production maintenance
+
+v1.0.2 hardens cross-repository monitoring against GitHub's anonymous REST API quota. Repository Inventory still prefers the owner-batched REST listing because it provides visibility, archive, and update metadata. When that listing is unavailable, each registered public repository is probed with `git ls-remote --symref`; successful fallback preserves repository existence and default-branch data so downstream quality, release, and runtime checks can continue. Metadata available only through REST is left unknown and the inventory records a non-blocking warning.
+
+Documentation-only changes no longer trigger the full cross-repository Repository Health workflow. They remain covered by the static Validate Registry workflow, including English/Japanese README version consistency. Scheduled health, manual health, registry/runtime/checker changes, and release-version changes continue to run the full health suite.
 
 ## v1.0.1 production maintenance
 

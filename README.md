@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.0.1-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.0.2-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -144,9 +144,9 @@ After changing registry data:
 | [standards/BROWSER_KITTY_GUIDE.md](standards/BROWSER_KITTY_GUIDE.md) | Shared Browser Kitty app guidance |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
 
-## v1.0.1
+## v1.0.2
 
-v1.0.1 is the current registry release. It retries transient GitHub Pages responses while keeping persistent Pages errors blocking. See [CHANGELOG.md](CHANGELOG.md) for the full release history.
+v1.0.2 keeps Repository Health available when GitHub's anonymous REST API quota is exhausted by falling back to public Git repository probes for repository existence and default-branch discovery. Documentation-only changes are handled by the lightweight validation workflow instead of triggering a full 75-repository health scan. See [CHANGELOG.md](CHANGELOG.md) for the full release history.
 
 ## License
 

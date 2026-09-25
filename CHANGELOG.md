@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.0.2
+
+### Fixed
+
+- Added a public `git ls-remote --symref` fallback when the owner-batched GitHub REST repository listing is unavailable or rate-limited.
+- Repository existence and default-branch discovery now continue during anonymous API quota exhaustion; API-only metadata is left unavailable and recorded as a non-blocking warning instead of turning all registered apps into false failures.
+- Stopped the full 75-repository health workflow from running for documentation-only changes; the lightweight `Validate registry` workflow still validates release-document consistency.
+- Added `README.ja.md` to the release-readiness required files and version consistency check.
+
+
 ## v1.0.1
 
 ### Fixed
