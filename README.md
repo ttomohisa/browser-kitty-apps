@@ -1,5 +1,7 @@
 # Browser Kitty Apps
 
+[日本語](README.ja.md)
+
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
 [![Registry version](https://img.shields.io/badge/registry-v1.0.1-16624F?style=flat-square)](VERSION)
@@ -8,9 +10,7 @@
 
 **Browser Kitty** is a collection of small tools that run in the browser. No account or installation is required. Tools are designed to process user files and data locally whenever their documented behavior allows it.
 
-**Browser Kitty は、ブラウザだけで使える小さなツールを公開するサイトです。** 登録・インストール不要で、各ツールは原則として端末内で処理する構成です。
-
-### [Open Browser Kitty / Browser Kittyを開く →](https://browser-kitty.com/)
+### [Open Browser Kitty →](https://browser-kitty.com/)
 
 This repository is the public **app registry, health-check hub, and feedback entry point** for Browser Kitty. Each application remains in its own public repository; this repository is not a monorepo and is not a runtime dependency of the website.
 
@@ -20,17 +20,15 @@ You do not need to find the individual app repository before sending feedback. S
 
 | I want to… | Link |
 |---|---|
-| Improve an existing tool / 既存ツールを改善してほしい | [Feature request](https://github.com/ttomohisa/browser-kitty-apps/issues/new?template=feature_request.yml) |
-| Suggest a new browser tool / 新しいツールを提案したい | [New tool idea](https://github.com/ttomohisa/browser-kitty-apps/issues/new?template=new_tool.yml) |
-| Report something broken / 不具合を報告したい | [Problem report](https://github.com/ttomohisa/browser-kitty-apps/issues/new?template=problem_report.yml) |
-| See existing requests / 既存の要望を見る | [Issues](https://github.com/ttomohisa/browser-kitty-apps/issues) |
-| Use the tools / ツールを使う | [browser-kitty.com](https://browser-kitty.com/) |
+| Improve an existing tool | [Feature request](https://github.com/ttomohisa/browser-kitty-apps/issues/new?template=feature_request.yml) |
+| Suggest a new browser tool | [New tool idea](https://github.com/ttomohisa/browser-kitty-apps/issues/new?template=new_tool.yml) |
+| Report something broken | [Problem report](https://github.com/ttomohisa/browser-kitty-apps/issues/new?template=problem_report.yml) |
+| See existing requests | [Issues](https://github.com/ttomohisa/browser-kitty-apps/issues) |
+| Use the tools | [browser-kitty.com](https://browser-kitty.com/) |
 
 ### Star this repository
 
 If Browser Kitty is useful to you, starring this repository is a simple way to show interest in the project. Stars and issue reactions are also useful signals when deciding which tools or improvements to work on next.
-
-Browser Kittyを使っていて役に立った場合は、このRepositoryにStarを付けてもらえると、どの程度使われているかを知る手掛かりになります。機能要望へのリアクションも今後の改善を検討する際の参考にします。
 
 ## What this repository manages
 
