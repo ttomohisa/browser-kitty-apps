@@ -98,6 +98,19 @@ GitHub Pages probes use bounded retries only for transient request failures and 
 
 Generated reports are uploaded as the `browser-kitty-repository-health` Actions artifact and are not committed to the repository.
 
+## Human-readable registry and health
+
+`CATALOG.md` is a deterministic human-readable view of the application registry. Do not edit it by hand. After changing `apps.json` or `categories.json`, run:
+
+```powershell
+./scripts/generate-catalog.ps1
+./scripts/generate-catalog.ps1 -Check
+```
+
+`STATUS.md` is a committed health snapshot. The live Repository Health workflow regenerates the status view from `reports/repository-status.json`, adds it to the GitHub Actions Job Summary, and includes it in the workflow artifact. The live Actions result should be treated as newer than the committed snapshot.
+
+The human-readable files do not become independent sources of truth: registry data comes from `apps.json` / `categories.json`, and health data comes from the generated health JSON.
+
 ## Public export
 
 `generated/apps.public.json` is the stable build-time feed for the private Browser Kitty website repository.

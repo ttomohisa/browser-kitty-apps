@@ -10,6 +10,7 @@ Run on PowerShell 7:
 ./scripts/check-powershell.ps1
 ./scripts/check-registry.ps1
 ./scripts/generate-public-export.ps1 -Check
+./scripts/generate-catalog.ps1 -Check
 ./scripts/test-generate-report.ps1
 ./scripts/check-release-candidate.ps1
 ```
@@ -42,6 +43,13 @@ The historical script/report names are retained for compatibility. From v1.0.0 o
 - Hard runtime / standalone contradictions have no blocking failure.
 - WARN count and reasons are retained for follow-up.
 
+## Human-readable views
+
+- `CATALOG.md` is current and matches `apps.json` / `categories.json`.
+- `STATUS.md` exists as an explicitly dated snapshot.
+- Repository Health generates a fresh `STATUS.md` and publishes it in the Actions Job Summary.
+- Human-readable views are derived outputs; they do not replace Registry or Health JSON sources of truth.
+
 ## Browser Kitty export
 
 - `generated/apps.public.json` is current.
@@ -53,10 +61,10 @@ The historical script/report names are retained for compatibility. From v1.0.0 o
 ## Repository release metadata
 
 - `VERSION` is the intended release version.
-- The first version heading in `README.md` matches `VERSION`.
+- The first version heading in both `README.md` and `README.ja.md` matches `VERSION`.
 - The first release entry in `CHANGELOG.md` matches `VERSION`.
 - `REGISTRY_SPEC.md` current production version matches `VERSION`.
-- `LICENSE`, `README.md`, `CHANGELOG.md`, `REGISTRY_SPEC.md`, `OPERATIONS.md`, schemas, workflows, scripts, and generated export are present.
+- `LICENSE`, `README.md`, `README.ja.md`, `CATALOG.md`, `STATUS.md`, `CHANGELOG.md`, `REGISTRY_SPEC.md`, `OPERATIONS.md`, schemas, workflows, scripts, and generated export are present.
 
 ## CI
 
@@ -78,8 +86,9 @@ For each parent-registry release:
 2. Add the matching top sections to `README.md` and `CHANGELOG.md`.
 3. Update the current version in `REGISTRY_SPEC.md`.
 4. Regenerate `generated/apps.public.json` if registry/public data changed.
-5. Run the static release-readiness gate.
-6. Require both GitHub Actions workflows to pass.
-7. Release only with 0 blocking FAILs.
+5. Regenerate `CATALOG.md` when registry/category data changed and refresh the committed `STATUS.md` snapshot from a recent successful health run when practical.
+6. Run the static release-readiness gate.
+7. Require both GitHub Actions workflows to pass.
+8. Release only with 0 blocking FAILs.
 
 Use Semantic Versioning: patch for backward-compatible fixes/metadata corrections, minor for additive registry/schema/export capabilities, and major for intentional incompatible contract changes.

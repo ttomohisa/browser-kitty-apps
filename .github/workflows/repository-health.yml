@@ -48,6 +48,10 @@ jobs:
         shell: pwsh
         run: ./scripts/generate-public-export.ps1 -Check
 
+      - name: Verify human-readable catalog is current
+        shell: pwsh
+        run: ./scripts/generate-catalog.ps1 -Check
+
       - name: Smoke test repository health report
         id: health-report-smoke
         continue-on-error: true
@@ -90,6 +94,23 @@ jobs:
         shell: pwsh
         run: ./scripts/generate-report.ps1
 
+      - name: Generate human-readable health status
+        if: always()
+        shell: pwsh
+        run: |
+          if (-not (Test-Path -LiteralPath ./reports/repository-status.json -PathType Leaf)) {
+            throw 'Repository health JSON is missing; cannot generate STATUS.md.'
+          }
+          ./scripts/generate-status.ps1 -HealthReportPath reports/repository-status.json -OutputPath STATUS.md
+
+      - name: Publish health summary
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path -LiteralPath ./STATUS.md -PathType Leaf) {
+            Get-Content -LiteralPath ./STATUS.md -Raw -Encoding UTF8 | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding UTF8
+          }
+
       - name: Release readiness gate
         if: always()
         id: release-readiness
@@ -112,6 +133,7 @@ jobs:
             reports/repository-status.md
             reports/release-candidate.json
             reports/release-candidate.md
+            STATUS.md
           if-no-files-found: warn
           retention-days: 14
       - name: Enforce health report smoke test result

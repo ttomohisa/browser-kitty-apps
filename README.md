@@ -4,13 +4,15 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.0.2-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.1.0-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
 **Browser Kitty** is a collection of small tools that run in the browser. No account or installation is required. Tools are designed to process user files and data locally whenever their documented behavior allows it.
 
 ### [Open Browser Kitty →](https://browser-kitty.com/)
+
+[Browse all apps](CATALOG.md) · [Health snapshot](STATUS.md) · [Live health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml) · [Feature requests](https://github.com/ttomohisa/browser-kitty-apps/issues)
 
 This repository is the public **app registry, health-check hub, and feedback entry point** for Browser Kitty. Each application remains in its own public repository; this repository is not a monorepo and is not a runtime dependency of the website.
 
@@ -142,11 +144,13 @@ After changing registry data:
 | [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) | Release-readiness checklist |
 | [reports/README.md](reports/README.md) | Health report behavior |
 | [standards/BROWSER_KITTY_GUIDE.md](standards/BROWSER_KITTY_GUIDE.md) | Shared Browser Kitty app guidance |
+| [CATALOG.md](CATALOG.md) | Human-readable application catalog |
+| [STATUS.md](STATUS.md) | Human-readable Repository Health snapshot |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
 
-## v1.0.2
+## v1.1.0
 
-v1.0.2 keeps Repository Health available when GitHub's anonymous REST API quota is exhausted by falling back to public Git repository probes for repository existence and default-branch discovery. Documentation-only changes are handled by the lightweight validation workflow instead of triggering a full 75-repository health scan. See [CHANGELOG.md](CHANGELOG.md) for the full release history.
+v1.1.0 adds human-readable views for the registry and Repository Health. `CATALOG.md` is a deterministic catalog generated from the registry, while `STATUS.md` is a health snapshot; every Repository Health run regenerates the status view and publishes it directly in the GitHub Actions Job Summary. See [CHANGELOG.md](CHANGELOG.md) for the full release history.
 
 ## License
 
