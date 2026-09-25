@@ -83,6 +83,7 @@ else {
 
 $requiredFiles = @(
     'README.md',
+    'README.ja.md',
     'CHANGELOG.md',
     'LICENSE',
     'REGISTRY_SPEC.md',
@@ -121,6 +122,7 @@ else {
 }
 
 $readmePath = Join-Path $RepositoryRoot 'README.md'
+$readmeJaPath = Join-Path $RepositoryRoot 'README.ja.md'
 $changelogPath = Join-Path $RepositoryRoot 'CHANGELOG.md'
 $specPath = Join-Path $RepositoryRoot 'REGISTRY_SPEC.md'
 if (-not [string]::IsNullOrWhiteSpace($version)) {
@@ -133,6 +135,18 @@ if (-not [string]::IsNullOrWhiteSpace($version)) {
         }
         else {
             Add-RcCheck -Id 'readme_version' -Status 'PASS' -Message "README current version matches $version."
+        }
+    }
+
+    if (Test-Path -LiteralPath $readmeJaPath -PathType Leaf) {
+        $readmeJa = Get-Content -LiteralPath $readmeJaPath -Raw -Encoding UTF8
+        $match = [regex]::Match($readmeJa, '(?m)^## v(?<version>[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)\s*$')
+        if (-not $match.Success -or $match.Groups['version'].Value -cne $version) {
+            $found = if ($match.Success) { $match.Groups['version'].Value } else { '<none>' }
+            Add-RcCheck -Id 'readme_ja_version' -Status 'FAIL' -Message "README.ja.md first version heading is $found; expected $version."
+        }
+        else {
+            Add-RcCheck -Id 'readme_ja_version' -Status 'PASS' -Message "README.ja.md current version matches $version."
         }
     }
 

@@ -44,6 +44,38 @@ function Invoke-GitHubGet {
 }
 function Get-AbsoluteOutputPath { param([Parameter(Mandatory)][string]$Path); if ([IO.Path]::IsPathRooted($Path)) { $Path } else { Join-Path $RepositoryRoot $Path } }
 
+function Get-GitRepositoryFallback {
+    param([Parameter(Mandatory)][string]$Repository)
+
+    $remoteUrl = "https://github.com/$Repository.git"
+    try {
+        $output = @(& git ls-remote --symref $remoteUrl HEAD 2>&1 | ForEach-Object { [string]$_ })
+        $exitCode = $LASTEXITCODE
+    }
+    catch {
+        return [pscustomobject]@{ Success=$false; DefaultBranch=$null; Error=$_.Exception.Message }
+    }
+
+    if ($exitCode -ne 0) {
+        $message = ($output -join ' ').Trim()
+        if ([string]::IsNullOrWhiteSpace($message)) { $message = "git ls-remote exited with code $exitCode." }
+        return [pscustomobject]@{ Success=$false; DefaultBranch=$null; Error=$message }
+    }
+
+    $defaultBranch = $null
+    foreach ($line in $output) {
+        if ($line -match '^ref:\s+refs/heads/(?<branch>\S+)\s+HEAD$') {
+            $defaultBranch = [string]$Matches['branch']
+            break
+        }
+    }
+    if ([string]::IsNullOrWhiteSpace($defaultBranch)) {
+        return [pscustomobject]@{ Success=$false; DefaultBranch=$null; Error='Could not determine the default branch from git ls-remote.' }
+    }
+
+    return [pscustomobject]@{ Success=$true; DefaultBranch=$defaultBranch; Error=$null }
+}
+
 Write-Host 'Browser Kitty repository inventory'
 Write-Host "Repository: $RepositoryRoot"
 Write-Host "Registered apps: $($apps.Count)"
@@ -84,8 +116,30 @@ foreach ($app in $apps) {
         releaseLookupStatus='not-checked'; hasLatestRelease=$false; latestRelease=$null; warnings=@(); error=$null
     }
     if ($ownerErrors.ContainsKey($owner)) {
-        $entry.lookupStatus='error'; $entry.exists=$false; $entry.error=[string]$ownerErrors[$owner]; $errorCount++; $results.Add([pscustomobject]$entry)
-        Write-Host ' ERROR' -ForegroundColor Red; continue
+        $apiError=[string]$ownerErrors[$owner]
+        $fallback=Get-GitRepositoryFallback -Repository $repository
+        if ($fallback.Success) {
+            $warnings=[Collections.Generic.List[string]]::new()
+            $warnings.Add("GitHub API owner listing was unavailable; repository existence/default branch were verified with git fallback. API error: $apiError")
+            $entry.visibility='public'
+            $entry.private=$false
+            $entry.archived=$null
+            $entry.defaultBranch=[string]$fallback.DefaultBranch
+            $entry.htmlUrl="https://github.com/$repository"
+            $entry.warnings=@($warnings)
+            $warningCount += $warnings.Count
+            $results.Add([pscustomobject]$entry)
+            Write-Host ' OK (git fallback)' -ForegroundColor Yellow
+            continue
+        }
+
+        $entry.lookupStatus='error'
+        $entry.exists=$false
+        $entry.error="$apiError Git fallback also failed: $($fallback.Error)"
+        $errorCount++
+        $results.Add([pscustomobject]$entry)
+        Write-Host ' ERROR' -ForegroundColor Red
+        continue
     }
     $key=$repository.ToLowerInvariant()
     if (-not $repoIndex.ContainsKey($key)) {

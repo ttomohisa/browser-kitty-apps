@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.0.1-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.0.2-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -144,9 +144,9 @@ Registryを変更した場合は次を実行します。
 | [standards/BROWSER_KITTY_GUIDE.md](standards/BROWSER_KITTY_GUIDE.md) | Browser Kitty共通ガイド |
 | [CHANGELOG.md](CHANGELOG.md) | Version履歴 |
 
-## v1.0.1
+## v1.0.2
 
-v1.0.1が現在のRegistry releaseです。GitHub Pagesの一時的なHTTP応答は再試行し、継続するPagesエラーは従来どおりblocking failureとして扱います。詳細は [CHANGELOG.md](CHANGELOG.md) を参照してください。
+v1.0.2では、GitHubの匿名REST APIのrate limitに到達した場合でも、Public Git RepositoryへのfallbackでRepositoryの存在確認とdefault branch確認を継続できるようにしました。また、READMEなどドキュメントだけの変更では75RepositoryのFull Healthを起動せず、軽量なValidationだけを実行します。詳細は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## License
 

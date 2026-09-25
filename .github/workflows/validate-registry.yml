@@ -11,6 +11,7 @@ on:
       - generated/**
       - VERSION
       - README.md
+      - README.ja.md
       - CHANGELOG.md
       - REGISTRY_SPEC.md
       - RELEASE_CHECKLIST.md
@@ -26,6 +27,7 @@ on:
       - generated/**
       - VERSION
       - README.md
+      - README.ja.md
       - CHANGELOG.md
       - REGISTRY_SPEC.md
       - RELEASE_CHECKLIST.md

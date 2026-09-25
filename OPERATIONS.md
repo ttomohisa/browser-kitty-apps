@@ -94,7 +94,7 @@ GitHub Pages probes use bounded retries only for transient request failures and 
 
 ## Scheduled checks
 
-`.github/workflows/repository-health.yml` runs on relevant changes, manual dispatch, and the scheduled cron. It collects all source reports even when an individual source check reports an error, then uses the consolidated health report as the final health result.
+`.github/workflows/repository-health.yml` runs on registry/runtime/checker changes, release-version changes, manual dispatch, and the scheduled cron. Documentation-only changes are handled by `Validate registry` and do not trigger a second full scan of all child repositories. The health workflow collects all source reports even when an individual source check reports an error, then uses the consolidated health report as the final health result.
 
 Generated reports are uploaded as the `browser-kitty-repository-health` Actions artifact and are not committed to the repository.
 
@@ -108,7 +108,9 @@ The export intentionally omits internal repository-profile, build-path, hosting-
 
 ## GitHub authentication
 
-Public child repositories are checked anonymously where practical. `BROWSER_KITTY_GITHUB_TOKEN` is optional and should be configured only when additional cross-repository API rate limit is required.
+Public child repositories are checked anonymously where practical. Repository Inventory prefers the owner-batched GitHub REST API. If that request is unavailable or rate-limited, it falls back to `git ls-remote --symref` for each public child repository so existence and default-branch checks can continue. REST-only metadata is recorded as unavailable with a warning rather than converted into false application failures.
+
+`BROWSER_KITTY_GITHUB_TOKEN` remains optional. Configure it when complete cross-repository REST metadata is desired reliably or if anonymous API quota pressure becomes frequent; the fallback keeps core health monitoring functional without requiring a secret.
 
 Do not place tokens, credentials, private Browser Kitty repository contents, or user data in this public registry.
 
