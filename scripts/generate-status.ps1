@@ -87,7 +87,7 @@ $reasonRows = @(
             Count = [int]$reasonCounts[$code]
         }
     }
-) | Sort-Object @{ Expression = 'Count'; Descending = $true }, Label
+) | Sort-Object @{ Expression = { $_.Count }; Descending = $true }, Label
 
 $failApps = @($apps | Where-Object { [string]$_.overallStatus -eq 'FAIL' } | Sort-Object name)
 $attentionApps = @($apps | Where-Object { [string]$_.overallStatus -ne 'PASS' } | Sort-Object @{ Expression = { if ([string]$_.overallStatus -eq 'FAIL') { 0 } else { 1 } } }, name)
@@ -151,7 +151,8 @@ else {
     $lines.Add('| Count | Reason | Code |')
     $lines.Add('|---:|---|---|')
     foreach ($reason in $reasonRows) {
-        $lines.Add("| $($reason.Count) | $(Escape-MarkdownTableValue -Value $reason.Label) | `$(Escape-MarkdownTableValue -Value $reason.Code)` |")
+        $codeText = '`' + (Escape-MarkdownTableValue -Value $reason.Code) + '`'
+        $lines.Add("| $($reason.Count) | $(Escape-MarkdownTableValue -Value $reason.Label) | $codeText |")
     }
     $lines.Add('')
 }

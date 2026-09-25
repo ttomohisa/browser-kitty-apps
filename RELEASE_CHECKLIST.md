@@ -61,7 +61,7 @@ The historical script/report names are retained for compatibility. From v1.0.0 o
 ## Repository release metadata
 
 - `VERSION` is the intended release version.
-- The first version heading in `README.md` matches `VERSION`.
+- The first version heading in both `README.md` and `README.ja.md` matches `VERSION`.
 - The first release entry in `CHANGELOG.md` matches `VERSION`.
 - `REGISTRY_SPEC.md` current production version matches `VERSION`.
 - `LICENSE`, `README.md`, `README.ja.md`, `CATALOG.md`, `STATUS.md`, `CHANGELOG.md`, `REGISTRY_SPEC.md`, `OPERATIONS.md`, schemas, workflows, scripts, and generated export are present.

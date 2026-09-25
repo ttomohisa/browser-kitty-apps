@@ -48,6 +48,10 @@ jobs:
         shell: pwsh
         run: ./scripts/generate-public-export.ps1 -Check
 
+      - name: Verify human-readable catalog is current
+        shell: pwsh
+        run: ./scripts/generate-catalog.ps1 -Check
+
       - name: Smoke test repository health report
         id: health-report-smoke
         continue-on-error: true

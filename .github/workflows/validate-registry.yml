@@ -30,6 +30,8 @@ on:
       - VERSION
       - README.md
       - README.ja.md
+      - CATALOG.md
+      - STATUS.md
       - CHANGELOG.md
       - REGISTRY_SPEC.md
       - RELEASE_CHECKLIST.md

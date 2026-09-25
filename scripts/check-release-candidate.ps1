@@ -102,6 +102,8 @@ $requiredFiles = @(
     'scripts/check-powershell.ps1',
     'scripts/check-registry.ps1',
     'scripts/generate-public-export.ps1',
+    'scripts/generate-catalog.ps1',
+    'scripts/generate-status.ps1',
     'scripts/generate-report.ps1',
     'scripts/test-generate-report.ps1',
     '.github/workflows/validate-registry.yml',
