@@ -131,7 +131,7 @@ else {
         $lines.Add('')
         foreach ($issue in $failIssues) {
             $label = Get-IssueLabel -Code ([string]$issue.code) -Message ([string]$issue.message)
-            $lines.Add("- **$([string]$issue.source)** — $label: $([string]$issue.message)")
+            $lines.Add("- **$([string]$issue.source)** — ${label}: $([string]$issue.message)")
         }
         $lines.Add('')
     }
