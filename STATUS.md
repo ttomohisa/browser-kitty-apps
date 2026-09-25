@@ -4,7 +4,7 @@
 
 > This file is generated from `reports/repository-status.json`. A committed copy is a snapshot; the GitHub Actions Job Summary is the live view.
 
-Last checked: **2026-09-25T04:16:36Z**
+Last checked: **2026-09-25T04:20:05.7295656+00:00**
 
 ## Overall
 
