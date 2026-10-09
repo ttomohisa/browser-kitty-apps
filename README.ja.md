@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.1.1-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.1.2-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -147,6 +147,10 @@ Registryを変更した場合は次を実行します。
 | [CATALOG.md](CATALOG.md) | 人間向けアプリ一覧 |
 | [STATUS.md](STATUS.md) | 人間向けRepository Healthスナップショット |
 | [CHANGELOG.md](CHANGELOG.md) | Version履歴 |
+
+## v1.1.2
+
+v1.1.2では、依存アセットの実行場所を明示し、メインスレッドで使うモジュールとWorkerを区別します。意図的にバージョンを持たないアプリでは比較を対象外として記録し、配布HTMLの別名も検査します。実際のWorker・WASM・バージョン不一致の警告は回帰テストで維持します。詳細は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## v1.1.1
 

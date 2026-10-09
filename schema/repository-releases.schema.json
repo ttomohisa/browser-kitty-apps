@@ -279,6 +279,21 @@
             "boolean",
             "null"
           ]
+        },
+        "appConfigVersionPolicy": {
+          "type": "string",
+          "enum": [
+            "versioned",
+            "unversioned"
+          ]
+        },
+        "versionComparison": {
+          "type": "string",
+          "enum": [
+            "applicable",
+            "not-applicable"
+          ],
+          "description": "An explicit unversioned app has no version to compare; matching booleans remain null."
         }
       }
     },

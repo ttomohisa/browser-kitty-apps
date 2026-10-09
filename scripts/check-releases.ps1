@@ -38,27 +38,72 @@ Write-Host 'Browser Kitty release/version check';Write-Host "Registered apps: $(
 $results=[Collections.Generic.List[object]]::new();$pass=0;$warn=0;$fail=0;$lookupErrors=0
 foreach($app in $apps){
  $id=[string]$app.id;$repo=[string]$app.repository;$registered=[string]$app.release.version;$issues=[Collections.Generic.List[object]]::new();Write-Host "Checking $repo ..." -NoNewline
- $defaultBranch=$null;$configStatus='error';$configVersion=$null;$outputs=@();$blockNet=$null;$matchConfig=$null;$releaseStatusLookup='error';$releaseTag=$null;$matchRelease=$null;$tagStatus='error';$tags=@();$matchingTag=$null;$err=$null
+ $defaultBranch=$null;$configStatus='error';$configVersion=$null;$configVersionPolicy='versioned';$versionComparison='applicable';$outputs=@();$blockNet=$null;$matchConfig=$null;$releaseStatusLookup='error';$releaseTag=$null;$matchRelease=$null;$tagStatus='error';$tags=@();$matchingTag=$null;$err=$null
  if(-not $inventoryById.ContainsKey($id) -or [string]$inventoryById[$id].lookupStatus -ne 'ok' -or -not [bool]$inventoryById[$id].exists){$issues.Add((New-Issue FAIL 'repository_unavailable' 'Repository is unavailable according to inventory.'));$lookupErrors++;$err='Repository unavailable.'}
  else{
   $defaultBranch=[string]$inventoryById[$id].defaultBranch;$profile=if($null -ne $app.PSObject.Properties['repositoryProfile']){[string]$app.repositoryProfile}else{'standard'};$parts=$repo-split'/',2
   $configUri="https://raw.githubusercontent.com/$([Uri]::EscapeDataString($parts[0]))/$([Uri]::EscapeDataString($parts[1]))/refs/heads/$([Uri]::EscapeDataString($defaultBranch))/app.config.json"
   $cr=Get-Text $configUri @(200,404)
   if($cr.StatusCode -eq 200){
-    try{$c=$cr.Content|ConvertFrom-Json -Depth 100;$configStatus='ok';$configVersion=[string]$c.version;$list=[Collections.Generic.List[string]]::new();if($null -ne $c.PSObject.Properties['build']){$b=$c.build;foreach($pn in @('output','multiThreadOutput')){if($null -ne $b.PSObject.Properties[$pn]){$v=[string]$b.$pn;if($v -and -not $list.Contains($v)){$list.Add($v)}}};if($null -ne $b.PSObject.Properties['selfExtract']-and$null -ne $b.selfExtract){foreach($pn in @('output','multiThreadOutput')){if($null -ne $b.selfExtract.PSObject.Properties[$pn]){$v=[string]$b.selfExtract.$pn;if($v -and -not $list.Contains($v)){$list.Add($v)}}}};if($null -ne $b.PSObject.Properties['blockRuntimeNetwork']){$blockNet=[bool]$b.blockRuntimeNetwork}};$outputs=@($list);$matchConfig=(Normalize-VersionTag $configVersion) -eq (Normalize-VersionTag $registered);if (-not $matchConfig){$issues.Add((New-Issue WARN 'app_config_version_mismatch' "Registry version '$registered' differs from app.config.json version '$configVersion'."))}}
-    catch{$issues.Add((New-Issue FAIL 'app_config_invalid' "app.config.json could not be parsed: $($_.Exception.Message)"));$lookupErrors++}
+    try {
+      $c = $cr.Content | ConvertFrom-Json -Depth 100
+      if ($null -ne $c.PSObject.Properties['versionPolicy']) {
+        if ($c.versionPolicy -isnot [string] -or $c.versionPolicy -cne 'unversioned') {
+          throw "versionPolicy must be the exact string 'unversioned' when present."
+        }
+        if ($null -ne $c.PSObject.Properties['version']) {
+          throw 'An explicitly unversioned app must omit version, including null or empty values.'
+        }
+        $configVersionPolicy = 'unversioned'
+        $versionComparison = 'not-applicable'
+      }
+      $configVersion = if ($null -ne $c.PSObject.Properties['version']) { [string]$c.version } else { $null }
+      $list = [Collections.Generic.List[string]]::new()
+      if ($null -ne $c.PSObject.Properties['build'] -and $null -ne $c.build) {
+        $b = $c.build
+        foreach ($pn in @('output', 'multiThreadOutput')) {
+          if ($null -ne $b.PSObject.Properties[$pn]) { $v = [string]$b.$pn; if ($v -and -not $list.Contains($v)) { $list.Add($v) } }
+        }
+        if ($null -ne $b.PSObject.Properties['aliases']) {
+          if ($b.aliases -isnot [array]) { throw 'build.aliases must be an array of nonempty output paths.' }
+          if ($b.aliases.Count -gt 0 -and ($null -eq $b.PSObject.Properties['output'] -or $b.output -isnot [string] -or [string]::IsNullOrWhiteSpace($b.output))) { throw 'Nonempty build.aliases requires a primary build.output path.' }
+          foreach ($alias in $b.aliases) {
+            if ($alias -isnot [string] -or [string]::IsNullOrWhiteSpace($alias)) { throw 'build.aliases must contain only nonempty string output paths.' }
+            if (-not $list.Contains($alias)) { $list.Add($alias) }
+          }
+        }
+        if ($null -ne $b.PSObject.Properties['selfExtract'] -and $null -ne $b.selfExtract) {
+          foreach ($pn in @('output', 'multiThreadOutput')) {
+            if ($null -ne $b.selfExtract.PSObject.Properties[$pn]) { $v = [string]$b.selfExtract.$pn; if ($v -and -not $list.Contains($v)) { $list.Add($v) } }
+          }
+        }
+        if ($null -ne $b.PSObject.Properties['blockRuntimeNetwork']) { $blockNet = [bool]$b.blockRuntimeNetwork }
+      }
+      $outputs = @($list)
+      if ($versionComparison -eq 'applicable') {
+        if ([string]::IsNullOrWhiteSpace($configVersion)) {
+          $issues.Add((New-Issue WARN 'app_config_version_missing' 'app.config.json has no version and does not explicitly declare versionPolicy=unversioned.'))
+        }
+        else {
+          $matchConfig = (Normalize-VersionTag $configVersion) -eq (Normalize-VersionTag $registered)
+          if (-not $matchConfig) { $issues.Add((New-Issue WARN 'app_config_version_mismatch' "Registry version '$registered' differs from app.config.json version '$configVersion'.")) }
+        }
+      }
+      $configStatus = 'ok'
+    }
+    catch { $configStatus = 'error'; $issues.Add((New-Issue FAIL 'app_config_invalid' "app.config.json could not be parsed or validated: $($_.Exception.Message)")); $lookupErrors++ }
   }elseif($cr.StatusCode -eq 404 -and $profile -eq 'legacy'){$configStatus='legacy-none';$issues.Add((New-Issue WARN 'legacy_app_config_missing' 'Legacy repository has no app.config.json; version comparison is skipped.'))}
   else{$issues.Add((New-Issue FAIL 'app_config_lookup_failed' "app.config.json lookup failed: $($cr.Error)"));$lookupErrors++}
 
   $lr=Get-LatestReleaseTag $repo;$releaseStatusLookup=$lr.Status;$releaseTag=$lr.Tag
-  if($lr.Status -eq 'ok'){$matchRelease=(Normalize-VersionTag $releaseTag) -eq (Normalize-VersionTag $registered);if (-not $matchRelease){$issues.Add((New-Issue WARN 'release_version_mismatch' "Registry version '$registered' differs from latest GitHub Release tag '$releaseTag'."))}}
+  if($lr.Status -eq 'ok' -and $versionComparison -eq 'applicable'){$matchRelease=(Normalize-VersionTag $releaseTag) -eq (Normalize-VersionTag $registered);if (-not $matchRelease){$issues.Add((New-Issue WARN 'release_version_mismatch' "Registry version '$registered' differs from latest GitHub Release tag '$releaseTag'."))}}
   elseif($lr.Status -eq 'error'){$issues.Add((New-Issue FAIL 'release_lookup_failed' "Latest Release lookup failed: $($lr.Error)"));$lookupErrors++}
 
-  try{$gitOut=@(& git ls-remote --tags --refs "https://github.com/$repo.git" 2>$null);$gitCode=$LASTEXITCODE;if($gitCode -ne 0){throw "git ls-remote exited with code $gitCode"};$tags=@($gitOut|ForEach-Object{if($_ -match 'refs/tags/(.+)$'){$Matches[1]}}|Where-Object{$_});$tagStatus=if($tags.Count){'ok'}else{'none'};$matching=@($tags|Where-Object{(Normalize-VersionTag $_) -eq (Normalize-VersionTag $registered)}|Select-Object -First 1);if($matching.Count){$matchingTag=[string]$matching[0]}elseif($tags.Count){$issues.Add((New-Issue WARN 'registered_version_tag_missing' "Repository has tags, but none matches registry version '$registered'."))}}
+  try{$gitOut=@(& git ls-remote --tags --refs "https://github.com/$repo.git" 2>$null);$gitCode=$LASTEXITCODE;if($gitCode -ne 0){throw "git ls-remote exited with code $gitCode"};$tags=@($gitOut|ForEach-Object{if($_ -match 'refs/tags/(.+)$'){$Matches[1]}}|Where-Object{$_});$tagStatus=if($tags.Count){'ok'}else{'none'};if($versionComparison -eq 'applicable'){$matching=@($tags|Where-Object{(Normalize-VersionTag $_) -eq (Normalize-VersionTag $registered)}|Select-Object -First 1);if($matching.Count){$matchingTag=[string]$matching[0]}elseif($tags.Count){$issues.Add((New-Issue WARN 'registered_version_tag_missing' "Repository has tags, but none matches registry version '$registered'."))}}}
   catch{$tagStatus='error';$issues.Add((New-Issue FAIL 'tag_lookup_failed' "Tag lookup failed: $($_.Exception.Message)"));$lookupErrors++}
  }
  $status=if(@($issues|Where-Object severity -eq 'FAIL').Count){'FAIL'}elseif(@($issues|Where-Object severity -eq 'WARN').Count){'WARN'}else{'PASS'};switch($status){'PASS'{$pass++;Write-Host ' PASS' -ForegroundColor Green};'WARN'{$warn++;Write-Host ' WARN' -ForegroundColor Yellow};'FAIL'{$fail++;Write-Host ' FAIL' -ForegroundColor Red}}
- $results.Add([pscustomobject][ordered]@{appId=$id;name=[string]$app.name;repository=$repo;registryStatus=[string]$app.status;registeredVersion=$registered;defaultBranch=$defaultBranch;releaseStatus=$status;appConfigLookupStatus=$configStatus;appConfigVersion=$configVersion;appConfigBuildOutputs=@($outputs);appConfigBlockRuntimeNetwork=$blockNet;registryMatchesAppConfig=$matchConfig;releaseLookupStatus=$releaseStatusLookup;latestReleaseTag=$releaseTag;registryMatchesRelease=$matchRelease;tagLookupStatus=$tagStatus;tagCount=$tags.Count;matchingVersionTag=$matchingTag;tags=@($tags);issues=@($issues);error=$err})
+ $results.Add([pscustomobject][ordered]@{appId=$id;name=[string]$app.name;repository=$repo;registryStatus=[string]$app.status;registeredVersion=$registered;defaultBranch=$defaultBranch;releaseStatus=$status;appConfigLookupStatus=$configStatus;appConfigVersion=$configVersion;appConfigVersionPolicy=$configVersionPolicy;versionComparison=$versionComparison;appConfigBuildOutputs=@($outputs);appConfigBlockRuntimeNetwork=$blockNet;registryMatchesAppConfig=$matchConfig;releaseLookupStatus=$releaseStatusLookup;latestReleaseTag=$releaseTag;registryMatchesRelease=$matchRelease;tagLookupStatus=$tagStatus;tagCount=$tags.Count;matchingVersionTag=$matchingTag;tags=@($tags);issues=@($issues);error=$err})
 }
 $report=[ordered]@{schemaVersion=1;generatedAt=[DateTimeOffset]::UtcNow.ToString('o');sourceRegistry='apps.json';sourceInventory=$InventoryPath;githubApi=$ApiBaseUrl;authenticated=-not [string]::IsNullOrWhiteSpace($GitHubToken);policy=[ordered]@{missingReleaseIsFailure=$false;missingTagsIsFailure=$false;versionMismatchSeverity='WARN';acceptedTagForms=@('<version>','v<version>')};summary=[ordered]@{registeredApps=$apps.Count;checkedApps=$results.Count;pass=$pass;warn=$warn;fail=$fail;lookupErrors=$lookupErrors};applications=@($results)}
 $json=$report|ConvertTo-Json -Depth 30;if(-not(Test-Json -Json $json -SchemaFile $schemaPath)){throw 'Generated Release report does not match schema/repository-releases.schema.json.'}

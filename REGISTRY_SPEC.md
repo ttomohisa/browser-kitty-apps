@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 1.1.1 production
+Version: 1.1.2 production
 
 ## Purpose
 
@@ -186,8 +186,19 @@ The first live 75-app health run showed that repository hygiene debt and applica
 
 Runtime dependency inspection accepts all dependency-manifest layouts already present in Browser Kitty: an `assets` array, a single `asset` object, or a `files` array. Dependency evidence is advisory metadata evidence; the Registry remains the explicit source for capability flags.
 
+Each dependency asset may declare `executionContext` as exactly `main-thread` or `worker`. This describes how that app executes that specific embedded asset, not what upstream calls the file. A `main-thread` declaration requires source evidence that the module is imported/executed in the document and is never passed to a Worker; for example, PDF.js `WorkerMessageHandler` can be imported into `globalThis.pdfjsWorker` while `GlobalWorkerOptions.workerPort` stays null. This metadata does not change the app runtime or the registry's `requiresWorker` flag. It must be updated if the app starts using a real Worker.
+
+The runtime checker records explicitly main-thread assets in `evidence.mainThreadAssets`; it records explicit `worker` assets even when their filenames have no worker keyword. Missing context retains the existing worker filename/key heuristic. Unknown, empty, null, non-string, or incorrectly cased context values fail validation. Context is asset-local and is not inherited from a whole dependency; declaring one asset main-thread cannot suppress warnings for other Worker assets or WebAssembly assets. No app IDs or filenames are exempted.
+
+Apps that intentionally have no release version may explicitly set `versionPolicy: "unversioned"` in `app.config.json` and must omit `version` entirely. The release checker reports `appConfigVersionPolicy=unversioned`, `versionComparison=not-applicable`, and null version/match fields. It still validates build/runtime metadata and retains release/tag lookup evidence and lookup failures. This is not a claim that the registry's historical version placeholder is a real child version. Invalid policies or a simultaneous version field fail validation; missing versions without the explicit policy remain warnings.
+
+`scripts/test-check-runtime.ps1` and `scripts/test-check-releases.ps1` run the real checkers against deterministic fixtures with only HTTP/git boundaries replaced. Both validation workflows run these regressions.
+
+
 ## v0.7.0 Full Registry notes
 
 The registry now distinguishes `repositoryProfile: standard` from `repositoryProfile: legacy`. Standard repositories are expected to provide `app.config.json`; legacy repositories may omit it while migration remains pending. Legacy omission is a warning, not a repository-unavailable failure.
 
 Full-registry health checks must remain usable without exhausting GitHub's unauthenticated REST quota. Repository metadata is therefore fetched in owner-sized pages, asset presence is checked through throttled raw-file HEAD requests, and release/tag inspection is separated from repository inventory. Templates, builder repositories, shared cores, and duplicate repository aliases are not application entries.
+
+Child `app.config.json` may list `build.aliases` as an array of nonempty string paths for exact generated copies of the primary output. The release checker deduplicates these alongside primary and self-extract outputs; invalid alias metadata fails validation. Child build checks must verify byte parity. Aliases do not introduce a build for an existing no-build application.

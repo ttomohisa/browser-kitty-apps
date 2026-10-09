@@ -107,6 +107,7 @@ foreach ($app in $apps) {
     $dependenciesLookupStatus = 'none'
     $wasmAssets = [System.Collections.Generic.List[string]]::new()
     $workerAssets = [System.Collections.Generic.List[string]]::new()
+    $mainThreadAssets = [System.Collections.Generic.List[string]]::new()
     $errorMessage = $null
 
     $runtime = [ordered]@{
@@ -220,9 +221,24 @@ foreach ($app in $apps) {
                             if ($mime -eq 'application/wasm' -or $path -match '(?i)\.wasm(?:\.gz)?$') {
                                 if (-not [string]::IsNullOrWhiteSpace($path) -and -not $wasmAssets.Contains($path)) { $wasmAssets.Add($path) }
                             }
-                            if ($key -match '(?i)worker' -or $path -match '(?i)worker') {
-                                $workerEvidence = if ([string]::IsNullOrWhiteSpace($path)) { $key } else { $path }
-                                if (-not [string]::IsNullOrWhiteSpace($workerEvidence) -and -not $workerAssets.Contains($workerEvidence)) { $workerAssets.Add($workerEvidence) }
+                            # An asset's name does not establish where the app executes it.
+                            # Keep the legacy hint unless this specific asset declares a valid context.
+                            $assetExecutionContext = $null
+                            if ($null -ne $asset.PSObject.Properties['executionContext']) {
+                                if ($asset.executionContext -isnot [string] -or $asset.executionContext -cnotin @('main-thread', 'worker')) {
+                                    throw "Asset '$path' has invalid executionContext; expected 'main-thread' or 'worker'."
+                                }
+                                $assetExecutionContext = [string]$asset.executionContext
+                            }
+                            $assetEvidence = if ([string]::IsNullOrWhiteSpace($path)) { $key } else { $path }
+                            if ($null -ne $assetExecutionContext -and [string]::IsNullOrWhiteSpace($assetEvidence)) {
+                                throw 'An asset with executionContext must identify a path/file or key/id.'
+                            }
+                            if ($assetExecutionContext -ceq 'main-thread') {
+                                if (-not [string]::IsNullOrWhiteSpace($assetEvidence) -and -not $mainThreadAssets.Contains($assetEvidence)) { $mainThreadAssets.Add($assetEvidence) }
+                            }
+                            elseif ($assetExecutionContext -ceq 'worker' -or $key -match '(?i)worker' -or $path -match '(?i)worker') {
+                                if (-not [string]::IsNullOrWhiteSpace($assetEvidence) -and -not $workerAssets.Contains($assetEvidence)) { $workerAssets.Add($assetEvidence) }
                             }
                         }
                     }
@@ -288,6 +304,7 @@ foreach ($app in $apps) {
             dependenciesLookupStatus = $dependenciesLookupStatus
             wasmAssets               = @($wasmAssets)
             workerAssets             = @($workerAssets)
+            mainThreadAssets         = @($mainThreadAssets)
         }
         issues        = @($issues)
         error         = $errorMessage
