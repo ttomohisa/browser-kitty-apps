@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.2
+
+### Fixed
+
+- Distinguish dependency assets explicitly executed on the main thread from actual Worker assets, while preserving legacy filename hints, WebAssembly evidence, and invalid-metadata failures.
+- Recognize an explicit unversioned app metadata policy without inventing a child version or treating a skipped comparison as a match.
+- Add deterministic runtime/release regression checks to both validation workflows.
+
 ## v1.1.1
 
 ### Changed

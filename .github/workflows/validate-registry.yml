@@ -66,6 +66,14 @@ jobs:
         shell: pwsh
         run: ./scripts/generate-catalog.ps1 -Check
 
+      - name: Test runtime execution-context evidence
+        shell: pwsh
+        run: ./scripts/test-check-runtime.ps1
+
+      - name: Test explicit version policies
+        shell: pwsh
+        run: ./scripts/test-check-releases.ps1
+
       - name: Smoke test repository health report
         shell: pwsh
         run: ./scripts/test-generate-report.ps1

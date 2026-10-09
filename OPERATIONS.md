@@ -31,6 +31,8 @@ For a registry-only change:
    ./scripts/check-registry.ps1
    ./scripts/generate-public-export.ps1 -Check
    ./scripts/test-generate-report.ps1
+   ./scripts/test-check-runtime.ps1
+   ./scripts/test-check-releases.ps1
    ./scripts/check-release-candidate.ps1
    ```
 

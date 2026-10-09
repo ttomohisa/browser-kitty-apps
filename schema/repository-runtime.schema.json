@@ -239,6 +239,13 @@
           "items": {
             "type": "string"
           }
+        },
+        "mainThreadAssets": {
+          "type": "array",
+          "description": "Dependency assets explicitly declared to execute only on the main thread.",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
