@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.1.0-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.1.1-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -43,7 +43,7 @@ The source of truth for application code is each individual app repository. This
 - consolidated health reports
 - release-readiness checks
 
-Current production baseline: **75 published applications across 7 categories**.
+Current inventory: **96 registered applications**, including **86 published on Browser Kitty across 7 categories** and **10 not yet published there**. A working app site is independent of Browser Kitty catalog publication.
 
 ```text
 browser-kitty.com
@@ -147,6 +147,10 @@ After changing registry data:
 | [CATALOG.md](CATALOG.md) | Human-readable application catalog |
 | [STATUS.md](STATUS.md) | Human-readable Repository Health snapshot |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+
+## v1.1.1
+
+v1.1.1 refreshes current child-repository versions and reconciles the registry with the live Browser Kitty catalog: 96 registered apps, 86 published apps, and 10 independently hosted apps outside the catalog. It corrects two catalog slugs, retains stable registry IDs, and regenerates the public export and catalog. Mirrored app versions describe child repositories, not the version currently bundled by the separate Browser Kitty site. See [CHANGELOG.md](CHANGELOG.md) for the release history.
 
 ## v1.1.0
 

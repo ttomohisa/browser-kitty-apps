@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 1.1.0 production
+Version: 1.1.1 production
 
 ## Purpose
 
@@ -21,6 +21,8 @@ The repository has four responsibilities:
 - Browser Kitty website source: the separate private Browser Kitty repository.
 
 The registry may mirror an application's current version or publication URL, but it must not become the source of truth for that application's code.
+
+`release.version` mirrors the current release metadata of the child repository; it does not assert which version the separately deployed Browser Kitty website has bundled. `browserKitty.published` means the app is listed in the Browser Kitty catalog. A reachable child Pages URL does not by itself set that flag. Independently hosted apps can remain registered with `published: false` and are excluded from the public export and `CATALOG.md`.
 
 ## Non-goals
 
@@ -54,6 +56,10 @@ Not every application must pass through every state.
 - v1.0.0 — Production Registry (implemented)
 
 
+
+## v1.1.1 registry reconciliation
+
+v1.1.1 synchronizes child versions, adds missing public and independently hosted applications, and reconciles publication flags and slugs against the live Browser Kitty catalog. It keeps the schema/export contract and existing registry IDs unchanged: 96 registered applications, 86 published applications, and 10 unpublished applications across the same seven registry categories.
 
 ## v1.1.0 human-readable registry and health
 

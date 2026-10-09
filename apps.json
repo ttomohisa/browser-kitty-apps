@@ -15,7 +15,7 @@
         "slug": "archive-explorer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-archive-explorer/"
@@ -45,7 +45,7 @@
         "slug": "arrow-viewer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-arrow-viewer/"
@@ -75,7 +75,7 @@
         "slug": "avro-viewer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-avro-viewer/"
@@ -135,7 +135,7 @@
         "slug": "dbf-viewer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-dbf-viewer/"
@@ -165,10 +165,40 @@
         "slug": "duckdb-explorer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-duckdb-explorer/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "graph-digitizer",
+      "name": "Graph Digitizer",
+      "nameJa": "Graph Digitizer",
+      "repository": "ttomohisa/htmlapps-graph-digitizer",
+      "repositoryProfile": "standard",
+      "category": "data",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "graph-digitizer"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-graph-digitizer/"
       },
       "runtime": {
         "standalone": true,
@@ -195,7 +225,7 @@
         "slug": "json-yaml-csv-viewer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.4"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-json-yaml-csv-viewer/"
@@ -225,7 +255,7 @@
         "slug": "jsonl-viewer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-jsonl-viewer/"
@@ -255,7 +285,7 @@
         "slug": "orc-viewer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-orc-viewer/"
@@ -315,7 +345,7 @@
         "slug": "schema-diff"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-schema-diff/"
@@ -375,7 +405,7 @@
         "slug": "test-data-generator"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-test-data-generator/"
@@ -405,7 +435,7 @@
         "slug": "text-inspector"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-text-inspector/"
@@ -435,7 +465,7 @@
         "slug": "face-redactor"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-face-redactor/"
@@ -447,6 +477,36 @@
         "networkAccess": false,
         "crossOriginIsolated": false,
         "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "file-in-image",
+      "name": "File in Image",
+      "nameJa": "画像にファイルを埋め込む",
+      "repository": "ttomohisa/htmlapps-file-in-image",
+      "repositoryProfile": "standard",
+      "category": "image",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "file-in-image"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-file-in-image/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
         "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
@@ -465,7 +525,7 @@
         "slug": "font-subsetter"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-font-subsetter/"
@@ -483,6 +543,36 @@
       }
     },
     {
+      "id": "frame-animator",
+      "name": "Frame Animator",
+      "nameJa": "Frame Animator",
+      "repository": "ttomohisa/htmlapps-frame-animator",
+      "repositoryProfile": "standard",
+      "category": "image",
+      "status": "stable",
+      "browserKitty": {
+        "published": false,
+        "slug": "frame-animator"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-frame-animator/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
       "id": "handwriting-font-maker",
       "name": "Handwriting Font Maker",
       "nameJa": "手書きフォントメーカー",
@@ -495,7 +585,7 @@
         "slug": "handwriting-font-maker"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-handwriting-font-maker/"
@@ -525,7 +615,7 @@
         "slug": "image-compressor-converter"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-image-compressor-converter/"
@@ -555,10 +645,40 @@
         "slug": "image-counter"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-image-counter/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "image-pipeline-builder",
+      "name": "Image Pipeline Builder",
+      "nameJa": "画像処理パイプライン",
+      "repository": "ttomohisa/htmlapps-image-pipeline-builder",
+      "repositoryProfile": "standard",
+      "category": "image",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "image-pipeline-builder"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-image-pipeline-builder/"
       },
       "runtime": {
         "standalone": true,
@@ -585,10 +705,40 @@
         "slug": "onefile-album"
       },
       "release": {
-        "version": "1.0.1"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-onefile-album/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "photo-collage",
+      "name": "Photo Collage",
+      "nameJa": "写真コラージュ",
+      "repository": "ttomohisa/htmlapps-photo-collage",
+      "repositoryProfile": "standard",
+      "category": "image",
+      "status": "stable",
+      "browserKitty": {
+        "published": false,
+        "slug": "photo-collage"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-photo-collage/"
       },
       "runtime": {
         "standalone": true,
@@ -615,7 +765,7 @@
         "slug": "photo-privacy-inspector"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-photo-privacy-inspector/"
@@ -645,10 +795,40 @@
         "slug": "photo-re-enactor"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.1.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-photo-re-enactor/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "pixel-animation-studio",
+      "name": "Pixel Animation Studio",
+      "nameJa": "Pixel Animation Studio",
+      "repository": "ttomohisa/htmlapps-pixel-animation-studio",
+      "repositoryProfile": "standard",
+      "category": "image",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "pixel-animation-studio"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-pixel-animation-studio/"
       },
       "runtime": {
         "standalone": true,
@@ -675,7 +855,7 @@
         "slug": "smart-image-sorter"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-smart-image-sorter/"
@@ -705,10 +885,40 @@
         "slug": "document-scanner"
       },
       "release": {
-        "version": "1.0.1"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-document-scanner/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "document-to-markdown",
+      "name": "Document to Markdown",
+      "nameJa": "文書→Markdown",
+      "repository": "ttomohisa/htmlapps-document-to-markdown",
+      "repositoryProfile": "standard",
+      "category": "pdf",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "document-to-markdown"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-document-to-markdown/"
       },
       "runtime": {
         "standalone": true,
@@ -735,7 +945,7 @@
         "slug": "office-image-extractor"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-office-image-extractor/"
@@ -765,10 +975,40 @@
         "slug": "pdf-compare"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pdf-compare/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "pdf-fill-sign",
+      "name": "PDF Fill & Sign",
+      "nameJa": "PDF記入・署名",
+      "repository": "ttomohisa/htmlapps-pdf-fill-sign",
+      "repositoryProfile": "standard",
+      "category": "pdf",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "pdf-fill-sign"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-pdf-fill-sign/"
       },
       "runtime": {
         "standalone": true,
@@ -825,7 +1065,7 @@
         "slug": "pdf-pipeline-builder"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pdf-pipeline-builder/"
@@ -855,7 +1095,7 @@
         "slug": "pdf-review-notes"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pdf-review-notes/"
@@ -881,7 +1121,7 @@
       "category": "presentation",
       "status": "stable",
       "browserKitty": {
-        "published": true,
+        "published": false,
         "slug": "gesture-presentation"
       },
       "release": {
@@ -915,7 +1155,7 @@
         "slug": "pptx-diff"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pptx-diff/"
@@ -945,7 +1185,7 @@
         "slug": "pptx-version-control"
       },
       "release": {
-        "version": "1.1.2"
+        "version": "1.1.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pptx-version-control/"
@@ -975,7 +1215,7 @@
         "slug": "presentation-remote"
       },
       "release": {
-        "version": "1.0.5"
+        "version": "1.0.6"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-presentation-remote/"
@@ -1005,7 +1245,7 @@
         "slug": "presentation-video-maker"
       },
       "release": {
-        "version": "1.3.0"
+        "version": "1.3.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-presentation-video-maker/"
@@ -1035,7 +1275,7 @@
         "slug": "label-sheet-maker"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.1.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-label-sheet-maker/"
@@ -1065,7 +1305,7 @@
         "slug": "large-print-tiler"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-large-print-tiler/"
@@ -1095,7 +1335,7 @@
         "slug": "max-text-print"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-max-text-print/"
@@ -1125,7 +1365,7 @@
         "slug": "planner-refill-maker"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-planner-refill-maker/"
@@ -1155,7 +1395,7 @@
         "slug": "check-in-desk"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-check-in-desk/"
@@ -1185,7 +1425,7 @@
         "slug": "developer-toolbox"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-developer-toolbox/"
@@ -1215,7 +1455,7 @@
         "slug": "device-check"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-device-check/"
@@ -1245,7 +1485,7 @@
         "slug": "engineering-calculator"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-engineering-calculator/"
@@ -1275,7 +1515,7 @@
         "slug": "ffmpeg-filter-builder"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.2.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-ffmpeg-filter-builder/"
@@ -1313,10 +1553,100 @@
         "slug": "handy-convert"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-handy-convert/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "interactive-guide-maker",
+      "name": "Interactive Guide Maker",
+      "nameJa": "インタラクティブ手順書",
+      "repository": "ttomohisa/htmlapps-interactive-guide-maker",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "interactive-guide-maker"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-interactive-guide-maker/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "loan-board",
+      "name": "Loan Board",
+      "nameJa": "貸出・返却ボード",
+      "repository": "ttomohisa/htmlapps-loan-board",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "loan-board"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-loan-board/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "local-form-builder",
+      "name": "Local Form Builder",
+      "nameJa": "ローカルフォーム作成",
+      "repository": "ttomohisa/htmlapps-local-form-builder",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "local-form-builder"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-local-form-builder/"
       },
       "runtime": {
         "standalone": true,
@@ -1343,10 +1673,70 @@
         "slug": "markdown-preview-lab"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-markdown-preview-lab/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "mini-league-desk",
+      "name": "Mini League Desk",
+      "nameJa": "Mini League Desk / ミニリーグ運営",
+      "repository": "ttomohisa/htmlapps-mini-league-desk",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "mini-league-desk"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-mini-league-desk/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "music-cue-pad",
+      "name": "Music Cue Pad",
+      "nameJa": "Music Cue Pad",
+      "repository": "ttomohisa/htmlapps-music-cue-pad",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "music-cue-pad"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-music-cue-pad/"
       },
       "runtime": {
         "standalone": true,
@@ -1373,7 +1763,7 @@
         "slug": "music-practice-kit"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-music-practice-kit/"
@@ -1399,14 +1789,74 @@
       "category": "utility",
       "status": "stable",
       "browserKitty": {
-        "published": true,
+        "published": false,
         "slug": "nfc-tap-log"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-nfc-tap-log/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "office-privacy-inspector",
+      "name": "Office Privacy Inspector",
+      "nameJa": "Office Privacy Inspector",
+      "repository": "ttomohisa/htmlapps-office-privacy-inspector",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "office-privacy-inspector"
+      },
+      "release": {
+        "version": "1.1.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-office-privacy-inspector/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "offline-web-packager",
+      "name": "Offline Web Packager",
+      "nameJa": "Offline Web Packager",
+      "repository": "ttomohisa/htmlapps-offline-web-packager",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "offline-web-packager"
+      },
+      "release": {
+        "version": "1.0.2"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-offline-web-packager/"
       },
       "runtime": {
         "standalone": true,
@@ -1430,10 +1880,10 @@
       "status": "stable",
       "browserKitty": {
         "published": true,
-        "slug": "optical-file"
+        "slug": "optical-file-camera"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-optical-file-camera/"
@@ -1463,7 +1913,7 @@
         "slug": "pass-the-phone-vote"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/"
@@ -1493,7 +1943,7 @@
         "slug": "pocket-level"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pocket-level/"
@@ -1523,7 +1973,7 @@
         "slug": "pocket-teleprompter"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pocket-teleprompter/"
@@ -1553,7 +2003,7 @@
         "slug": "pomodoro-timer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pomodoro-timer/"
@@ -1583,7 +2033,7 @@
         "slug": "popup-face-check-in"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-popup-face-check-in/"
@@ -1609,11 +2059,11 @@
       "category": "utility",
       "status": "stable",
       "browserKitty": {
-        "published": true,
+        "published": false,
         "slug": "qc-workbench"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-qc-workbench/"
@@ -1643,10 +2093,40 @@
         "slug": "qr-reader"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-qr-reader/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "queue-board",
+      "name": "Queue Board",
+      "nameJa": "呼び出し番号",
+      "repository": "ttomohisa/htmlapps-queue-board",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "queue-board"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-queue-board/"
       },
       "runtime": {
         "standalone": true,
@@ -1673,7 +2153,7 @@
         "slug": "random-picker"
       },
       "release": {
-        "version": "1.0.1"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-random-picker/"
@@ -1703,10 +2183,40 @@
         "slug": "restock-list"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-restock-list/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "reveal-sheet",
+      "name": "Reveal Sheet",
+      "nameJa": "めくる暗記シート",
+      "repository": "ttomohisa/htmlapps-reveal-sheet",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": false,
+        "slug": "reveal-sheet"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-reveal-sheet/"
       },
       "runtime": {
         "standalone": true,
@@ -1733,7 +2243,7 @@
         "slug": "same-spot-diff"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-same-spot-diff/"
@@ -1763,7 +2273,7 @@
         "slug": "signal-screen"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-signal-screen/"
@@ -1793,7 +2303,7 @@
         "slug": "tap-counter"
       },
       "release": {
-        "version": "1.0.1"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-tap-counter/"
@@ -1823,7 +2333,7 @@
         "slug": "task-packing"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.0.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-task-packing/"
@@ -1871,6 +2381,36 @@
       }
     },
     {
+      "id": "tuning-compare",
+      "name": "Tuning Compare",
+      "nameJa": "音律聞き比べ",
+      "repository": "ttomohisa/htmlapps-tuning-compare",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": false,
+        "slug": "tuning-compare"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-tuning-compare/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
       "id": "way-back",
       "name": "Way Back",
       "nameJa": "Way Back",
@@ -1879,7 +2419,7 @@
       "category": "utility",
       "status": "stable",
       "browserKitty": {
-        "published": true,
+        "published": false,
         "slug": "way-back"
       },
       "release": {
@@ -1913,7 +2453,7 @@
         "slug": "wifi-share"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-wifi-share/"
@@ -1943,7 +2483,7 @@
         "slug": "wireless-sensor"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-wireless-sensor/"
@@ -1973,7 +2513,7 @@
         "slug": "audio-cutter-joiner"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-audio-cutter-joiner/"
@@ -2000,10 +2540,10 @@
       "status": "stable",
       "browserKitty": {
         "published": true,
-        "slug": "local-video-compressor"
+        "slug": "video-compressor"
       },
       "release": {
-        "version": "1.3.1"
+        "version": "1.3.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-compressor/"
@@ -2033,7 +2573,7 @@
         "slug": "lossless-video-cutter"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-lossless-video-cutter/"
@@ -2063,7 +2603,7 @@
         "slug": "media-inspector"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-media-inspector/"
@@ -2074,8 +2614,8 @@
         "localProcessing": true,
         "networkAccess": false,
         "crossOriginIsolated": false,
-        "requiresWasm": false,
-        "requiresWorker": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
       }
@@ -2093,7 +2633,7 @@
         "slug": "one-second-montage"
       },
       "release": {
-        "version": "1.3.0"
+        "version": "1.3.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-one-second-montage/"
@@ -2111,6 +2651,96 @@
       }
     },
     {
+      "id": "practice-mirror",
+      "name": "Practice Mirror",
+      "nameJa": "Practice Mirror",
+      "repository": "ttomohisa/htmlapps-practice-mirror",
+      "repositoryProfile": "standard",
+      "category": "video",
+      "status": "stable",
+      "browserKitty": {
+        "published": false,
+        "slug": "practice-mirror"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-practice-mirror/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": true
+      }
+    },
+    {
+      "id": "time-study-desk",
+      "name": "Time Study Desk",
+      "nameJa": "動画作業分析",
+      "repository": "ttomohisa/htmlapps-time-study-desk",
+      "repositoryProfile": "standard",
+      "category": "video",
+      "status": "rc",
+      "browserKitty": {
+        "published": false,
+        "slug": "time-study-desk"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-time-study-desk/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "video-audio-extractor",
+      "name": "Video Audio Extractor",
+      "nameJa": "動画から音声抽出",
+      "repository": "ttomohisa/htmlapps-video-audio-extractor",
+      "repositoryProfile": "standard",
+      "category": "video",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "video-audio-extractor"
+      },
+      "release": {
+        "version": "1.0.1"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-video-audio-extractor/"
+      },
+      "runtime": {
+        "standalone": true,
+        "standalonePath": "dist/index.html",
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
       "id": "video-contact-sheet",
       "name": "Video Contact Sheet",
       "nameJa": "Video Contact Sheet",
@@ -2123,7 +2753,7 @@
         "slug": "video-contact-sheet"
       },
       "release": {
-        "version": "1.0.1"
+        "version": "1.0.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-contact-sheet/"
@@ -2153,7 +2783,7 @@
         "slug": "video-face-redactor"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-face-redactor/"
@@ -2183,7 +2813,7 @@
         "slug": "video-review-notes"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-review-notes/"
@@ -2213,7 +2843,7 @@
         "slug": "video-speed-changer"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-speed-changer/"
@@ -2243,7 +2873,7 @@
         "slug": "video-to-gif-webp"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-to-gif-webp/"

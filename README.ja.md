@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.1.0-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.1.1-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -43,7 +43,7 @@ Browser Kittyが役に立った場合、このRepositoryにStarを付けても�
 - Repository Health Report
 - Release Readiness Check
 
-現在のProduction baselineは **75アプリ / 7カテゴリ** です。
+現在の登録数は **96アプリ** です。このうち **86アプリ / 7カテゴリ** がBrowser Kittyで公開済みで、**10アプリ** は未掲載です。個別アプリのサイト公開とBrowser Kittyへの掲載は別々に管理します。
 
 ```text
 browser-kitty.com
@@ -147,6 +147,10 @@ Registryを変更した場合は次を実行します。
 | [CATALOG.md](CATALOG.md) | 人間向けアプリ一覧 |
 | [STATUS.md](STATUS.md) | 人間向けRepository Healthスナップショット |
 | [CHANGELOG.md](CHANGELOG.md) | Version履歴 |
+
+## v1.1.1
+
+v1.1.1では、各アプリの最新バージョンとBrowser Kittyの公開カタログを照合し、登録96アプリ・掲載86アプリ・未掲載10アプリへ更新しました。既存のRegistry IDを維持したまま2つの掲載スラッグを修正し、公開JSONとカタログを再生成しています。記録するバージョンは各アプリのリポジトリのもので、別管理のBrowser Kittyサイトに取り込まれたバージョンを示すものではありません。詳細は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## v1.1.0
 
