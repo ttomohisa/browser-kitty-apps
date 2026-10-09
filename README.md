@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.1.3-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.1.4-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -147,6 +147,10 @@ After changing registry data:
 | [CATALOG.md](CATALOG.md) | Human-readable application catalog |
 | [STATUS.md](STATUS.md) | Human-readable Repository Health snapshot |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+
+## v1.1.4
+
+v1.1.4 updates the mirrored Pop-up Face Check-in version to the merged v1.0.3 English-label fix and regenerates the public export and catalog. Inventory, publication flags, and runtime capabilities are unchanged.
 
 ## v1.1.3
 

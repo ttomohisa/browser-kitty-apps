@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.4
+
+### Changed
+
+- Mirror Pop-up Face Check-in v1.0.3 after its English-label fix was merged.
+- Regenerate the public export and catalog with that single app-version change; preserve all inventory, publication, and runtime fields.
+
 ## v1.1.3
 
 ### Fixed
