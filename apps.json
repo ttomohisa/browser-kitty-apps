@@ -1029,7 +1029,7 @@
       "repository": "ttomohisa/html-pdf-organizer",
       "repositoryProfile": "standard",
       "category": "pdf",
-      "status": "maintenance",
+      "status": "stable",
       "browserKitty": {
         "published": true,
         "slug": "pdf-organizer"
@@ -2033,7 +2033,7 @@
         "slug": "popup-face-check-in"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.0.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-popup-face-check-in/"
@@ -2357,7 +2357,7 @@
       "repository": "ttomohisa/htmlapps-temporary-links",
       "repositoryProfile": "standard",
       "category": "utility",
-      "status": "maintenance",
+      "status": "stable",
       "browserKitty": {
         "published": true,
         "slug": "temporary-links"

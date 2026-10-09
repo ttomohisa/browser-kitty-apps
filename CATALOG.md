@@ -10,8 +10,8 @@
 |---|---:|
 | Published apps | 86 |
 | Categories | 7 |
-| Stable | 83 |
-| Maintenance | 3 |
+| Stable | 85 |
+| Maintenance | 1 |
 | Fully local processing | 86 |
 
 `Fully local processing` means the registry declares `localProcessing=true` and `networkAccess=false` for the application.
@@ -25,7 +25,7 @@
 | Office Image Extractor | Office Image Extractor | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/office-image-extractor/) · [App](https://ttomohisa.github.io/htmlapps-office-image-extractor/) · [Source](https://github.com/ttomohisa/htmlapps-office-image-extractor) |
 | PDF Compare | PDF比較 | 1.0.2 | stable | Fully local | Worker | [Browser Kitty](https://browser-kitty.com/tools/pdf-compare/) · [App](https://ttomohisa.github.io/htmlapps-pdf-compare/) · [Source](https://github.com/ttomohisa/htmlapps-pdf-compare) |
 | PDF Fill & Sign | PDF記入・署名 | 1.0.1 | stable | Fully local | Worker | [Browser Kitty](https://browser-kitty.com/tools/pdf-fill-sign/) · [App](https://ttomohisa.github.io/htmlapps-pdf-fill-sign/) · [Source](https://github.com/ttomohisa/htmlapps-pdf-fill-sign) |
-| PDF Organizer | PDF Organizer | 1.2.3 | maintenance | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pdf-organizer/) · [App](https://ttomohisa.github.io/html-pdf-organizer/) · [Source](https://github.com/ttomohisa/html-pdf-organizer) |
+| PDF Organizer | PDF Organizer | 1.2.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pdf-organizer/) · [App](https://ttomohisa.github.io/html-pdf-organizer/) · [Source](https://github.com/ttomohisa/html-pdf-organizer) |
 | PDF Pipeline Builder | PDF Pipeline Builder | 1.1.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pdf-pipeline-builder/) · [App](https://ttomohisa.github.io/htmlapps-pdf-pipeline-builder/) · [Source](https://github.com/ttomohisa/htmlapps-pdf-pipeline-builder) |
 | PDF Review Notes | PDF Review Notes | 1.0.1 | stable | Fully local | Worker | [Browser Kitty](https://browser-kitty.com/tools/pdf-review-notes/) · [App](https://ttomohisa.github.io/htmlapps-pdf-review-notes/) · [Source](https://github.com/ttomohisa/htmlapps-pdf-review-notes) |
 
@@ -124,7 +124,7 @@
 | Pocket Level | Pocket Level | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pocket-level/) · [App](https://ttomohisa.github.io/htmlapps-pocket-level/) · [Source](https://github.com/ttomohisa/htmlapps-pocket-level) |
 | Pocket Teleprompter | Pocket Teleprompter | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pocket-teleprompter/) · [App](https://ttomohisa.github.io/htmlapps-pocket-teleprompter/) · [Source](https://github.com/ttomohisa/htmlapps-pocket-teleprompter) |
 | Pomodoro Timer | ポモドーロタイマー | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pomodoro-timer/) · [App](https://ttomohisa.github.io/htmlapps-pomodoro-timer/) · [Source](https://github.com/ttomohisa/htmlapps-pomodoro-timer) |
-| Pop-up Face Check-in | Pop-up Face Check-in | 1.0.2 | stable | Fully local | WASM | [Browser Kitty](https://browser-kitty.com/tools/popup-face-check-in/) · [App](https://ttomohisa.github.io/htmlapps-popup-face-check-in/) · [Source](https://github.com/ttomohisa/htmlapps-popup-face-check-in) |
+| Pop-up Face Check-in | Pop-up Face Check-in | 1.0.3 | stable | Fully local | WASM | [Browser Kitty](https://browser-kitty.com/tools/popup-face-check-in/) · [App](https://ttomohisa.github.io/htmlapps-popup-face-check-in/) · [Source](https://github.com/ttomohisa/htmlapps-popup-face-check-in) |
 | QR Reader | QRコードリーダー | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/qr-reader/) · [App](https://ttomohisa.github.io/htmlapps-qr-reader/) · [Source](https://github.com/ttomohisa/htmlapps-qr-reader) |
 | Queue Board | 呼び出し番号 | 1.0.1 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/queue-board/) · [App](https://ttomohisa.github.io/htmlapps-queue-board/) · [Source](https://github.com/ttomohisa/htmlapps-queue-board) |
 | Random Picker | ランダムピッカー | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/random-picker/) · [App](https://ttomohisa.github.io/htmlapps-random-picker/) · [Source](https://github.com/ttomohisa/htmlapps-random-picker) |
@@ -133,7 +133,7 @@
 | Signal Screen | Signal Screen | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/signal-screen/) · [App](https://ttomohisa.github.io/htmlapps-signal-screen/) · [Source](https://github.com/ttomohisa/htmlapps-signal-screen) |
 | Tap Counter | Tap Counter | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/tap-counter/) · [App](https://ttomohisa.github.io/htmlapps-tap-counter/) · [Source](https://github.com/ttomohisa/htmlapps-tap-counter) |
 | Task Packing | Task Packing | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/task-packing/) · [App](https://ttomohisa.github.io/htmlapps-task-packing/) · [Source](https://github.com/ttomohisa/htmlapps-task-packing) |
-| Temporary Links | 一時リンク置き場 | 1.0.2 | maintenance | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/temporary-links/) · [App](https://ttomohisa.github.io/htmlapps-temporary-links/) · [Source](https://github.com/ttomohisa/htmlapps-temporary-links) |
+| Temporary Links | 一時リンク置き場 | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/temporary-links/) · [App](https://ttomohisa.github.io/htmlapps-temporary-links/) · [Source](https://github.com/ttomohisa/htmlapps-temporary-links) |
 | Wi-Fi Share | Wi-Fi共有 | 1.1.1 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/wifi-share/) · [App](https://ttomohisa.github.io/htmlapps-wifi-share/) · [Source](https://github.com/ttomohisa/htmlapps-wifi-share) |
 | Wireless Sensor | Wireless Sensor | 1.0.1 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/wireless-sensor/) · [App](https://ttomohisa.github.io/htmlapps-wireless-sensor/) · [Source](https://github.com/ttomohisa/htmlapps-wireless-sensor) |
 

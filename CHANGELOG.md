@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.4
+
+### Changed
+
+- Mirror Pop-up Face Check-in v1.0.3 after its English-label fix was merged.
+- Mark PDF Organizer and Temporary Links as stable after verifying their completed metadata modernization; retain Parquet Viewer's existing maintenance status.
+- Regenerate the public export and catalog with the single app-version change and two reviewed lifecycle corrections; preserve all inventory, publication, and runtime fields.
+- Refresh the committed health snapshot from the 2026-10-09 07:57 UTC CI report (96 PASS, 0 WARN, 0 FAIL).
+
 ## v1.1.3
 
 ### Fixed
