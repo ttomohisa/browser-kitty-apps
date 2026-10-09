@@ -132,6 +132,67 @@ try {
         throw "Smoke test expected an empty global issue collection."
     }
 
+    # Exercise the real status renderer with zero, one, and multiple warning reasons.
+    # A pipeline must not unwrap the reason collection under strict mode.
+    $generateStatusPath = Join-Path $PSScriptRoot 'generate-status.ps1'
+    foreach ($case in @('all-pass', 'one-reason', 'multiple-reasons', 'failure-only')) {
+        $fixture = Get-Content -LiteralPath $jsonOutput -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 100
+        $warningCodes = switch ($case) {
+            'one-reason' { @('screenshot_en_missing', 'screenshot_en_missing') }
+            'multiple-reasons' { @('screenshot_en_missing', 'screenshot_en_missing', 'favicon_missing') }
+            default { @() }
+        }
+        $warningCodes = @($warningCodes)
+        for ($i = 0; $i -lt $warningCodes.Count; $i++) {
+            $app = $fixture.applications[$i]
+            $app.overallStatus = 'WARN'
+            $app.checks.quality = 'WARN'
+            $app.issueCounts.warn = 1
+            $app.issues = @([pscustomobject]@{ severity = 'WARN'; source = 'quality'; code = $warningCodes[$i]; message = 'Fixture warning'; path = $null })
+        }
+        if ($warningCodes.Count -gt 0) {
+            $fixture.overallStatus = 'WARN'
+            $fixture.summary.pass -= $warningCodes.Count
+            $fixture.summary.warn = $warningCodes.Count
+            $fixture.summary.warnings = $warningCodes.Count
+        }
+        if ($case -eq 'failure-only') {
+            $app = $fixture.applications[0]
+            $app.overallStatus = 'FAIL'
+            $app.checks.pages = 'FAIL'
+            $app.issueCounts.fail = 1
+            $app.issues = @([pscustomobject]@{ severity = 'FAIL'; source = 'pages'; code = 'pages_unavailable'; message = 'Fixture outage'; path = $null })
+            $fixture.overallStatus = 'FAIL'
+            $fixture.summary.pass--
+            $fixture.summary.fail = 1
+            $fixture.summary.failures = 1
+        }
+        $fixturePath = Join-Path $tempRoot "$case.json"
+        $statusPath = Join-Path $tempRoot "$case.md"
+        ($fixture | ConvertTo-Json -Depth 100) | Set-Content -LiteralPath $fixturePath -Encoding utf8NoBOM
+        & $generateStatusPath -RepositoryRoot $RepositoryRoot -HealthReportPath $fixturePath -OutputPath $statusPath
+        if (-not $?) { throw "Status renderer failed for $case." }
+        $status = Get-Content -LiteralPath $statusPath -Raw -Encoding UTF8
+        if ($warningCodes.Count -eq 0 -and -not $status.Contains('No warnings detected.')) {
+            throw "Status renderer omitted the zero-warning message for $case."
+        }
+        if ($case -eq 'all-pass' -and -not $status.Contains('All registered applications are PASS.')) {
+            throw 'Status renderer omitted the all-pass message.'
+        }
+        if ($warningCodes.Count -gt 0 -and -not $status.Contains('| 2 | English screenshot missing | `screenshot_en_missing` |')) {
+            throw "Status renderer failed to aggregate one warning reason for $case."
+        }
+        if ($case -eq 'multiple-reasons') {
+            $first = $status.IndexOf('| 2 | English screenshot missing')
+            $second = $status.IndexOf('| 1 | Favicon missing')
+            if ($first -lt 0 -or $second -le $first) { throw 'Status renderer warning reasons are missing or incorrectly sorted.' }
+        }
+        if ($case -eq 'failure-only' -and (-not $status.Contains('Fixture outage') -or $status.Contains('All registered applications are PASS.'))) {
+            throw 'Status renderer hid a failure-only report.'
+        }
+        Write-Host "[OK] Status renderer regression passed: $case."
+    }
+
     Write-Host "[OK] Repository health report smoke test passed for $($apps.Count) app(s)." -ForegroundColor Green
 }
 finally {
