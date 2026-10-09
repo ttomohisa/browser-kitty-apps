@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.1.1
+
+### Changed
+
+- Reconciled the inventory with current public application repositories: 96 registered apps, including 86 published in Browser Kitty and 10 independently hosted apps outside its catalog.
+- Updated 68 existing app versions from current child `app.config.json` files and added 21 missing application entries.
+- Corrected Browser Kitty publication flags for Gesture Presentation, NFC Tap Log, QC Workbench, and Way Back; their child repositories and Pages URLs remain registered.
+- Corrected the Browser Kitty slugs for Optical File (`optical-file-camera`) and Local Video Compressor (`video-compressor`) without changing their stable registry IDs.
+- Recorded Media Inspector's embedded WebAssembly/Worker requirements and the verified capabilities of new entries.
+- Regenerated `generated/apps.public.json` and `CATALOG.md`; refreshed the committed Repository Health snapshot.
+- Clarified that child release versions, child Pages availability, and Browser Kitty catalog publication are separate facts.
+
+
 ## v1.1.0
 
 ### Added

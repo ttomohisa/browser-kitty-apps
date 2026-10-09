@@ -51,7 +51,7 @@ Add the application to `apps.json` with:
 - unique `repository`
 - valid category
 - explicit lifecycle `status`
-- Browser Kitty publication state and slug
+- Browser Kitty publication state and slug, checked against the live Browser Kitty catalog rather than inferred from a working child Pages site
 - current application version
 - canonical public Pages URL
 - explicit runtime capability flags
@@ -70,7 +70,7 @@ When an application version, public URL, runtime requirement, or publication sta
 3. Regenerate the public export if a public field changed.
 4. Run the static checks and Repository Health.
 
-The parent registry must not automatically bump versions or rewrite child repositories.
+The parent registry must not automatically bump versions or rewrite child repositories. The mirrored `release.version` is the child-repository version, not a claim that the separate Browser Kitty website has imported that version. Preserve unpublished entries in the registry while excluding them from the public export until catalog publication is verified.
 
 ## Health policy
 
