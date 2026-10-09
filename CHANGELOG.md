@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.1.3
+
+### Changed
+
+- Reconciled mirrored child versions with merged warning-remediation releases.
+- Promoted Parquet Viewer, PDF Organizer, and Temporary Links to the standard metadata profile after their explicit app metadata and repository assets were verified.
+- Regenerated the public export and catalog without changing the 96-app inventory, the 86 published / 10 unpublished split, stable IDs, slugs, or runtime capabilities.
+- Child releases do not imply a deployment of the separate Browser Kitty website.
+
 ## v1.1.2
 
 ### Fixed
