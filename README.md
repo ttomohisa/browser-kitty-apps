@@ -150,7 +150,7 @@ After changing registry data:
 
 ## v1.1.4
 
-v1.1.4 updates the mirrored Pop-up Face Check-in version to the merged v1.0.3 English-label fix and regenerates the public export and catalog. Inventory, publication flags, and runtime capabilities are unchanged.
+v1.1.4 mirrors Pop-up Face Check-in v1.0.3 and marks PDF Organizer and Temporary Links as stable after their metadata modernization. It regenerates the public export and catalog while preserving inventory, publication flags, and runtime capabilities.
 
 ## v1.1.3
 

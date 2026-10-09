@@ -150,7 +150,7 @@ Registryを変更した場合は次を実行します。
 
 ## v1.1.4
 
-v1.1.4 は、Pop-up Face Check-in の英語ラベル修正版 v1.0.3 を台帳へ反映し、公開用exportとカタログを再生成します。登録アプリ、掲載状態、実行環境の宣言は変更しません。
+v1.1.4 は、Pop-up Face Check-in v1.0.3 を台帳へ反映し、メタデータ整備を確認した PDF Organizer と Temporary Links の状態を stable に変更します。公開用exportとカタログを再生成し、登録アプリ、掲載状態、実行環境の宣言は維持します。
 
 ## v1.1.3
 

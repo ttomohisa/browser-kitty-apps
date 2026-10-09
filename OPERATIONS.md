@@ -138,8 +138,9 @@ When a legacy repository is modernized:
 1. Add/verify current `app.config.json` and template-era repository metadata in the child repository.
 2. Confirm Pages and standalone behavior.
 3. Change `repositoryProfile` from `legacy` to `standard` in `apps.json`.
-4. Regenerate the public export if public fields changed.
-5. Run Repository Health and confirm no new blocking failure.
+4. Reassess `status` explicitly after modernization. Lifecycle status is a manual product decision, independent of `repositoryProfile` and health PASS; do not automatically promote every passing application. If the reason for `maintenance` has been resolved and the application is verified, update it to the reviewed lifecycle state.
+5. Regenerate the public export and catalog if public fields changed.
+6. Run Repository Health and confirm no new blocking failure.
 
 ## Repository releases
 
