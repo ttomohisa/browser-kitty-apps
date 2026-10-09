@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.1.2-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.1.3-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -147,6 +147,10 @@ Registryを変更した場合は次を実行します。
 | [CATALOG.md](CATALOG.md) | 人間向けアプリ一覧 |
 | [STATUS.md](STATUS.md) | 人間向けRepository Healthスナップショット |
 | [CHANGELOG.md](CHANGELOG.md) | Version履歴 |
+
+## v1.1.3
+
+v1.1.3 は、各Repositoryの警告対応後のバージョンとメタデータを台帳へ反映し、公開用exportとカタログを更新します。登録96アプリ、Browser Kitty掲載86アプリ、未掲載10アプリの構成は変えません。各アプリの更新とBrowser Kitty本体への反映は別々に管理します。
 
 ## v1.1.2
 

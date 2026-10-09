@@ -87,7 +87,8 @@ $reasonRows = @(
             Count = [int]$reasonCounts[$code]
         }
     }
-) | Sort-Object @{ Expression = { $_.Count }; Descending = $true }, Label
+)
+$reasonRows = @($reasonRows | Sort-Object @{ Expression = { $_.Count }; Descending = $true }, Label)
 
 $failApps = @($apps | Where-Object { [string]$_.overallStatus -eq 'FAIL' } | Sort-Object name)
 $attentionApps = @($apps | Where-Object { [string]$_.overallStatus -ne 'PASS' } | Sort-Object @{ Expression = { if ([string]$_.overallStatus -eq 'FAIL') { 0 } else { 1 } } }, name)

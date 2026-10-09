@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.1.3
+
+### Fixed
+
+- Preserve the warning-reason collection when generating STATUS.md so zero-warning and single-reason reports work under PowerShell strict mode. Cover all-clear, repeated single-reason, multiple-reason, and failure-only reports in the existing CI smoke test.
+
+### Changed
+
+- Reconciled mirrored child versions with merged warning-remediation releases.
+- Promoted Parquet Viewer, PDF Organizer, and Temporary Links to the standard metadata profile after their explicit app metadata and repository assets were verified.
+- Regenerated the public export and catalog without changing the 96-app inventory, the 86 published / 10 unpublished split, stable IDs, slugs, or runtime capabilities.
+- Refreshed STATUS.md from the 2026-10-09 authoritative health report: 96 PASS, 0 WARN, and 0 FAIL.
+- Child releases do not imply a deployment of the separate Browser Kitty website.
+
 ## v1.1.2
 
 ### Fixed
