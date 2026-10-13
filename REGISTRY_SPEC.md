@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 1.1.4 production
+Version: 1.1.5 production
 
 ## Purpose
 

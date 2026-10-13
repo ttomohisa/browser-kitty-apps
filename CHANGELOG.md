@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.1.5
+
+### Changed
+
+- Mirror 87 current child-repository versions, including Pocket Level v1.1.0 and Video Contact Sheet v1.0.6. Keep the explicitly unversioned Parquet Viewer historical registry placeholder unchanged.
+- Reconcile Frame Animator, Photo Collage, NFC Tap Log, and Practice Mirror as published after verifying their entries in the live Browser Kitty catalog.
+- Add Web Serial Terminal, Image Measurement, Motion Notes (pose-studio), Voice Cleaner, and Passage Counter as unpublished inventory entries. Keep Motion Notes, Voice Cleaner, and Passage Counter in development; Passage Counter has not passed its documented stable-release approval gate.
+- Regenerate the public export and catalog: 101 registered applications, 90 catalog-published applications, and 11 unpublished applications across seven categories. Preserve existing registry IDs, slugs, and lifecycle decisions.
+- Defer Reverse Clip while its default branch remains a starter template. Defer Jargon Bingo and Mine Window until they provide the standard app metadata required for new registry entries.
+
+
 ## v1.1.4
 
 ### Changed
