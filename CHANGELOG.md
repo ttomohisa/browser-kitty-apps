@@ -9,6 +9,7 @@
 - Add Web Serial Terminal, Image Measurement, Motion Notes (pose-studio), Voice Cleaner, and Passage Counter as unpublished inventory entries. Keep Motion Notes, Voice Cleaner, and Passage Counter in development; Passage Counter has not passed its documented stable-release approval gate.
 - Regenerate the public export and catalog: 101 registered applications, 90 catalog-published applications, and 11 unpublished applications across seven categories. Preserve existing registry IDs, slugs, and lifecycle decisions.
 - Defer Reverse Clip while its default branch remains a starter template. Defer Jargon Bingo and Mine Window until they provide the standard app metadata required for new registry entries.
+- Refresh STATUS.md from the 2026-10-13 10:12 UTC CI report: 100 PASS, 1 WARN, 0 FAIL. Preserve the FFmpeg Filter Builder warning because its main metadata is v1.2.3 while its latest GitHub Release remains v1.2.1 and a matching v1.2.3 tag is absent.
 
 
 ## v1.1.4
