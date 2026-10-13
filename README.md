@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.1.4-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.1.5-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -43,7 +43,7 @@ The source of truth for application code is each individual app repository. This
 - consolidated health reports
 - release-readiness checks
 
-Current inventory: **96 registered applications**, including **86 published on Browser Kitty across 7 categories** and **10 not yet published there**. A working app site is independent of Browser Kitty catalog publication.
+Current inventory: **101 registered applications**, including **90 published on Browser Kitty across 7 categories** and **11 not yet published there**. A working app site is independent of Browser Kitty catalog publication.
 
 ```text
 browser-kitty.com
@@ -147,6 +147,10 @@ After changing registry data:
 | [CATALOG.md](CATALOG.md) | Human-readable application catalog |
 | [STATUS.md](STATUS.md) | Human-readable Repository Health snapshot |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+
+## v1.1.5
+
+v1.1.5 mirrors 87 current child-repository versions, reconciles four publication flags against the live Browser Kitty catalog, and adds five independently hosted applications as unpublished inventory entries. The registry now contains 101 apps: 90 catalog-published and 11 unpublished. Development entries retain their documented release limitations; child versions remain independent of the separately deployed website.
 
 ## v1.1.4
 

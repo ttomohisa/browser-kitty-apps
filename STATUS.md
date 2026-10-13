@@ -4,20 +4,20 @@
 
 > This file is generated from `reports/repository-status.json`. A committed copy is a snapshot; the GitHub Actions Job Summary is the live view.
 
-Last checked: **2026-10-09T07:57:11.0141058+00:00**
+Last checked: **2026-10-13T10:12:04.4017133+00:00**
 
 ## Overall
 
-**PASS — no detected issues**
+**WARN — no blocking failures, follow-up items remain**
 
 | Status | Apps |
 |---|---:|
-| PASS | 96 |
-| WARN | 0 |
+| PASS | 100 |
+| WARN | 1 |
 | FAIL | 0 |
 
-Registered apps: **96**  
-Warnings: **0**  
+Registered apps: **101**  
+Warnings: **2**  
 Failures: **0**  
 Global issues: **0**
 
@@ -27,11 +27,16 @@ No blocking application failures were detected.
 
 ## Warnings by reason
 
-No warnings detected.
+| Count | Reason | Code |
+|---:|---|---|
+| 1 | Registered version tag missing | `registered_version_tag_missing` |
+| 1 | Registry / latest release version mismatch | `release_version_mismatch` |
 
 ## Apps needing attention
 
-All registered applications are PASS.
+| Status | App | Inventory | Quality | Pages | Release | Runtime | Issues | Reasons |
+|---|---|---|---|---|---|---|---:|---|
+| WARN | FFmpeg Filter Builder | PASS | PASS | PASS | WARN | PASS | 2 | Registry / latest release version mismatch; Registered version tag missing |
 
 ## Status meanings
 
