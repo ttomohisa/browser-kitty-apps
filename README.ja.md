@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.1.5-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.2.0-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -43,7 +43,7 @@ Browser Kittyが役に立った場合、このRepositoryにStarを付けても�
 - Repository Health Report
 - Release Readiness Check
 
-現在の登録数は **101アプリ** です。このうち **90アプリ / 7カテゴリ** がBrowser Kittyで公開済みで、**11アプリ** は未掲載です。個別アプリのサイト公開とBrowser Kittyへの掲載は別々に管理します。
+現在の登録数は **105アプリ** です。このうち **100アプリ / 7カテゴリ** がBrowser Kittyに掲載済みで、**5アプリ** は未掲載です。掲載済み100件のうち3件はアプリ側の状態が開発中（2件）またはリリース候補（1件）です。掲載状況とアプリの安定版判定は別々に管理し、制限事項を省略しません。
 
 ```text
 browser-kitty.com
@@ -62,7 +62,7 @@ Browser Kitty本体は、公開exportをビルド時に取り込みます。ブ�
 
 | Repository | 役割 |
 |---|---|
-| `browser-kitty` | Private / Browser Kitty本体 |
+| `browser-kit` | Private / Browser Kitty本体 |
 | `browser-kitty-apps` | Public / Registry・Health Check・自動化・フィードバック窓口 |
 | `htmlapps-template` | Public / アプリ共通テンプレート |
 | `htmlapps-*` | Public / 各アプリのソースコード |
@@ -90,10 +90,10 @@ Browser Kitty本体は、公開exportをビルド時に取り込みます。ブ�
     "slug": "ffmpeg-filter-builder"
   },
   "release": {
-    "version": "1.1.0"
+    "version": "1.2.3"
   },
   "pages": {
-    "url": "https://ttomohisa.github.io/htmlapps-ffmpeg-filter-builder/mt/"
+    "url": "https://ttomohisa.github.io/htmlapps-ffmpeg-filter-builder/"
   }
 }
 ```
@@ -147,6 +147,10 @@ Registryを変更した場合は次を実行します。
 | [CATALOG.md](CATALOG.md) | 人間向けアプリ一覧 |
 | [STATUS.md](STATUS.md) | 人間向けRepository Healthスナップショット |
 | [CHANGELOG.md](CHANGELOG.md) | Version履歴 |
+
+## v1.2.0
+
+v1.2.0では、Browser Kitty本体の100ツールを実際のGitHubリポジトリと照合しました。未登録だったAudio to MIDI、Best Shot Picker、Pause & Tell、Reverse Clipを追加し、既存6ツールの掲載状態を修正、4ツールの現行バージョンを同期しています。台帳は**105件（掲載100件・未掲載5件）**になりました。開発中／RCの3ツールは安定版と偽らず表示し、Registryのリリース判定では明示的な警告を出します。公開用JSONとアプリカタログは再生成済みです。`STATUS.md`は作成日時のあるHealthスナップショットで、最新の判定は[Repository Health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)をご確認ください。
 
 ## v1.1.5
 

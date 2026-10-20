@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.1.5-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.2.0-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -43,7 +43,7 @@ The source of truth for application code is each individual app repository. This
 - consolidated health reports
 - release-readiness checks
 
-Current inventory: **101 registered applications**, including **90 published on Browser Kitty across 7 categories** and **11 not yet published there**. A working app site is independent of Browser Kitty catalog publication.
+Current inventory: **105 registered applications**, including **100 listed on Browser Kitty across 7 categories** and **5 not yet listed there**. Of the 100 listed apps, two are still labeled development and one release candidate. Catalog inclusion does not itself certify stable release readiness; per-app limitations remain in effect.
 
 ```text
 browser-kitty.com
@@ -62,7 +62,7 @@ The Browser Kitty website consumes the public export at build time. Browser clie
 
 | Repository | Role |
 |---|---|
-| `browser-kitty` | Private Browser Kitty website source |
+| `browser-kit` | Private Browser Kitty website source |
 | `browser-kitty-apps` | Public registry, health checks, automation, and feedback hub |
 | `htmlapps-template` | Public application template |
 | `htmlapps-*` | Public source repositories for individual applications |
@@ -90,10 +90,10 @@ Security-related reports should follow [SECURITY.md](SECURITY.md). Do not attach
     "slug": "ffmpeg-filter-builder"
   },
   "release": {
-    "version": "1.1.0"
+    "version": "1.2.3"
   },
   "pages": {
-    "url": "https://ttomohisa.github.io/htmlapps-ffmpeg-filter-builder/mt/"
+    "url": "https://ttomohisa.github.io/htmlapps-ffmpeg-filter-builder/"
   }
 }
 ```
@@ -147,6 +147,10 @@ After changing registry data:
 | [CATALOG.md](CATALOG.md) | Human-readable application catalog |
 | [STATUS.md](STATUS.md) | Human-readable Repository Health snapshot |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+
+## v1.2.0
+
+v1.2.0 reconciles the registry against the 100 tools actually listed on Browser Kitty. It adds four missing applications (Audio to MIDI, Best Shot Picker, Pause & Tell, and Reverse Clip), corrects six publication flags, and mirrors four current child versions. The resulting inventory has **105 apps: 100 listed and 5 not listed**. Three listed applications explicitly retain development/RC maturity and now generate a visible registry readiness warning instead of being silently relabeled stable. Public export and catalog data have been regenerated. `STATUS.md` remains a timestamped health snapshot; use [live Repository Health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml) for the current check.
 
 ## v1.1.5
 
