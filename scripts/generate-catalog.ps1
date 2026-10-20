@@ -39,6 +39,8 @@ $usedCategories = @($categories | Where-Object {
 
 $stableCount = @($published | Where-Object { [string]$_.status -eq 'stable' }).Count
 $maintenanceCount = @($published | Where-Object { [string]$_.status -eq 'maintenance' }).Count
+$developmentCount = @($published | Where-Object { [string]$_.status -eq 'development' }).Count
+$rcCount = @($published | Where-Object { [string]$_.status -eq 'rc' }).Count
 $fullyLocalCount = @($published | Where-Object {
     [bool]$_.runtime.localProcessing -and -not [bool]$_.runtime.networkAccess
 }).Count
@@ -58,6 +60,8 @@ $lines.Add("| Published apps | $($published.Count) |")
 $lines.Add("| Categories | $($usedCategories.Count) |")
 $lines.Add("| Stable | $stableCount |")
 $lines.Add("| Maintenance | $maintenanceCount |")
+$lines.Add("| Development | $developmentCount |")
+$lines.Add("| Release candidate | $rcCount |")
 $lines.Add("| Fully local processing | $fullyLocalCount |")
 $lines.Add('')
 $lines.Add('`Fully local processing` means the registry declares `localProcessing=true` and `networkAccess=false` for the application.')

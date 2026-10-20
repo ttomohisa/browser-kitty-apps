@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 1.1.5 production
+Version: 1.2.0 production
 
 ## Purpose
 
@@ -36,7 +36,7 @@ The registry may mirror an application's current version or publication URL, but
 
 `development` → `rc` → `stable` → `maintenance` → `archived`
 
-Not every application must pass through every state.
+Not every application must pass through every state. `browserKitty.published` records actual catalog inclusion, while `status` records application lifecycle maturity independently. A published `development` or `rc` entry is visible with a non-blocking release-readiness warning; it is not automatically promoted to `stable`. A published `archived` entry fails the readiness gate.
 
 ## Roadmap
 
@@ -56,6 +56,10 @@ Not every application must pass through every state.
 - v1.0.0 — Production Registry (implemented)
 
 
+
+## v1.2.0 live catalog reconciliation
+
+v1.2.0 updates the registry against the live 100-tool Browser Kitty catalog and the current child repository metadata: 105 registered apps, 100 published, five independent unpublished apps, and seven categories. Four previously unregistered stable apps are added, six publication flags are corrected, and four child versions are refreshed. Three site-listed applications remain explicitly `development` or `rc` according to their documented release limitations; the release-readiness gate now reports them as visible WARNs rather than fabricating stable status or hiding actual publication. A published archived app remains blocking. The public export schema and build-time contract are unchanged.
 
 ## v1.1.1 registry reconciliation
 

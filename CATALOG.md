@@ -12,6 +12,8 @@
 | Categories | 7 |
 | Stable | 96 |
 | Maintenance | 1 |
+| Development | 2 |
+| Release candidate | 1 |
 | Fully local processing | 100 |
 
 `Fully local processing` means the registry declares `localProcessing=true` and `networkAccess=false` for the application.

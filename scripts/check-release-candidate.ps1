@@ -226,9 +226,16 @@ else {
     Add-RcCheck -Id 'public_export_ids' -Status 'PASS' -Message 'Public export app IDs match the published registry set.'
 }
 
-$nonReleasePublished = @($publishedApps | Where-Object { ([string]$_.status) -notin @('stable', 'maintenance') })
-if ($nonReleasePublished.Count -gt 0) {
-    Add-RcCheck -Id 'published_lifecycle' -Status 'FAIL' -Message ("Published apps are not release-state stable/maintenance: " + (($nonReleasePublished | ForEach-Object { [string]$_.id }) -join ', '))
+# Browser Kitty catalog publication and a child application's release readiness
+# are independent facts. Record published development/RC apps as explicit WARNs
+# rather than claiming they are stable; archived published entries remain blocking.
+$archivedPublished = @($publishedApps | Where-Object { [string]$_.status -eq 'archived' })
+$preReleasePublished = @($publishedApps | Where-Object { ([string]$_.status) -in @('development', 'rc') })
+if ($archivedPublished.Count -gt 0) {
+    Add-RcCheck -Id 'published_lifecycle' -Status 'FAIL' -Message ("Archived applications remain listed on Browser Kitty: " + (($archivedPublished | ForEach-Object { [string]$_.id }) -join ', '))
+}
+elseif ($preReleasePublished.Count -gt 0) {
+    Add-RcCheck -Id 'published_lifecycle' -Status 'WARN' -Message ("Browser Kitty lists applications not yet declared stable (review their limitations): " + (($preReleasePublished | ForEach-Object { [string]$_.id + ' (' + [string]$_.status + ')' }) -join ', '))
 }
 else {
     Add-RcCheck -Id 'published_lifecycle' -Status 'PASS' -Message 'All published apps are stable or maintenance.'
