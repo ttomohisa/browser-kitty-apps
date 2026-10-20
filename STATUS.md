@@ -4,7 +4,7 @@
 
 > This file is generated from `reports/repository-status.json`. A committed copy is a snapshot; the GitHub Actions Job Summary is the live view.
 
-Last checked: **2026-10-13T10:12:04.4017133+00:00**
+Last checked: **2026-10-20T20:08:11.5782700+00:00**
 
 ## Overall
 
@@ -12,12 +12,12 @@ Last checked: **2026-10-13T10:12:04.4017133+00:00**
 
 | Status | Apps |
 |---|---:|
-| PASS | 100 |
-| WARN | 1 |
+| PASS | 101 |
+| WARN | 4 |
 | FAIL | 0 |
 
-Registered apps: **101**  
-Warnings: **2**  
+Registered apps: **105**  
+Warnings: **6**  
 Failures: **0**  
 Global issues: **0**
 
@@ -29,6 +29,8 @@ No blocking application failures were detected.
 
 | Count | Reason | Code |
 |---:|---|---|
+| 3 | English screenshot missing | `screenshot_en_missing` |
+| 1 | Default / Japanese screenshot missing | `screenshot_missing` |
 | 1 | Registered version tag missing | `registered_version_tag_missing` |
 | 1 | Registry / latest release version mismatch | `release_version_mismatch` |
 
@@ -36,7 +38,10 @@ No blocking application failures were detected.
 
 | Status | App | Inventory | Quality | Pages | Release | Runtime | Issues | Reasons |
 |---|---|---|---|---|---|---|---:|---|
+| WARN | Audio to MIDI | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
+| WARN | Best Shot Picker | PASS | WARN | PASS | PASS | PASS | 1 | English screenshot missing |
 | WARN | FFmpeg Filter Builder | PASS | PASS | PASS | WARN | PASS | 2 | Registry / latest release version mismatch; Registered version tag missing |
+| WARN | Pause & Tell | PASS | WARN | PASS | PASS | PASS | 2 | Default / Japanese screenshot missing; English screenshot missing |
 
 ## Status meanings
 
