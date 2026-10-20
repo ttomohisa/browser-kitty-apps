@@ -640,7 +640,7 @@
       "slug": "pixel-animation-studio",
       "category": "image",
       "status": "stable",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "appUrl": "https://ttomohisa.github.io/htmlapps-pixel-animation-studio/",
       "repository": "ttomohisa/htmlapps-pixel-animation-studio",
       "repositoryUrl": "https://github.com/ttomohisa/htmlapps-pixel-animation-studio",
@@ -666,6 +666,28 @@
       "appUrl": "https://ttomohisa.github.io/htmlapps-smart-image-sorter/",
       "repository": "ttomohisa/htmlapps-smart-image-sorter",
       "repositoryUrl": "https://github.com/ttomohisa/htmlapps-smart-image-sorter",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "best-shot-picker",
+      "name": "Best Shot Picker",
+      "nameJa": "ベストショット選び",
+      "slug": "best-shot-picker",
+      "category": "image",
+      "status": "stable",
+      "version": "1.0.0",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-best-shot-picker/",
+      "repository": "ttomohisa/htmlapps-best-shot-picker",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-best-shot-picker",
       "runtime": {
         "localProcessing": true,
         "networkAccess": false,
@@ -1410,7 +1432,7 @@
       "slug": "pass-the-phone-vote",
       "category": "utility",
       "status": "stable",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "appUrl": "https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/",
       "repository": "ttomohisa/htmlapps-pass-the-phone-vote",
       "repositoryUrl": "https://github.com/ttomohisa/htmlapps-pass-the-phone-vote",
@@ -1602,6 +1624,28 @@
       }
     },
     {
+      "id": "reveal-sheet",
+      "name": "Reveal Sheet",
+      "nameJa": "めくる暗記シート",
+      "slug": "reveal-sheet",
+      "category": "utility",
+      "status": "stable",
+      "version": "1.0.1",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-reveal-sheet/",
+      "repository": "ttomohisa/htmlapps-reveal-sheet",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-reveal-sheet",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
       "id": "same-spot-diff",
       "name": "Same Spot Diff",
       "nameJa": "Same Spot Diff",
@@ -1712,6 +1756,50 @@
       }
     },
     {
+      "id": "tuning-compare",
+      "name": "Tuning Compare",
+      "nameJa": "音律聞き比べ",
+      "slug": "tuning-compare",
+      "category": "utility",
+      "status": "stable",
+      "version": "1.0.1",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-tuning-compare/",
+      "repository": "ttomohisa/htmlapps-tuning-compare",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-tuning-compare",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "web-serial-terminal",
+      "name": "Web Serial Terminal",
+      "nameJa": "Web Serial Terminal / シリアル通信ターミナル",
+      "slug": "web-serial-terminal",
+      "category": "utility",
+      "status": "stable",
+      "version": "1.0.0",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-web-serial-terminal/",
+      "repository": "ttomohisa/htmlapps-web-serial-terminal",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-web-serial-terminal",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
       "id": "wifi-share",
       "name": "Wi-Fi Share",
       "nameJa": "Wi-Fi共有",
@@ -1751,6 +1839,28 @@
         "crossOriginIsolated": false,
         "requiresWasm": false,
         "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "audio-to-midi",
+      "name": "Audio to MIDI",
+      "nameJa": "音声→MIDI",
+      "slug": "audio-to-midi",
+      "category": "utility",
+      "status": "stable",
+      "version": "1.0.0",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-audio-to-midi/",
+      "repository": "ttomohisa/htmlapps-audio-to-midi",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-audio-to-midi",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
       }
@@ -1828,7 +1938,7 @@
       "slug": "media-inspector",
       "category": "video",
       "status": "stable",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "appUrl": "https://ttomohisa.github.io/htmlapps-media-inspector/",
       "repository": "ttomohisa/htmlapps-media-inspector",
       "repositoryUrl": "https://github.com/ttomohisa/htmlapps-media-inspector",
@@ -1866,6 +1976,28 @@
       }
     },
     {
+      "id": "passage-counter",
+      "name": "Passage Counter",
+      "nameJa": "通過カウンター",
+      "slug": "passage-counter",
+      "category": "video",
+      "status": "development",
+      "version": "1.0.0",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-passage-counter/",
+      "repository": "ttomohisa/htmlapps-passage-counter",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-passage-counter",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": true,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
       "id": "practice-mirror",
       "name": "Practice Mirror",
       "nameJa": "Practice Mirror",
@@ -1885,6 +2017,28 @@
         "requiresWorker": false,
         "requiresWebGPU": false,
         "requiresWebCodecs": true
+      }
+    },
+    {
+      "id": "time-study-desk",
+      "name": "Time Study Desk",
+      "nameJa": "動画作業分析",
+      "slug": "time-study-desk",
+      "category": "video",
+      "status": "rc",
+      "version": "1.0.1",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-time-study-desk/",
+      "repository": "ttomohisa/htmlapps-time-study-desk",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-time-study-desk",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
       }
     },
     {
@@ -1982,7 +2136,7 @@
       "slug": "video-speed-changer",
       "category": "video",
       "status": "stable",
-      "version": "1.0.4",
+      "version": "1.1.1",
       "appUrl": "https://ttomohisa.github.io/htmlapps-video-speed-changer/",
       "repository": "ttomohisa/htmlapps-video-speed-changer",
       "repositoryUrl": "https://github.com/ttomohisa/htmlapps-video-speed-changer",
@@ -2015,6 +2169,72 @@
         "crossOriginIsolated": false,
         "requiresWasm": false,
         "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "voice-cleaner",
+      "name": "Voice Cleaner",
+      "nameJa": "Voice Cleaner",
+      "slug": "voice-cleaner",
+      "category": "video",
+      "status": "development",
+      "version": "1.0.0",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-voice-cleaner/",
+      "repository": "ttomohisa/htmlapps-voice-cleaner",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-voice-cleaner",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "pause-and-tell",
+      "name": "Pause & Tell",
+      "nameJa": "Pause & Tell｜動画説明差し込みエディター",
+      "slug": "pause-and-tell",
+      "category": "video",
+      "status": "stable",
+      "version": "1.0.0",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-pause-and-tell/",
+      "repository": "ttomohisa/htmlapps-pause-and-tell",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-pause-and-tell",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": true
+      }
+    },
+    {
+      "id": "reverse-clip",
+      "name": "Reverse Clip",
+      "nameJa": "動画逆再生",
+      "slug": "reverse-clip",
+      "category": "video",
+      "status": "stable",
+      "version": "1.0.0",
+      "appUrl": "https://ttomohisa.github.io/htmlapps-reverse-clip/mt/",
+      "repository": "ttomohisa/htmlapps-reverse-clip",
+      "repositoryUrl": "https://github.com/ttomohisa/htmlapps-reverse-clip",
+      "runtime": {
+        "localProcessing": true,
+        "networkAccess": false,
+        "standalone": true,
+        "crossOriginIsolated": true,
+        "requiresWasm": true,
+        "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
       }

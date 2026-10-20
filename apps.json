@@ -855,7 +855,7 @@
         "slug": "pixel-animation-studio"
       },
       "release": {
-        "version": "1.0.3"
+        "version": "1.0.4"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pixel-animation-studio/"
@@ -900,6 +900,36 @@
         "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "best-shot-picker",
+      "name": "Best Shot Picker",
+      "nameJa": "ベストショット選び",
+      "repository": "ttomohisa/htmlapps-best-shot-picker",
+      "repositoryProfile": "standard",
+      "category": "image",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "best-shot-picker"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-best-shot-picker/"
+      },
+      "runtime": {
+        "standalone": true,
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false,
+        "standalonePath": "dist/index.html"
       }
     },
     {
@@ -1943,7 +1973,7 @@
         "slug": "pass-the-phone-vote"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.0.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/"
@@ -2239,7 +2269,7 @@
       "category": "utility",
       "status": "stable",
       "browserKitty": {
-        "published": false,
+        "published": true,
         "slug": "reveal-sheet"
       },
       "release": {
@@ -2419,7 +2449,7 @@
       "category": "utility",
       "status": "stable",
       "browserKitty": {
-        "published": false,
+        "published": true,
         "slug": "tuning-compare"
       },
       "release": {
@@ -2479,7 +2509,7 @@
       "category": "utility",
       "status": "stable",
       "browserKitty": {
-        "published": false,
+        "published": true,
         "slug": "web-serial-terminal"
       },
       "release": {
@@ -2558,6 +2588,36 @@
         "requiresWorker": false,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "audio-to-midi",
+      "name": "Audio to MIDI",
+      "nameJa": "音声→MIDI",
+      "repository": "ttomohisa/htmlapps-audio-to-midi",
+      "repositoryProfile": "standard",
+      "category": "utility",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "audio-to-midi"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-audio-to-midi/"
+      },
+      "runtime": {
+        "standalone": true,
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false,
+        "standalonePath": "dist/index.html"
       }
     },
     {
@@ -2663,7 +2723,7 @@
         "slug": "media-inspector"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-media-inspector/"
@@ -2719,7 +2779,7 @@
       "category": "video",
       "status": "development",
       "browserKitty": {
-        "published": false,
+        "published": true,
         "slug": "passage-counter"
       },
       "release": {
@@ -2809,7 +2869,7 @@
       "category": "video",
       "status": "rc",
       "browserKitty": {
-        "published": false,
+        "published": true,
         "slug": "time-study-desk"
       },
       "release": {
@@ -2963,7 +3023,7 @@
         "slug": "video-speed-changer"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-speed-changer/"
@@ -3019,7 +3079,7 @@
       "category": "video",
       "status": "development",
       "browserKitty": {
-        "published": false,
+        "published": true,
         "slug": "voice-cleaner"
       },
       "release": {
@@ -3038,6 +3098,74 @@
         "requiresWorker": true,
         "requiresWebGPU": false,
         "requiresWebCodecs": false
+      }
+    },
+    {
+      "id": "pause-and-tell",
+      "name": "Pause & Tell",
+      "nameJa": "Pause & Tell｜動画説明差し込みエディター",
+      "repository": "ttomohisa/htmlapps-pause-and-tell",
+      "repositoryProfile": "standard",
+      "category": "video",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "pause-and-tell"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-pause-and-tell/"
+      },
+      "runtime": {
+        "standalone": true,
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": false,
+        "requiresWasm": false,
+        "requiresWorker": false,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": true,
+        "standalonePath": "dist/index.html"
+      }
+    },
+    {
+      "id": "reverse-clip",
+      "name": "Reverse Clip",
+      "nameJa": "動画逆再生",
+      "repository": "ttomohisa/htmlapps-reverse-clip",
+      "repositoryProfile": "standard",
+      "category": "video",
+      "status": "stable",
+      "browserKitty": {
+        "published": true,
+        "slug": "reverse-clip"
+      },
+      "release": {
+        "version": "1.0.0"
+      },
+      "pages": {
+        "url": "https://ttomohisa.github.io/htmlapps-reverse-clip/mt/"
+      },
+      "runtime": {
+        "standalone": true,
+        "localProcessing": true,
+        "networkAccess": false,
+        "crossOriginIsolated": true,
+        "requiresWasm": true,
+        "requiresWorker": true,
+        "requiresWebGPU": false,
+        "requiresWebCodecs": false,
+        "standalonePath": "dist/index.mt.html"
+      },
+      "hosting": {
+        "crossOriginIsolated": true,
+        "headers": [
+          "Cross-Origin-Opener-Policy",
+          "Cross-Origin-Embedder-Policy",
+          "Cross-Origin-Resource-Policy"
+        ]
       }
     }
   ]
