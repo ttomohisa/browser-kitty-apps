@@ -8,11 +8,13 @@
 
 | Item | Count |
 |---|---:|
-| Published apps | 90 |
+| Published apps | 100 |
 | Categories | 7 |
-| Stable | 89 |
+| Stable | 96 |
 | Maintenance | 1 |
-| Fully local processing | 90 |
+| Development | 2 |
+| Release candidate | 1 |
+| Fully local processing | 100 |
 
 `Fully local processing` means the registry declares `localProcessing=true` and `networkAccess=false` for the application.
 
@@ -58,22 +60,27 @@
 | Test Data Generator | テストデータ生成 | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/test-data-generator/) · [App](https://ttomohisa.github.io/htmlapps-test-data-generator/) · [Source](https://github.com/ttomohisa/htmlapps-test-data-generator) |
 | Text Inspector | Text Inspector | 1.0.5 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/text-inspector/) · [App](https://ttomohisa.github.io/htmlapps-text-inspector/) · [Source](https://github.com/ttomohisa/htmlapps-text-inspector) |
 
-## Video / 動画 (12)
+## Video / 動画 (17)
 
 | App | 日本語名 | Version | Status | Processing | Runtime | Links |
 |---|---|---:|---|---|---|---|
 | Audio Cutter & Joiner | 音声カット・結合 | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/audio-cutter-joiner/) · [App](https://ttomohisa.github.io/htmlapps-audio-cutter-joiner/) · [Source](https://github.com/ttomohisa/htmlapps-audio-cutter-joiner) |
 | Local Video Compressor | ローカル動画圧縮 | 1.3.7 | stable | Fully local | WASM · Worker | [Browser Kitty](https://browser-kitty.com/tools/video-compressor/) · [App](https://ttomohisa.github.io/htmlapps-video-compressor/) · [Source](https://github.com/ttomohisa/htmlapps-video-compressor) |
 | Lossless Video Cutter | Lossless Video Cutter | 1.0.4 | stable | Fully local | WASM | [Browser Kitty](https://browser-kitty.com/tools/lossless-video-cutter/) · [App](https://ttomohisa.github.io/htmlapps-lossless-video-cutter/) · [Source](https://github.com/ttomohisa/htmlapps-lossless-video-cutter) |
-| Media Inspector | Media Inspector | 1.0.4 | stable | Fully local | WASM · Worker | [Browser Kitty](https://browser-kitty.com/tools/media-inspector/) · [App](https://ttomohisa.github.io/htmlapps-media-inspector/) · [Source](https://github.com/ttomohisa/htmlapps-media-inspector) |
+| Media Inspector | Media Inspector | 1.0.5 | stable | Fully local | WASM · Worker | [Browser Kitty](https://browser-kitty.com/tools/media-inspector/) · [App](https://ttomohisa.github.io/htmlapps-media-inspector/) · [Source](https://github.com/ttomohisa/htmlapps-media-inspector) |
 | One Second Montage | 1秒モンタージュ | 1.3.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/one-second-montage/) · [App](https://ttomohisa.github.io/htmlapps-one-second-montage/) · [Source](https://github.com/ttomohisa/htmlapps-one-second-montage) |
+| Passage Counter | 通過カウンター | 1.0.0 | development | Fully local | WASM | [Browser Kitty](https://browser-kitty.com/tools/passage-counter/) · [App](https://ttomohisa.github.io/htmlapps-passage-counter/) · [Source](https://github.com/ttomohisa/htmlapps-passage-counter) |
 | Practice Mirror | Practice Mirror | 1.0.1 | stable | Fully local | WebCodecs | [Browser Kitty](https://browser-kitty.com/tools/practice-mirror/) · [App](https://ttomohisa.github.io/htmlapps-practice-mirror/) · [Source](https://github.com/ttomohisa/htmlapps-practice-mirror) |
+| Time Study Desk | 動画作業分析 | 1.0.1 | rc | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/time-study-desk/) · [App](https://ttomohisa.github.io/htmlapps-time-study-desk/) · [Source](https://github.com/ttomohisa/htmlapps-time-study-desk) |
 | Video Audio Extractor | 動画から音声抽出 | 1.0.3 | stable | Fully local | WASM · Worker | [Browser Kitty](https://browser-kitty.com/tools/video-audio-extractor/) · [App](https://ttomohisa.github.io/htmlapps-video-audio-extractor/) · [Source](https://github.com/ttomohisa/htmlapps-video-audio-extractor) |
 | Video Contact Sheet | Video Contact Sheet | 1.0.6 | stable | Fully local | WASM | [Browser Kitty](https://browser-kitty.com/tools/video-contact-sheet/) · [App](https://ttomohisa.github.io/htmlapps-video-contact-sheet/) · [Source](https://github.com/ttomohisa/htmlapps-video-contact-sheet) |
 | Video Face Redactor | 動画顔ぼかし | 1.0.3 | stable | Fully local | WASM · Worker · WebCodecs | [Browser Kitty](https://browser-kitty.com/tools/video-face-redactor/) · [App](https://ttomohisa.github.io/htmlapps-video-face-redactor/) · [Source](https://github.com/ttomohisa/htmlapps-video-face-redactor) |
 | Video Review Notes | 動画レビュー付箋 | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/video-review-notes/) · [App](https://ttomohisa.github.io/htmlapps-video-review-notes/) · [Source](https://github.com/ttomohisa/htmlapps-video-review-notes) |
-| Video Speed Changer | 動画速度変更 | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/video-speed-changer/) · [App](https://ttomohisa.github.io/htmlapps-video-speed-changer/) · [Source](https://github.com/ttomohisa/htmlapps-video-speed-changer) |
+| Video Speed Changer | 動画速度変更 | 1.1.1 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/video-speed-changer/) · [App](https://ttomohisa.github.io/htmlapps-video-speed-changer/) · [Source](https://github.com/ttomohisa/htmlapps-video-speed-changer) |
 | Video to GIF / WebP | 動画をGIF / WebPに変換 | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/video-to-gif-webp/) · [App](https://ttomohisa.github.io/htmlapps-video-to-gif-webp/) · [Source](https://github.com/ttomohisa/htmlapps-video-to-gif-webp) |
+| Voice Cleaner | Voice Cleaner | 1.0.0 | development | Fully local | WASM · Worker | [Browser Kitty](https://browser-kitty.com/tools/voice-cleaner/) · [App](https://ttomohisa.github.io/htmlapps-voice-cleaner/) · [Source](https://github.com/ttomohisa/htmlapps-voice-cleaner) |
+| Pause & Tell | Pause & Tell｜動画説明差し込みエディター | 1.0.0 | stable | Fully local | WebCodecs | [Browser Kitty](https://browser-kitty.com/tools/pause-and-tell/) · [App](https://ttomohisa.github.io/htmlapps-pause-and-tell/) · [Source](https://github.com/ttomohisa/htmlapps-pause-and-tell) |
+| Reverse Clip | 動画逆再生 | 1.0.0 | stable | Fully local | WASM · Worker · COI | [Browser Kitty](https://browser-kitty.com/tools/reverse-clip/) · [App](https://ttomohisa.github.io/htmlapps-reverse-clip/mt/) · [Source](https://github.com/ttomohisa/htmlapps-reverse-clip) |
 
 ## Print / 印刷・用紙 (4)
 
@@ -84,7 +91,7 @@
 | Max Text Print | Max Text Print | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/max-text-print/) · [App](https://ttomohisa.github.io/htmlapps-max-text-print/) · [Source](https://github.com/ttomohisa/htmlapps-max-text-print) |
 | Planner Refill Maker | システム手帳リフィルメーカー | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/planner-refill-maker/) · [App](https://ttomohisa.github.io/htmlapps-planner-refill-maker/) · [Source](https://github.com/ttomohisa/htmlapps-planner-refill-maker) |
 
-## Image / 画像 (14)
+## Image / 画像 (15)
 
 | App | 日本語名 | Version | Status | Processing | Runtime | Links |
 |---|---|---:|---|---|---|---|
@@ -100,10 +107,11 @@
 | Photo Collage | 写真コラージュ | 1.0.1 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/photo-collage/) · [App](https://ttomohisa.github.io/htmlapps-photo-collage/) · [Source](https://github.com/ttomohisa/htmlapps-photo-collage) |
 | Photo Privacy Inspector | Photo Privacy Inspector | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/photo-privacy-inspector/) · [App](https://ttomohisa.github.io/htmlapps-photo-privacy-inspector/) · [Source](https://github.com/ttomohisa/htmlapps-photo-privacy-inspector) |
 | Photo Re-Enactor | 同じ構図で撮る | 1.1.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/photo-re-enactor/) · [App](https://ttomohisa.github.io/htmlapps-photo-re-enactor/) · [Source](https://github.com/ttomohisa/htmlapps-photo-re-enactor) |
-| Pixel Animation Studio | Pixel Animation Studio | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pixel-animation-studio/) · [App](https://ttomohisa.github.io/htmlapps-pixel-animation-studio/) · [Source](https://github.com/ttomohisa/htmlapps-pixel-animation-studio) |
+| Pixel Animation Studio | Pixel Animation Studio | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pixel-animation-studio/) · [App](https://ttomohisa.github.io/htmlapps-pixel-animation-studio/) · [Source](https://github.com/ttomohisa/htmlapps-pixel-animation-studio) |
 | Smart Image Sorter | Smart Image Sorter | 1.0.5 | stable | Fully local | WASM · Worker | [Browser Kitty](https://browser-kitty.com/tools/smart-image-sorter/) · [App](https://ttomohisa.github.io/htmlapps-smart-image-sorter/) · [Source](https://github.com/ttomohisa/htmlapps-smart-image-sorter) |
+| Best Shot Picker | ベストショット選び | 1.0.0 | stable | Fully local | WASM · Worker | [Browser Kitty](https://browser-kitty.com/tools/best-shot-picker/) · [App](https://ttomohisa.github.io/htmlapps-best-shot-picker/) · [Source](https://github.com/ttomohisa/htmlapps-best-shot-picker) |
 
-## Utility / 便利ツール (33)
+## Utility / 便利ツール (37)
 
 | App | 日本語名 | Version | Status | Processing | Runtime | Links |
 |---|---|---:|---|---|---|---|
@@ -124,7 +132,7 @@
 | Office Privacy Inspector | Office Privacy Inspector | 1.1.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/office-privacy-inspector/) · [App](https://ttomohisa.github.io/htmlapps-office-privacy-inspector/) · [Source](https://github.com/ttomohisa/htmlapps-office-privacy-inspector) |
 | Offline Web Packager | Offline Web Packager | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/offline-web-packager/) · [App](https://ttomohisa.github.io/htmlapps-offline-web-packager/) · [Source](https://github.com/ttomohisa/htmlapps-offline-web-packager) |
 | Optical File | Optical File | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/optical-file-camera/) · [App](https://ttomohisa.github.io/htmlapps-optical-file-camera/) · [Source](https://github.com/ttomohisa/htmlapps-optical-file-camera) |
-| Pass-the-Phone Vote | スマホ回し投票 | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pass-the-phone-vote/) · [App](https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/) · [Source](https://github.com/ttomohisa/htmlapps-pass-the-phone-vote) |
+| Pass-the-Phone Vote | スマホ回し投票 | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pass-the-phone-vote/) · [App](https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/) · [Source](https://github.com/ttomohisa/htmlapps-pass-the-phone-vote) |
 | Pocket Level | Pocket Level | 1.1.0 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pocket-level/) · [App](https://ttomohisa.github.io/htmlapps-pocket-level/) · [Source](https://github.com/ttomohisa/htmlapps-pocket-level) |
 | Pocket Teleprompter | Pocket Teleprompter | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pocket-teleprompter/) · [App](https://ttomohisa.github.io/htmlapps-pocket-teleprompter/) · [Source](https://github.com/ttomohisa/htmlapps-pocket-teleprompter) |
 | Pomodoro Timer | ポモドーロタイマー | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/pomodoro-timer/) · [App](https://ttomohisa.github.io/htmlapps-pomodoro-timer/) · [Source](https://github.com/ttomohisa/htmlapps-pomodoro-timer) |
@@ -133,13 +141,17 @@
 | Queue Board | 呼び出し番号 | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/queue-board/) · [App](https://ttomohisa.github.io/htmlapps-queue-board/) · [Source](https://github.com/ttomohisa/htmlapps-queue-board) |
 | Random Picker | ランダムピッカー | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/random-picker/) · [App](https://ttomohisa.github.io/htmlapps-random-picker/) · [Source](https://github.com/ttomohisa/htmlapps-random-picker) |
 | Restock List | Restock List | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/restock-list/) · [App](https://ttomohisa.github.io/htmlapps-restock-list/) · [Source](https://github.com/ttomohisa/htmlapps-restock-list) |
+| Reveal Sheet | めくる暗記シート | 1.0.1 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/reveal-sheet/) · [App](https://ttomohisa.github.io/htmlapps-reveal-sheet/) · [Source](https://github.com/ttomohisa/htmlapps-reveal-sheet) |
 | Same Spot Diff | Same Spot Diff | 1.0.5 | stable | Fully local | WASM | [Browser Kitty](https://browser-kitty.com/tools/same-spot-diff/) · [App](https://ttomohisa.github.io/htmlapps-same-spot-diff/) · [Source](https://github.com/ttomohisa/htmlapps-same-spot-diff) |
 | Signal Screen | Signal Screen | 1.0.4 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/signal-screen/) · [App](https://ttomohisa.github.io/htmlapps-signal-screen/) · [Source](https://github.com/ttomohisa/htmlapps-signal-screen) |
 | Tap Counter | Tap Counter | 1.0.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/tap-counter/) · [App](https://ttomohisa.github.io/htmlapps-tap-counter/) · [Source](https://github.com/ttomohisa/htmlapps-tap-counter) |
 | Task Packing | Task Packing | 1.0.5 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/task-packing/) · [App](https://ttomohisa.github.io/htmlapps-task-packing/) · [Source](https://github.com/ttomohisa/htmlapps-task-packing) |
 | Temporary Links | 一時リンク置き場 | 1.0.5 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/temporary-links/) · [App](https://ttomohisa.github.io/htmlapps-temporary-links/) · [Source](https://github.com/ttomohisa/htmlapps-temporary-links) |
+| Tuning Compare | 音律聞き比べ | 1.0.1 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/tuning-compare/) · [App](https://ttomohisa.github.io/htmlapps-tuning-compare/) · [Source](https://github.com/ttomohisa/htmlapps-tuning-compare) |
+| Web Serial Terminal | Web Serial Terminal / シリアル通信ターミナル | 1.0.0 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/web-serial-terminal/) · [App](https://ttomohisa.github.io/htmlapps-web-serial-terminal/) · [Source](https://github.com/ttomohisa/htmlapps-web-serial-terminal) |
 | Wi-Fi Share | Wi-Fi共有 | 1.1.3 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/wifi-share/) · [App](https://ttomohisa.github.io/htmlapps-wifi-share/) · [Source](https://github.com/ttomohisa/htmlapps-wifi-share) |
 | Wireless Sensor | Wireless Sensor | 1.0.2 | stable | Fully local | — | [Browser Kitty](https://browser-kitty.com/tools/wireless-sensor/) · [App](https://ttomohisa.github.io/htmlapps-wireless-sensor/) · [Source](https://github.com/ttomohisa/htmlapps-wireless-sensor) |
+| Audio to MIDI | 音声→MIDI | 1.0.0 | stable | Fully local | Worker | [Browser Kitty](https://browser-kitty.com/tools/audio-to-midi/) · [App](https://ttomohisa.github.io/htmlapps-audio-to-midi/) · [Source](https://github.com/ttomohisa/htmlapps-audio-to-midi) |
 
 ## Notes
 

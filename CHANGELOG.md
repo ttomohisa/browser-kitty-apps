@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.2.0
+
+### Added
+
+- Register Audio to MIDI, Best Shot Picker, Pause & Tell, and Reverse Clip from their current v1.0.0 child metadata and verified public Pages deployment; record explicit runtime capabilities. Reverse Clip's isolated multi-thread distribution uses `dist/index.mt.html` and a Pages `/mt/` URL.
+- Include all 100 live Browser Kitty tool slugs in the public registry export. Retain five independently hosted, non-catalog applications as unpublished.
+
+### Changed
+
+- Reconcile six already-listed tools (Reveal Sheet, Web Serial Terminal, Tuning Compare, Voice Cleaner, Passage Counter, and Time Study Desk) from unpublished to catalog-published without modifying their lifecycle maturity; refresh four child versions (Pixel Animation Studio 1.0.4, Pass-the-Phone Vote 1.0.3, Media Inspector 1.0.5, and Video Speed Changer 1.1.1).
+- Describe catalog publication and lifecycle release readiness as distinct facts. Published development/RC apps now cause a clearly visible release-readiness WARN; an archived app that remains published still causes a blocking FAIL. Keep those three real lifecycle states intact rather than claiming every catalog-listed tool is stable.
+- Extend generated `CATALOG.md` summary with development and release-candidate counts, retaining the exact 100-item published catalog, seven categories, and deterministic public export.
+- Update Japanese/English README counts, current release notes, and the actual private website repository name in the repository-role table. Correct the existing FFmpeg Filter Builder sample's mirrored version and Pages URL.
+- Keep the dated `STATUS.md` as a historical committed snapshot; the current Repository Health workflow generates a fresh snapshot in its artifact and Job Summary. No child repo, Browser Kitty website source, or runtime tool code is changed.
+
 ## v1.1.5
 
 ### Changed

@@ -21,7 +21,7 @@ The scheduled / on-change Repository Health workflow additionally runs:
 ./scripts/check-release-candidate.ps1 -RequireHealthReport
 ```
 
-The historical script/report names are retained for compatibility. From v1.0.0 onward this is the general production **release-readiness** gate. A release is acceptable when the report has **0 FAIL**. WARN items may remain only when they are non-blocking repository-hygiene or legacy-migration debt already represented by Repository Health. WARNs must remain visible; they are not silently suppressed.
+The historical script/report names are retained for compatibility. From v1.0.0 onward this is the general production **release-readiness** gate. A release is acceptable when the report has **0 FAIL**. WARN items may remain when they are non-blocking repository-hygiene or legacy-migration debt represented by Repository Health, or when an actually catalog-published application is still explicitly in `development` / `rc`. These maturity warnings are not a claim of stable release readiness. WARNs must remain visible; they are not silently suppressed.
 
 ## Registry
 
@@ -30,7 +30,8 @@ The historical script/report names are retained for compatibility. From v1.0.0 o
 - Categories referenced by applications exist.
 - Registered versions are valid Semantic Versions.
 - Published applications have a Browser Kitty slug and HTTPS application URL.
-- Published applications are `stable` or `maintenance`, not `development` / `rc`.
+- Published `stable` / `maintenance` applications are release-state entries. Any actually catalog-published `development` / `rc` applications stay labeled accordingly and produce a visible **WARN**; do not promote them just to pass the registry gate.
+- Published `archived` applications remain a blocking **FAIL** until the catalog entry is retired.
 - Runtime capability flags are explicit.
 - Cross-origin-isolated applications declare the required hosting metadata.
 

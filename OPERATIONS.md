@@ -74,6 +74,8 @@ When an application version, public URL, runtime requirement, or publication sta
 
 The parent registry must not automatically bump versions or rewrite child repositories. The mirrored `release.version` is the child-repository version, not a claim that the separate Browser Kitty website has imported that version. Preserve unpublished entries in the registry while excluding them from the public export until catalog publication is verified.
 
+A tool may appear in Browser Kitty before its individual repository is considered stable. Reflect verified catalog publication with `browserKitty.published=true` **without** silently changing `status`: `development` / `rc` in a published app produces a visible release-readiness **WARN**, while a published `archived` app remains **FAIL**. The application README and health checks continue to describe unverified or incomplete release conditions.
+
 ## Health policy
 
 Repository Health combines five source checks:
