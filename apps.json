@@ -45,7 +45,7 @@
         "slug": "arrow-viewer"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.0.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-arrow-viewer/"
@@ -165,7 +165,7 @@
         "slug": "duckdb-explorer"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-duckdb-explorer/"
@@ -375,7 +375,7 @@
         "slug": "sqlite-explorer"
       },
       "release": {
-        "version": "1.1.2"
+        "version": "1.1.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-sqlite-explorer/"
@@ -495,7 +495,7 @@
         "slug": "file-in-image"
       },
       "release": {
-        "version": "1.0.3"
+        "version": "1.0.4"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-file-in-image/"
@@ -555,7 +555,7 @@
         "slug": "frame-animator"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.6"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-frame-animator/"
@@ -585,7 +585,7 @@
         "slug": "handwriting-font-maker"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-handwriting-font-maker/"
@@ -735,7 +735,7 @@
         "slug": "onefile-album"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-onefile-album/"
@@ -795,7 +795,7 @@
         "slug": "photo-privacy-inspector"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-photo-privacy-inspector/"
@@ -885,7 +885,7 @@
         "slug": "smart-image-sorter"
       },
       "release": {
-        "version": "1.0.5"
+        "version": "1.0.6"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-smart-image-sorter/"
@@ -1005,7 +1005,7 @@
         "slug": "office-image-extractor"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-office-image-extractor/"
@@ -1245,7 +1245,7 @@
         "slug": "pptx-version-control"
       },
       "release": {
-        "version": "1.1.6"
+        "version": "1.1.8"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pptx-version-control/"
@@ -1395,7 +1395,7 @@
         "slug": "max-text-print"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.2.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-max-text-print/"
@@ -1425,7 +1425,7 @@
         "slug": "planner-refill-maker"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.2.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-planner-refill-maker/"
@@ -1515,7 +1515,7 @@
         "slug": "device-check"
       },
       "release": {
-        "version": "1.0.5"
+        "version": "1.0.6"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-device-check/"
@@ -1793,7 +1793,7 @@
         "slug": "music-cue-pad"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.0.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-music-cue-pad/"
@@ -2003,7 +2003,7 @@
         "slug": "pocket-level"
       },
       "release": {
-        "version": "1.1.1"
+        "version": "1.2.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pocket-level/"
@@ -2303,7 +2303,7 @@
         "slug": "same-spot-diff"
       },
       "release": {
-        "version": "1.0.6"
+        "version": "1.0.7"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-same-spot-diff/"
@@ -2693,7 +2693,7 @@
         "slug": "lossless-video-cutter"
       },
       "release": {
-        "version": "1.0.5"
+        "version": "1.0.6"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-lossless-video-cutter/"
@@ -2783,7 +2783,7 @@
         "slug": "passage-counter"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-passage-counter/"
@@ -2843,7 +2843,7 @@
         "slug": "practice-mirror"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-practice-mirror/"
@@ -2993,7 +2993,7 @@
         "slug": "video-review-notes"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-review-notes/"
@@ -3023,7 +3023,7 @@
         "slug": "video-speed-changer"
       },
       "release": {
-        "version": "1.1.1"
+        "version": "1.1.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-speed-changer/"
@@ -3113,7 +3113,7 @@
         "slug": "pause-and-tell"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pause-and-tell/"
@@ -3143,7 +3143,7 @@
         "slug": "reverse-clip"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-reverse-clip/mt/"

@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.2.0-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.2.1-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -147,6 +147,10 @@ Registryを変更した場合は次を実行します。
 | [CATALOG.md](CATALOG.md) | 人間向けアプリ一覧 |
 | [STATUS.md](STATUS.md) | 人間向けRepository Healthスナップショット |
 | [CHANGELOG.md](CHANGELOG.md) | Version履歴 |
+
+## v1.2.1
+
+v1.2.1では、**掲載済み24アプリ**のバージョンを2026年11月14日時点で確認できたGitHub Releaseに合わせて更新しました。登録数は**105件（掲載100件・未掲載5件）**のままです。FFmpeg Filter Builderは`app.config.json`の1.2.4が最新GitHub Releaseのv1.2.3より先行しているため、未リリース版として台帳へ反映していません。公開用exportとカタログを更新し、個別アプリのコードやBrowser Kitty本体のデプロイには触れていません。詳しくは [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## v1.2.0
 

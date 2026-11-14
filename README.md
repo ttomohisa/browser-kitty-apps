@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.2.0-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.2.1-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -147,6 +147,10 @@ After changing registry data:
 | [CATALOG.md](CATALOG.md) | Human-readable application catalog |
 | [STATUS.md](STATUS.md) | Human-readable Repository Health snapshot |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+
+## v1.2.1
+
+v1.2.1 updates the mirrored versions of **24 published applications** to their verified GitHub Releases as of November 14, 2026. The inventory remains **105 registered apps**, with **100 listed on Browser Kitty and 5 not listed**. FFmpeg Filter Builder's unreleased `app.config.json` version (1.2.4) is intentionally not treated as released; its latest published GitHub Release is v1.2.3. The public export and catalog were regenerated; application code and website deployment are unchanged. See [CHANGELOG.md](CHANGELOG.md).
 
 ## v1.2.0
 
