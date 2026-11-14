@@ -59,7 +59,7 @@ Not every application must pass through every state. `browserKitty.published` re
 
 ## v1.2.1 verified release sync
 
-v1.2.1 mirrors 19 verified GitHub Releases from published child repositories (checked 2026-11-14). It does not treat newer `app.config.json` versions without a matching published GitHub Release as released. Application counts, lifecycle classifications, slugs, publication flags, categories, runtime declarations, and the public export contract remain unchanged.
+v1.2.1 mirrors 25 verified GitHub Releases from published child repositories (checked 2026-11-14). It does not treat newer `app.config.json` versions without a matching published GitHub Release as released. Application counts, lifecycle classifications, slugs, publication flags, categories, runtime declarations, and the public export contract remain unchanged.
 
 ## v1.2.0 live catalog reconciliation
 

@@ -150,7 +150,7 @@ After changing registry data:
 
 ## v1.2.1
 
-v1.2.1 updates the mirrored versions of **19 published applications** to their verified GitHub Releases as of November 14, 2026. The inventory remains **105 registered apps**, with **100 listed on Browser Kitty and 5 not listed**. Newer `app.config.json` versions without matching published releases (DuckDB Explorer, FFmpeg Filter Builder, and Lossless Video Cutter) are intentionally not treated as released. The public export and catalog were regenerated; application code and website deployment are unchanged. See [CHANGELOG.md](CHANGELOG.md).
+v1.2.1 updates the mirrored versions of **25 published applications** to their verified GitHub Releases as of November 14, 2026. The inventory remains **105 registered apps**, with **100 listed on Browser Kitty and 5 not listed**. FFmpeg Filter Builder's unreleased `app.config.json` version (1.2.4) is intentionally not treated as released; its latest published GitHub Release is v1.2.3. The public export and catalog were regenerated; application code and website deployment are unchanged. See [CHANGELOG.md](CHANGELOG.md).
 
 ## v1.2.0
 

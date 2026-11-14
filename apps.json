@@ -165,7 +165,7 @@
         "slug": "duckdb-explorer"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-duckdb-explorer/"
@@ -585,7 +585,7 @@
         "slug": "handwriting-font-maker"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-handwriting-font-maker/"
@@ -1245,7 +1245,7 @@
         "slug": "pptx-version-control"
       },
       "release": {
-        "version": "1.1.7"
+        "version": "1.1.8"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pptx-version-control/"
@@ -2693,7 +2693,7 @@
         "slug": "lossless-video-cutter"
       },
       "release": {
-        "version": "1.0.5"
+        "version": "1.0.6"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-lossless-video-cutter/"
@@ -2783,7 +2783,7 @@
         "slug": "passage-counter"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-passage-counter/"
@@ -3143,7 +3143,7 @@
         "slug": "reverse-clip"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-reverse-clip/mt/"

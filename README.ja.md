@@ -150,7 +150,7 @@ Registryを変更した場合は次を実行します。
 
 ## v1.2.1
 
-v1.2.1では、**掲載済み19アプリ**のバージョンを2026年11月14日時点で確認できたGitHub Releaseに合わせて更新しました。登録数は**105件（掲載100件・未掲載5件）**のままです。DuckDB Explorer、FFmpeg Filter Builder、Lossless Video Cutterは`app.config.json`が最新のGitHub Releaseより先行しているため、未リリース版として台帳へ反映していません。公開用exportとカタログを更新し、個別アプリのコードやBrowser Kitty本体のデプロイには触れていません。詳しくは [CHANGELOG.md](CHANGELOG.md) を参照してください。
+v1.2.1では、**掲載済み25アプリ**のバージョンを2026年11月14日時点で確認できたGitHub Releaseに合わせて更新しました。登録数は**105件（掲載100件・未掲載5件）**のままです。FFmpeg Filter Builderは`app.config.json`の1.2.4が最新GitHub Releaseのv1.2.3より先行しているため、未リリース版として台帳へ反映していません。公開用exportとカタログを更新し、個別アプリのコードやBrowser Kitty本体のデプロイには触れていません。詳しくは [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## v1.2.0
 

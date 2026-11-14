@@ -4,9 +4,9 @@
 
 ### Changed
 
-- Synchronize the registry and public export with **19 verified published child-application releases** as of 2026-11-14; regenerate `CATALOG.md` with those versions.
+- Synchronize the registry and public export with **25 verified published child-application releases** as of 2026-11-14; regenerate `CATALOG.md` with those versions.
 - Keep **105 registered applications / 100 Browser Kitty catalog listings / 5 unpublished inventory entries** and the existing seven registry categories, IDs, slugs, lifecycle states, and runtime declarations unchanged.
-- Leave DuckDB Explorer (config 1.0.5, latest release 1.0.4), FFmpeg Filter Builder (config 1.2.4, latest release 1.2.3), and Lossless Video Cutter (config 1.0.6, latest release 1.0.5) at their verified release versions rather than advertising unreleased metadata.
+- Keep FFmpeg Filter Builder at its latest published GitHub Release v1.2.3 while its `app.config.json` is at unreleased version 1.2.4; do not advertise unreleased metadata.
 - Update release-version documentation in both README languages and the registry specification. `STATUS.md` remains a timestamped historical health snapshot, not a live status claim.
 
 ## v1.2.0
