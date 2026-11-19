@@ -15,7 +15,7 @@
         "slug": "archive-explorer"
       },
       "release": {
-        "version": "1.0.3"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-archive-explorer/"
@@ -255,7 +255,7 @@
         "slug": "jsonl-viewer"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.0.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-jsonl-viewer/"
@@ -405,7 +405,7 @@
         "slug": "test-data-generator"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-test-data-generator/"
@@ -855,7 +855,7 @@
         "slug": "pixel-animation-studio"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pixel-animation-studio/"
@@ -1065,7 +1065,7 @@
         "slug": "pdf-fill-sign"
       },
       "release": {
-        "version": "1.0.5"
+        "version": "1.0.6"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pdf-fill-sign/"
@@ -1095,7 +1095,7 @@
         "slug": "pdf-organizer"
       },
       "release": {
-        "version": "1.2.6"
+        "version": "1.2.7"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/html-pdf-organizer/"
@@ -1155,7 +1155,7 @@
         "slug": "pdf-review-notes"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pdf-review-notes/"
@@ -1275,7 +1275,7 @@
         "slug": "presentation-remote"
       },
       "release": {
-        "version": "1.1.2"
+        "version": "1.1.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-presentation-remote/"
@@ -1425,7 +1425,7 @@
         "slug": "planner-refill-maker"
       },
       "release": {
-        "version": "1.2.0"
+        "version": "1.4.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-planner-refill-maker/"
@@ -1575,7 +1575,7 @@
         "slug": "ffmpeg-filter-builder"
       },
       "release": {
-        "version": "1.2.3"
+        "version": "1.2.4"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-ffmpeg-filter-builder/"
@@ -1853,7 +1853,7 @@
         "slug": "nfc-tap-log"
       },
       "release": {
-        "version": "1.0.2"
+        "version": "1.0.3"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-nfc-tap-log/"
@@ -1883,7 +1883,7 @@
         "slug": "office-privacy-inspector"
       },
       "release": {
-        "version": "1.1.4"
+        "version": "1.2.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-office-privacy-inspector/"
@@ -1973,7 +1973,7 @@
         "slug": "pass-the-phone-vote"
       },
       "release": {
-        "version": "1.0.3"
+        "version": "1.0.4"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/"
@@ -2213,7 +2213,7 @@
         "slug": "random-picker"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-random-picker/"
@@ -2603,7 +2603,7 @@
         "slug": "audio-to-midi"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-audio-to-midi/"
@@ -2633,7 +2633,7 @@
         "slug": "audio-cutter-joiner"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-audio-cutter-joiner/"
@@ -2753,7 +2753,7 @@
         "slug": "one-second-montage"
       },
       "release": {
-        "version": "1.3.2"
+        "version": "1.4.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-one-second-montage/"
@@ -2963,7 +2963,7 @@
         "slug": "video-face-redactor"
       },
       "release": {
-        "version": "1.0.3"
+        "version": "1.0.4"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-face-redactor/"
@@ -3083,7 +3083,7 @@
         "slug": "voice-cleaner"
       },
       "release": {
-        "version": "1.0.0"
+        "version": "1.0.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-voice-cleaner/"
