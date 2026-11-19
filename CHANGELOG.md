@@ -1,5 +1,35 @@
 # Changelog
 
+## v1.2.2
+
+### Changed
+
+- Mirror **19 published GitHub Releases** in the registry and its generated public export and catalog (checked 2026-11-20 JST). All 19 also match the current child-repository `app.config.json` versions.
+- Keep **105 registered applications, 100 listed on Browser Kitty, 5 unlisted**, with existing IDs, slugs, categories, lifecycle status, and runtime policies unchanged. Cross-check website catalog mappings without changing website code.
+- Update `VERSION`, English/Japanese README release notes, and the registry specification. `STATUS.md` remains a dated historical snapshot; the GitHub Actions workflow reports live health.
+
+| Application | Previously registered | Published release |
+|---|---:|---:|
+| `archive-explorer` | 1.0.3 | 1.1.0 |
+| `jsonl-viewer` | 1.0.2 | 1.0.3 |
+| `test-data-generator` | 1.0.2 | 1.1.0 |
+| `pixel-animation-studio` | 1.0.4 | 1.0.5 |
+| `pdf-fill-sign` | 1.0.5 | 1.0.6 |
+| `pdf-organizer` | 1.2.6 | 1.2.7 |
+| `pdf-review-notes` | 1.0.4 | 1.0.5 |
+| `presentation-remote` | 1.1.2 | 1.1.3 |
+| `planner-refill-maker` | 1.2.0 | 1.4.0 |
+| `ffmpeg-filter-builder` | 1.2.3 | 1.2.4 |
+| `nfc-tap-log` | 1.0.2 | 1.0.3 |
+| `office-privacy-inspector` | 1.1.4 | 1.2.0 |
+| `pass-the-phone-vote` | 1.0.3 | 1.0.4 |
+| `random-picker` | 1.0.4 | 1.1.0 |
+| `audio-to-midi` | 1.0.0 | 1.0.2 |
+| `audio-cutter-joiner` | 1.0.4 | 1.0.5 |
+| `one-second-montage` | 1.3.2 | 1.4.0 |
+| `video-face-redactor` | 1.0.3 | 1.0.4 |
+| `voice-cleaner` | 1.0.0 | 1.0.1 |
+
 ## v1.2.1
 
 ### Changed
