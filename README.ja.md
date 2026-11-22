@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.2.2-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.2.3-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -147,6 +147,10 @@ Registryを変更した場合は次を実行します。
 | [CATALOG.md](CATALOG.md) | 人間向けアプリ一覧 |
 | [STATUS.md](STATUS.md) | 人間向けRepository Healthスナップショット |
 | [CHANGELOG.md](CHANGELOG.md) | Version履歴 |
+
+## v1.2.3
+
+v1.2.3では、登録されている105アプリのGitHub Releaseを2026年11月23日に再確認し、**10アプリ**の登録バージョンを更新しました。対象はTap Counter、Markdown Preview Lab、Video Audio Extractor、Pass-the-Phone Vote、Photo Collage、PDF Organizer、Pomodoro Timer、Signal Screen、Tuning Compare、Reverse Clipです。登録数は**105件（Browser Kitty掲載100件・未掲載5件）**のままです。公開用JSONとカタログにも同じバージョンを反映しました。アプリ本体、実行環境の設定、Browser Kitty本体のコードは変更していません。詳しくは [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## v1.2.2
 

@@ -765,7 +765,7 @@
         "slug": "photo-collage"
       },
       "release": {
-        "version": "1.0.1"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-photo-collage/"
@@ -1095,7 +1095,7 @@
         "slug": "pdf-organizer"
       },
       "release": {
-        "version": "1.2.7"
+        "version": "1.5.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/html-pdf-organizer/"
@@ -1733,7 +1733,7 @@
         "slug": "markdown-preview-lab"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-markdown-preview-lab/"
@@ -1973,7 +1973,7 @@
         "slug": "pass-the-phone-vote"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/"
@@ -2063,7 +2063,7 @@
         "slug": "pomodoro-timer"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pomodoro-timer/"
@@ -2333,7 +2333,7 @@
         "slug": "signal-screen"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-signal-screen/"
@@ -2363,7 +2363,7 @@
         "slug": "tap-counter"
       },
       "release": {
-        "version": "1.0.3"
+        "version": "1.0.4"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-tap-counter/"
@@ -2453,7 +2453,7 @@
         "slug": "tuning-compare"
       },
       "release": {
-        "version": "1.0.1"
+        "version": "1.0.2"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-tuning-compare/"
@@ -2903,7 +2903,7 @@
         "slug": "video-audio-extractor"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-audio-extractor/"
@@ -3143,7 +3143,7 @@
         "slug": "reverse-clip"
       },
       "release": {
-        "version": "1.1.0"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-reverse-clip/mt/"

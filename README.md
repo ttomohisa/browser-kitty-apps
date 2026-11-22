@@ -4,7 +4,7 @@
 
 [![Browser Kitty](https://img.shields.io/badge/Browser%20Kitty-open-16624F?style=flat-square)](https://browser-kitty.com/)
 [![Repository health](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml/badge.svg)](https://github.com/ttomohisa/browser-kitty-apps/actions/workflows/repository-health.yml)
-[![Registry version](https://img.shields.io/badge/registry-v1.2.2-16624F?style=flat-square)](VERSION)
+[![Registry version](https://img.shields.io/badge/registry-v1.2.3-16624F?style=flat-square)](VERSION)
 [![GitHub stars](https://img.shields.io/github/stars/ttomohisa/browser-kitty-apps?style=flat-square)](https://github.com/ttomohisa/browser-kitty-apps/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-16624F?style=flat-square)](LICENSE)
 
@@ -147,6 +147,10 @@ After changing registry data:
 | [CATALOG.md](CATALOG.md) | Human-readable application catalog |
 | [STATUS.md](STATUS.md) | Human-readable Repository Health snapshot |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+
+## v1.2.3
+
+v1.2.3 updates the registered release versions for **10 applications** to their verified GitHub Releases as of November 23, 2026, following a complete recheck of the 105 registered repositories. In addition to Tap Counter, Markdown Preview Lab, Video Audio Extractor, Pass-the-Phone Vote, and Photo Collage, the update covers PDF Organizer, Pomodoro Timer, Signal Screen, Tuning Compare, and Reverse Clip. The registry remains at **105 registered applications (100 listed on Browser Kitty, 5 unlisted)**. The generated public export and catalog reflect the same versions. No application code, runtime settings, or Browser Kitty website content has been changed. See [CHANGELOG.md](CHANGELOG.md).
 
 ## v1.2.2
 
