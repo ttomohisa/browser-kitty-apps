@@ -59,7 +59,7 @@ Not every application must pass through every state. `browserKitty.published` re
 
 ## v1.2.3 verified release sync
 
-v1.2.3 mirrors five published child-repository versions verified on 2026-11-23 (JST): Tap Counter, Markdown Preview Lab, Video Audio Extractor, Pass-the-Phone Vote, and Photo Collage. Their GitHub Releases and current `app.config.json` versions agree. The 105-app registry, 100-app Browser Kitty catalog, five unlisted inventory entries, seven categories, existing lifecycle states, runtime policies, and public export contract remain unchanged. This release updates only registry metadata and documentation, not the deployed applications.
+v1.2.3 mirrors 10 published child-repository versions verified on 2026-11-23 (JST), after checking the latest GitHub Releases across all 105 registered repositories: Tap Counter, Markdown Preview Lab, Video Audio Extractor, Pass-the-Phone Vote, Photo Collage, PDF Organizer, Pomodoro Timer, Signal Screen, Tuning Compare, and Reverse Clip. Their GitHub Releases and current `app.config.json` versions agree. The 105-app registry, 100-app Browser Kitty catalog, five unlisted inventory entries, seven categories, existing lifecycle states, runtime policies, and public export contract remain unchanged. This release updates only registry metadata and documentation, not the deployed applications.
 
 ## v1.2.2 verified release sync
 

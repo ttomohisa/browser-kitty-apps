@@ -4,8 +4,8 @@
 
 ### Changed
 
-- Mirror **five verified, published application releases** in `apps.json`, `generated/apps.public.json`, and `CATALOG.md` (checked 2026-11-23 JST). Each matches its child repository's `app.config.json`.
-- Keep **105 registered applications, 100 catalog-listed, 5 unlisted**, preserving all registry IDs, public slugs, categories, maturity states, runtime declarations, and standalone output paths. Verify all five website slug/repository mappings against the current private Browser Kitty catalog.
+- Mirror **10 verified, published application releases** in `apps.json`, `generated/apps.public.json`, and `CATALOG.md` (checked 2026-11-23 JST). Each matches its child repository's `app.config.json`.
+- Keep **105 registered applications, 100 catalog-listed, 5 unlisted**, preserving all registry IDs, public slugs, categories, maturity states, runtime declarations, and standalone output paths. Verify all 10 website slug/repository mappings against the current private Browser Kitty catalog.
 - Update `VERSION`, both README release notes, and `REGISTRY_SPEC.md`. Leave dated `STATUS.md` unchanged; live health checks run in GitHub Actions.
 
 | Application | Previously registered | Published release |
@@ -15,6 +15,11 @@
 | `video-audio-extractor` | 1.0.4 | 1.1.0 |
 | `pass-the-phone-vote` | 1.0.4 | 1.0.5 |
 | `photo-collage` | 1.0.1 | 1.1.1 |
+| `pdf-organizer` | 1.2.7 | 1.5.0 |
+| `pomodoro-timer` | 1.0.4 | 1.0.5 |
+| `signal-screen` | 1.0.4 | 1.1.0 |
+| `tuning-compare` | 1.0.1 | 1.0.2 |
+| `reverse-clip` | 1.1.0 | 1.1.1 |
 
 ## v1.2.2
 

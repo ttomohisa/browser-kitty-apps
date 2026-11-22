@@ -150,7 +150,7 @@ After changing registry data:
 
 ## v1.2.3
 
-v1.2.3 updates the registered release versions for **five applications**—Tap Counter, Markdown Preview Lab, Video Audio Extractor, Pass-the-Phone Vote, and Photo Collage—to their verified GitHub Releases as of November 23, 2026. The registry remains at **105 registered applications (100 listed on Browser Kitty, 5 unlisted)**. The generated public export and catalog reflect the same versions. No application code, runtime settings, or Browser Kitty website content has been changed. See [CHANGELOG.md](CHANGELOG.md).
+v1.2.3 updates the registered release versions for **10 applications** to their verified GitHub Releases as of November 23, 2026, following a complete recheck of the 105 registered repositories. In addition to Tap Counter, Markdown Preview Lab, Video Audio Extractor, Pass-the-Phone Vote, and Photo Collage, the update covers PDF Organizer, Pomodoro Timer, Signal Screen, Tuning Compare, and Reverse Clip. The registry remains at **105 registered applications (100 listed on Browser Kitty, 5 unlisted)**. The generated public export and catalog reflect the same versions. No application code, runtime settings, or Browser Kitty website content has been changed. See [CHANGELOG.md](CHANGELOG.md).
 
 ## v1.2.2
 

@@ -150,7 +150,7 @@ Registryを変更した場合は次を実行します。
 
 ## v1.2.3
 
-v1.2.3では、2026年11月23日時点のGitHub Releaseを確認し、**Tap Counter、Markdown Preview Lab、Video Audio Extractor、Pass-the-Phone Vote、Photo Collageの5アプリ**の登録バージョンを更新しました。登録数は**105件（Browser Kitty掲載100件・未掲載5件）**のままです。公開用JSONとカタログにも同じバージョンを反映しました。アプリ本体、実行環境の設定、Browser Kitty本体のコードは変更していません。詳しくは [CHANGELOG.md](CHANGELOG.md) を参照してください。
+v1.2.3では、登録されている105アプリのGitHub Releaseを2026年11月23日に再確認し、**10アプリ**の登録バージョンを更新しました。対象はTap Counter、Markdown Preview Lab、Video Audio Extractor、Pass-the-Phone Vote、Photo Collage、PDF Organizer、Pomodoro Timer、Signal Screen、Tuning Compare、Reverse Clipです。登録数は**105件（Browser Kitty掲載100件・未掲載5件）**のままです。公開用JSONとカタログにも同じバージョンを反映しました。アプリ本体、実行環境の設定、Browser Kitty本体のコードは変更していません。詳しくは [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## v1.2.2
 
