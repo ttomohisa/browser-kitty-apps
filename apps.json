@@ -765,7 +765,7 @@
         "slug": "photo-collage"
       },
       "release": {
-        "version": "1.0.1"
+        "version": "1.1.1"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-photo-collage/"
@@ -1733,7 +1733,7 @@
         "slug": "markdown-preview-lab"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-markdown-preview-lab/"
@@ -1973,7 +1973,7 @@
         "slug": "pass-the-phone-vote"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.0.5"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-pass-the-phone-vote/"
@@ -2363,7 +2363,7 @@
         "slug": "tap-counter"
       },
       "release": {
-        "version": "1.0.3"
+        "version": "1.0.4"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-tap-counter/"
@@ -2903,7 +2903,7 @@
         "slug": "video-audio-extractor"
       },
       "release": {
-        "version": "1.0.4"
+        "version": "1.1.0"
       },
       "pages": {
         "url": "https://ttomohisa.github.io/htmlapps-video-audio-extractor/"
