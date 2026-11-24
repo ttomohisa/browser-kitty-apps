@@ -1,6 +1,6 @@
 # Browser Kitty Apps Registry Specification
 
-Version: 1.2.3 production
+Version: 1.2.4 production
 
 ## Purpose
 
@@ -56,6 +56,10 @@ Not every application must pass through every state. `browserKitty.published` re
 - v1.0.0 — Production Registry (implemented)
 
 
+
+## v1.2.4 verified release sync
+
+v1.2.4 mirrors 9 published child-repository versions verified on 2026-11-25 (JST), after checking the latest GitHub Releases across all 105 registered repositories. Each updated version matches the current `app.config.json`. The 105-app registry, 100-app Browser Kitty catalog, five unlisted inventory entries, seven categories, existing lifecycle states, runtime policies, and public export contract remain unchanged. This is a metadata update, not an application rollout.
 
 ## v1.2.3 verified release sync
 
