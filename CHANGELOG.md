@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.2.4
+
+### Changed
+
+- Check the latest GitHub Releases across all 105 registered repositories and mirror **9 verified published application releases** in `apps.json`, `generated/apps.public.json`, and `CATALOG.md` (checked 2026-11-25 JST). Each updated version matches its child repository's current `app.config.json`.
+- Confirm all 100 Browser Kitty catalog entries match the registry's published slug/repository mappings. Preserve 105 registered apps, 100 listed, 5 unlisted, and all existing categories, lifecycle states, runtime declarations, and standalone output paths.
+- Update `VERSION`, both README release notes, and `REGISTRY_SPEC.md`. Leave dated `STATUS.md` unchanged; live health checks run in GitHub Actions.
+
+| Application | Previously registered | Published release |
+|---|---:|---:|
+| `schema-diff` | 1.0.4 | 1.1.0 |
+| `pixel-animation-studio` | 1.0.5 | 1.0.6 |
+| `document-to-markdown` | 1.0.4 | 1.1.0 |
+| `pptx-version-control` | 1.1.8 | 1.2.0 |
+| `mini-league-desk` | 1.0.3 | 1.1.0 |
+| `pocket-teleprompter` | 1.0.5 | 1.0.6 |
+| `reveal-sheet` | 1.2.0 | 1.2.1 |
+| `web-serial-terminal` | 1.0.0 | 1.1.0 |
+| `wifi-share` | 1.1.3 | 1.1.4 |
+
 ## v1.2.3
 
 ### Changed
